@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface Article {
   title: string;
@@ -10,25 +10,12 @@ interface Article {
   link: string;
 }
 
-export default function Articles() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+interface ArticlesProps {
+  articles: Article[];
+}
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await fetch('/api/medium-articles');
-        const data = await response.json();
-        setArticles(data);
-      } catch (error) {
-        console.error('Failed to fetch articles:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchArticles();
-  }, []);
+export default function Articles({ articles }: ArticlesProps) {
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -123,5 +110,35 @@ export default function Articles() {
       </div>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  try {
+    const mediumUsername = '@lilmod';
+    const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`);
+    const data = await response.json();
+    
+    const articles = data.items.map((item: any) => ({
+      title: item.title,
+      date: new Date(item.pubDate).toISOString(),
+      description: item.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+      link: item.link,
+      readTime: `${Math.ceil(item.content.split(' ').length / 200)} min read`,
+      tags: item.categories || []
+    }));
+
+    return {
+      props: {
+        articles,
+      },
+    };
+  } catch (error) {
+    console.error('Failed to fetch Medium articles:', error);
+    return {
+      props: {
+        articles: [],
+      },
+    };
+  }
 }
 

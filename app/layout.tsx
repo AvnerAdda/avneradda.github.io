@@ -1,8 +1,7 @@
 import './globals.css'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
-const jetbrains = JetBrains_Mono({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Avner Adda - Data Scientist',
