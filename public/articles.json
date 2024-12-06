@@ -1,0 +1,140 @@
+[
+  {
+    "title": "TinyTroupe : Simulating Social Dynamics with AI-Powered Tiny Worlds — Early Bird Gift Awaits!",
+    "date": "2024-11-21T11:53:30.000Z",
+    "description": "\n\nIn the realm of AI and simulation, TinyTroupe, a cutting-edge project by Microsoft, brings a fascinating twist: creating digital…\nContinue reading o...",
+    "link": "https://medium.com/@lilmod/tinytroupe-simulating-social-dynamics-with-ai-powered-tiny-worlds-early-bird-gift-awaits-0fdebd104053?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "llm",
+      "genai",
+      "agents",
+      "ai",
+      "business"
+    ]
+  },
+  {
+    "title": "Docling: Transforming Document Processing for the Modern Era",
+    "date": "2024-11-12T13:53:42.000Z",
+    "description": "\n\nWe can not more agree that processing and understanding documents across various formats is challenging. Discover Docling now!\nContinue reading on A...",
+    "link": "https://ai.plainenglish.io/docling-transforming-document-processing-for-the-modern-era-99ba230062a6?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "data-science",
+      "llm",
+      "python",
+      "langchain",
+      "document"
+    ]
+  },
+  {
+    "title": "Build a Financial Report Analyzer in 5 Minutes: LlamaIndex + KPMG Case Study",
+    "date": "2024-11-01T07:02:06.000Z",
+    "description": "\n\nIn today’s fast-paced financial world, extracting meaningful insights from lengthy reports quickly and accurately is crucial. With the…\nContinue rea...",
+    "link": "https://medium.com/@lilmod/build-a-financial-report-analyzer-in-5-minutes-llamaindex-kpmg-case-study-7c6a13bb3a39?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "llamaindex",
+      "reporting",
+      "genai",
+      "ai",
+      "llm"
+    ]
+  },
+  {
+    "title": "CrewAI: Your Personal Army of AI Agents, Collaborating for You",
+    "date": "2024-10-02T10:47:07.000Z",
+    "description": "\n\nWhat the CrewAI framework is ?\nContinue reading on AI Advances »\n...",
+    "link": "https://ai.gopubby.com/crewai-your-personal-army-of-ai-agents-collaborating-for-you-27bd56d498f9?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "llm",
+      "crew-ai",
+      "autogen",
+      "machine-learning",
+      "artificial-intelligence"
+    ]
+  },
+  {
+    "title": "PromptFlow by Microsoft: Bringing Your LLM Application into Production",
+    "date": "2024-09-23T08:37:49.000Z",
+    "description": "\n\nContinue reading on Artificial Intelligence in Plain English »\n...",
+    "link": "https://ai.plainenglish.io/promptflow-by-microsoft-bringing-your-llm-application-into-production-017da20d2568?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "artificial-intelligence",
+      "llm",
+      "microsoft"
+    ]
+  },
+  {
+    "title": "Haystack: the new LLM framework that is shaking its competitors",
+    "date": "2024-08-27T07:42:06.000Z",
+    "description": "\n\nHaystack is an open-source framework designed to help build AI applications. Let’s review together what makes it so strong with a use-case.\nContinue...",
+    "link": "https://ai.plainenglish.io/haystack-the-new-llm-framework-that-is-shaking-its-competitors-1a083a153fd9?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "genai",
+      "llm",
+      "openai",
+      "python",
+      "emerging-technology"
+    ]
+  },
+  {
+    "title": "Maximize Your Potential with Langchain: The 3 Tools You Absolutely Need to Know",
+    "date": "2024-07-30T05:17:23.000Z",
+    "description": "\n\nLLMs have revolutionized the way we interact with natural language processing (NLP) technologies. Thanks to these advances, innovative…\nContinue rea...",
+    "link": "https://ai.plainenglish.io/maximize-your-potential-with-langchain-the-3-tools-you-absolutely-need-to-know-c60e0378b01b?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "llm",
+      "langchain",
+      "ai",
+      "chatbots",
+      "genai"
+    ]
+  },
+  {
+    "title": "GraphRAG vs RAG, the ultimate use-case",
+    "date": "2024-07-02T03:19:32.000Z",
+    "description": "\n\nIn this article we will review together a new type of RAG: GraphRAG. From implementation to comparaison with common RAG method. Ready ?\nContinue rea...",
+    "link": "https://ai.plainenglish.io/graphrag-vs-rag-the-ultimate-use-case-3413fb48bbd4?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "machine-learning",
+      "python",
+      "llm",
+      "graph",
+      "langchain"
+    ]
+  },
+  {
+    "title": "Decoding the GPT Model: What you need to know — PART II",
+    "date": "2024-06-18T06:26:12.000Z",
+    "description": "\n\nLooking to understand the inner workings of a major language model? You are in the right place. ☺\nContinue reading on Artificial Intelligence in Pla...",
+    "link": "https://ai.plainenglish.io/decoding-the-gpt-model-what-you-need-to-know-part-ii-80885beb4eee?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "artificial-intelligence",
+      "llm",
+      "neural-networks",
+      "deep-learning",
+      "genai"
+    ]
+  },
+  {
+    "title": "You know streamlit, gradio ? Say Hi to Mesop by Google",
+    "date": "2024-06-11T04:32:33.000Z",
+    "description": "\n\nMesop is a new UI framework that enables Python developers to quickly create enjoyable web applications in a scalable way. Many Python UI…\nContinue ...",
+    "link": "https://medium.com/@lilmod/you-know-streamlit-gradio-say-hi-to-mesop-by-google-c08c36a091f2?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "ui",
+      "ai",
+      "python",
+      "app-development",
+      "google"
+    ]
+  }
+]

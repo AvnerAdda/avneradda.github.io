@@ -10,7 +10,7 @@ export default function Experience() {
           {
             role: 'Data Scientist',
             company: 'Deloitte',
-            period: '2022-2024',
+            period: '2022-Current',
             location: 'Tel-Aviv',
             achievements: [
               'Implemented a data cleansing solution to mask sensitive information on documents using NLP method (NER)',

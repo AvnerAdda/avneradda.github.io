@@ -36,7 +36,7 @@ export default function Home() {
           </div>
           <div id="articles" className="animate-fade-in" style={{ animationDelay: '0.8s' }}>
             <AiCard>
-              <Articles articles={[]} />
+              <Articles />
             </AiCard>
           </div>
         </div>

@@ -1,5 +1,6 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import articlesData from '../public/articles.json';
 
 interface Article {
   title: string;
@@ -10,12 +11,19 @@ interface Article {
   link: string;
 }
 
-interface ArticlesProps {
-  articles: Article[];
-}
+export default function Articles() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [displayCount, setDisplayCount] = useState(4);
 
-export default function Articles({ articles }: ArticlesProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    setArticles(articlesData);
+    setIsLoading(false);
+  }, []);
+
+  const handleShowMore = () => {
+    setDisplayCount(prev => prev + 4);
+  };
 
   return (
     <div className="space-y-6">
@@ -34,7 +42,7 @@ export default function Articles({ articles }: ArticlesProps) {
             </div>
           ))
         ) : (
-          articles.map((article, index) => (
+          articles.slice(0, displayCount).map((article, index) => (
             <a 
               href={article.link}
               target="_blank"
@@ -62,10 +70,6 @@ export default function Articles({ articles }: ArticlesProps) {
                   </span>
                 </div>
 
-                <p className="text-gray-300">
-                  {article.description}
-                </p>
-
                 <div className="flex flex-wrap gap-2">
                   {article.tags.map((tag) => (
                     <span 
@@ -88,6 +92,17 @@ export default function Articles({ articles }: ArticlesProps) {
           ))
         )}
       </div>
+
+      {!isLoading && displayCount < articles.length && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={handleShowMore}
+            className="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-400 text-white transition-colors hover:glow"
+          >
+            Show More
+          </button>
+        </div>
+      )}
 
       {/* Newsletter subscription */}
       <div className="mt-8 p-6 rounded-lg bg-gray-700/30 hover:glow-on-hover">
