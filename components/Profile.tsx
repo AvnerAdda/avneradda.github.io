@@ -23,16 +23,15 @@ const TECH_STACK = [
 ];
 
 const CONTACT_INFO = [
-  { icon: '📱', label: '+972 53-399-9137' },
   { 
     icon: '📧', 
-    label: 'avner.adda@outlook.com',
+    label: 'Email',
     href: 'mailto:avner.adda@outlook.com'
   },
-  { icon: '📍', label: 'Bat Yam' },
+  { icon: '📍', label: 'Tel Aviv, Israel' },
   { 
     icon: '🐙', 
-    label: 'GitHub: AvnerAdda',
+    label: 'GitHub',
     href: 'https://github.com/AvnerAdda'
   },
   {
@@ -135,8 +134,8 @@ export default function Profile() {
           ))}
         </div>
 
-        {/* Download Resume Button */}
-        <div className="mt-6 flex justify-center">
+        {/* Download Resume and Chatbot Buttons in one row */}
+        <div className="mt-6 flex justify-center gap-4">
           <button
             onClick={handleDownloadResume}
             className="group relative px-6 py-3 rounded-full 
@@ -167,10 +166,7 @@ export default function Profile() {
               Download Resume
             </div>
           </button>
-        </div>
 
-        {/* Chatbot button - make sure it's not hidden */}
-        <div className="mt-8 flex justify-center w-full">
           <button
             onClick={() => setIsChatbotOpen(true)}
             className="group relative px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold hover:scale-105 transition-all duration-300 z-10"

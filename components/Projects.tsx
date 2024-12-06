@@ -110,6 +110,22 @@ export default function Projects() {
 
   return (
     <div className="space-y-12">
+              {/* GitHub Contributions with enhanced styling */}
+              <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-3">GitHub Contributions</h3>
+          <div className="w-full overflow-hidden rounded-lg bg-gray-700/30 hover:bg-gray-700/40 transition-all duration-300 p-4 group">
+            <div className="relative">
+              <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition duration-500" />
+              <div className="relative">
+                <img
+                  src="https://ghchart.rshah.org/gradient/AvnerAdda"
+                  alt="GitHub Contributions Graph"
+                  className="w-full h-auto rounded-md hover:scale-[1.01] transition-transform duration-300"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       {/* Featured Lilmod Project - Now Clickable */}
       <a 
         href="https://lilmod-ai.com" 
