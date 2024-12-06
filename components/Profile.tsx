@@ -138,7 +138,7 @@ export default function Profile() {
         <div className="mt-6 flex justify-center gap-4">
           <button
             onClick={handleDownloadResume}
-            className="group relative px-6 py-3 rounded-full 
+            className="group relative px-6 py-3 md:px-6 md:py-3 px-4 py-2 rounded-full 
               bg-gradient-to-r from-green-500 to-emerald-500 
               text-white font-semibold hover:scale-105 
               transition-all duration-300"
@@ -163,15 +163,22 @@ export default function Profile() {
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                 />
               </svg>
-              Download Resume
+              <span className="hidden md:inline">Download Resume</span>
             </div>
           </button>
 
           <button
             onClick={() => setIsChatbotOpen(true)}
-            className="group relative px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold hover:scale-105 transition-all duration-300 z-10"
+            className="group relative px-6 py-3 md:px-6 md:py-3 px-4 py-2 rounded-full 
+              bg-gradient-to-r from-blue-500 to-purple-500 
+              text-white font-semibold hover:scale-105 
+              transition-all duration-300 z-10"
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+            <div className="absolute -inset-1 
+              bg-gradient-to-r from-blue-500 to-purple-500 
+              rounded-full blur opacity-30 
+              group-hover:opacity-70 transition duration-500"
+            />
             <div className="relative flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +194,7 @@ export default function Profile() {
                   d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
                 />
               </svg>
-              Speak to my chatbot
+              <span className="hidden md:inline">Speak to my chatbot</span>
             </div>
           </button>
         </div>
