@@ -7,6 +7,12 @@ import Image from 'next/image';
 const projectsData = {
   "Financial Technology": [
     {
+      title: "Forecasting Critical KPIs",
+      description: "Predicted bank KPIs threshold crossings for proactive decision-making",
+      tech: ["Python", "Time Series", "Forecasting"],
+      metrics: "76% forecasting accuracy"
+    },
+    {
       title: "Credit Prediction",
       description: "ML model predicting creditworthiness based on bank account data",
       tech: ["R", "Machine Learning", "Financial Analysis"],
@@ -17,12 +23,6 @@ const projectsData = {
       description: "Prototype platform for investment optimization",
       tech: ["R", "Azure", "Portfolio Analysis"],
       metrics: "Deployed in 3 months"
-    },
-    {
-      title: "Forecasting Critical KPIs",
-      description: "Predicted bank KPIs threshold crossings for proactive decision-making",
-      tech: ["Python", "Time Series", "Forecasting"],
-      metrics: "76% forecasting accuracy"
     },
     {
       title: "Cryptocurrency Analysis Dashboard",
@@ -45,16 +45,16 @@ const projectsData = {
       metrics: "Improved decision speed"
     },
     {
-      title: "Patient Medication Analysis",
-      description: "Behavior analysis for medication adherence",
-      tech: ["Data Analysis", "Healthcare", "Python"],
-      metrics: "3% adherence improvement"
-    },
-    {
       title: "Healthcare Provider Profiling",
       description: "Provider segmentation for improved drug accessibility",
       tech: ["Python", "Clustering", "Healthcare"],
       metrics: "5% proposal rate improvement"
+    },
+    {
+      title: "Patient Medication Analysis",
+      description: "Behavior analysis for medication adherence",
+      tech: ["Data Analysis", "Healthcare", "Python"],
+      metrics: "3% adherence improvement"
     },
     {
       title: "COVID-19 KPI Dashboard",
@@ -71,30 +71,36 @@ const projectsData = {
   ],
   "Natural Language Processing": [
     {
-      title: "Tech Article Analysis",
-      description: "Deep NLP analysis of tech articles for trend extraction",
-      tech: ["Python", "NLP", "SQL"],
-      metrics: "Improved user engagement"
-    },
-    {
       title: "Confidential Information Masking",
       description: "Automated sensitive information masking using AI models",
       tech: ["Python", "Hugging Face", "NLP"],
       metrics: "92% accuracy, 50 docs/day"
+    },
+    {
+      title: "Product Recommendation Engine",
+      description: "Clustered Israeli products based on nutritional value and price optimization",
+      tech: ["Python", "NLP", "Clustering"],
+      metrics: "95% segmentation accuracy, <1s processing"
+    },
+    {
+      title: "Tech Article Analysis",
+      description: "Deep NLP analysis of tech articles for trend extraction",
+      tech: ["Python", "NLP", "SQL"],
+      metrics: "Improved user engagement"
     }
   ],
   "Machine Learning & AI": [
-    {
-      title: "Musical Genre Prediction",
-      description: "Genre prediction using audio spectrograms",
-      tech: ["Python", "Computer Vision", "ML"],
-      metrics: "72% accuracy"
-    },
     {
       title: "Anomaly Detection System",
       description: "Real-time anomaly detection for SaaS KPI monitoring",
       tech: ["Python", "Time Series", "ML"],
       metrics: "Reduced downtime significantly"
+    },
+    {
+      title: "Musical Genre Prediction",
+      description: "Genre prediction using audio spectrograms",
+      tech: ["Python", "Computer Vision", "ML"],
+      metrics: "72% accuracy"
     }
   ]
 } as const; // Make it a constant to ensure consistency
