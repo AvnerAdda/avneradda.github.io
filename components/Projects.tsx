@@ -123,10 +123,13 @@ export default function Projects() {
             <div className="relative">
               <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition duration-500" />
               <div className="relative">
-                <img
+                <Image
                   src="https://ghchart.rshah.org/gradient/AvnerAdda"
                   alt="GitHub Contributions Graph"
+                  width={800}
+                  height={128}
                   className="w-full h-auto rounded-md hover:scale-[1.01] transition-transform duration-300"
+                  unoptimized // Since this is an external dynamic image
                 />
               </div>
             </div>
