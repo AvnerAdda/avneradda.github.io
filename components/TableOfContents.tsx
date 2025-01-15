@@ -9,9 +9,11 @@ interface Section {
 
 const sections: Section[] = [
   { id: 'profile', title: 'Profile', icon: '👤' },
+  { id: 'introduction', title: 'About Me', icon: '👋' },
   { id: 'education', title: 'Education', icon: '🎓' },
   { id: 'experience', title: 'Experience', icon: '💼' },
   { id: 'projects', title: 'Projects', icon: '🚀' },
+  { id: 'tools', title: 'Tools', icon: '🛠️' },
   { id: 'articles', title: 'Articles', icon: '📝' },
 ];
 

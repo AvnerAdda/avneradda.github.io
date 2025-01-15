@@ -6,6 +6,8 @@ import Articles from '../components/Articles'
 import AiDecorations from '../components/AiDecorations'
 import AiCard from '../components/AiCard'
 import TableOfContents from '../components/TableOfContents'
+import Tools from '../components/Tools'
+import Introduction from '../components/Introduction'
 
 export default function Home() {
   return (
@@ -17,6 +19,11 @@ export default function Home() {
           <div id="profile" className="animate-fade-in" style={{ animationDelay: '0s' }}>
             <AiCard>
               <Profile />
+            </AiCard>
+          </div>
+          <div id="introduction" className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <AiCard>
+              <Introduction />
             </AiCard>
           </div>
           <div id="education" className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -34,7 +41,12 @@ export default function Home() {
               <Projects />
             </AiCard>
           </div>
-          <div id="articles" className="animate-fade-in" style={{ animationDelay: '0.8s' }}>
+          <div id="tools" className="animate-fade-in" style={{ animationDelay: '1s' }}>
+            <AiCard>
+              <Tools />
+            </AiCard>
+          </div>
+          <div id="articles" className="animate-fade-in" style={{ animationDelay: '1.2s' }}>
             <AiCard>
               <Articles />
             </AiCard>
