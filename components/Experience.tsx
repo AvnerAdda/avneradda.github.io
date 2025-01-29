@@ -13,10 +13,12 @@ export default function Experience() {
             period: '2022-Current',
             location: 'Tel-Aviv',
             achievements: [
-              'Implemented a data cleansing solution to mask sensitive information on documents using NLP method (NER)',
-              'Providing data-science consulting and solutions to a wide variety of clients (Life Sciences, banking, etc.)',
-              'Tools: Python, AWS, GCP, Spark, NoSQL, T-SQL, Tableau, PowerBI, Dataiku, NVIDIA, Git, LLMs'
-            ]
+              'Implemented a data cleansing solution to mask sensitive information on documents using NLP method (NER).',
+              'Architected and implemented an enterprise-scale Graph-RAG system for healthcare data processing.',
+              'Led end-to-end development of a machine learning clustering algorithm for healthcare provider segmentation, processing 1M+ patient records to optimize drug accessibility pathways',
+              'Collaborated with diverse consumer goods clients to deliver personalized customer clustering analyses using classical Machine Learning and Generative AI techniques. Additionally, contributed to the development and improvement of the package',
+            ],
+            tools: ['Python', 'AWS', 'GCP', 'Spark', 'NoSQL', 'T-SQL', 'Tableau', 'PowerBI', 'Dataiku', 'NVIDIA', 'Git', 'LLMs']
           },
           {
             role: 'Data Scientist',
@@ -26,8 +28,8 @@ export default function Experience() {
             achievements: [
               'Leading company\'s machine learning projects and their releases into production',
               'Implementation of machine learning algorithms to detect and reduce fake requests and predict prices',
-              'Tools: Python, MySQL, ElasticSearch, Linux, AWS, Git'
-            ]
+            ],
+            tools: ['Python', 'MySQL', 'ElasticSearch', 'Linux', 'AWS', 'Git']
           },
           {
             role: 'Data Scientist',
@@ -37,8 +39,8 @@ export default function Experience() {
             achievements: [
               'Detected anomalies using time series algorithms and testing its robustness using Python and AWS environments',
               'Retrieved BI data warehouse using SQL, build the data history to map the behaviour of KPI\'s over time',
-              'Tools: Python, SQL, AWS, PostgreSQL, Snowflake, Git'
-            ]
+            ],
+            tools: ['Python', 'SQL', 'AWS', 'PostgreSQL', 'Snowflake', 'Git']
           }
         ].map((exp, index) => (
           <div 
@@ -66,6 +68,21 @@ export default function Experience() {
                   </li>
                 ))}
               </ul>
+              
+              <div className="mt-4">
+                <h4 className="text-sm font-semibold mb-2">Tools & Technologies</h4>
+                <div className="flex flex-wrap gap-2">
+                  {exp.tools.map((tool, index) => (
+                    <span
+                      key={tool}
+                      className="px-3 py-1 rounded-full bg-gray-700/50 text-sm animate-pulse"
+                      style={{ animationDelay: `${index * 0.2}s` }}
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         ))}
