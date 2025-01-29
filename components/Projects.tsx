@@ -167,7 +167,7 @@ export default function Projects() {
             </p>
             
             <div className="mt-4 flex flex-wrap gap-2">
-              {["Next.js", "AI/ML", "TypeScript", "Tailwind"].map((tech) => (
+              {["GCP", "AI/ML/GenAI", "SQL", "Next.js", "TypeScript", "Tailwind"].map((tech) => (
                 <span
                   key={tech}
                   className="px-3 py-1 text-sm rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20"
