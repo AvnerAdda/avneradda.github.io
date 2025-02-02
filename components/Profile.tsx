@@ -79,7 +79,7 @@ export default function Profile() {
 
           {/* Name and Title */}
           <div className="hover-float pt-2">
-            <h1 className="text-4xl font-bold bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
               Avner Adda
             </h1>
             <p className="text-xl text-gray-300">Data Scientist</p>

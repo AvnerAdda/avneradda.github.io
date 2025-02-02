@@ -27,7 +27,7 @@ const CERTIFICATIONS = [
 export default function Education() {
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold bg-clip-text text-transparent">
+      <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
         Education
       </h2>
       {/* Existing Education Content */}

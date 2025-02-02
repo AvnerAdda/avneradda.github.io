@@ -42,14 +42,14 @@ export default function Home() {
               <Projects />
             </AiCard>
           </div>
-          <div id="hobbies" className="animate-fade-in" style={{ animationDelay: '0.8s' }}>
-            <AiCard>
-              <Hobbies />
-            </AiCard>
-          </div>
           <div id="tools" className="animate-fade-in" style={{ animationDelay: '1s' }}>
             <AiCard>
               <Tools />
+            </AiCard>
+          </div>
+          <div id="hobbies" className="animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            <AiCard>
+              <Hobbies />
             </AiCard>
           </div>
           <div id="articles" className="animate-fade-in" style={{ animationDelay: '1.2s' }}>
