@@ -1,7 +1,10 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'Avner Adda - Data Scientist',
@@ -34,10 +37,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        <div className="fixed inset-0 -z-10 neural-bg opacity-50" />
-        {children}
+    <html lang="en" className="scroll-smooth">
+      <body className={`${inter.className} min-h-screen bg-gray-900 text-white relative`}>
+        <div className="fixed inset-0 -z-10 neural-bg opacity-30" />
+        <div className="relative z-0">
+          {children}
+        </div>
       </body>
     </html>
   )

@@ -1,9 +1,51 @@
 [
   {
+    "title": "Can Deepseek R1 become the next best reasoning model for AI Agents ?",
+    "date": "2025-01-28T11:11:23.000Z",
+    "description": "\n\nIt doesn’t seem to interest many people, but do you really want to know what makes DeepSeek unique? And above all, how they were able to…\nContinue r...",
+    "link": "https://ai.plainenglish.io/can-deepseek-r1-become-the-next-best-reasoning-model-for-ai-agents-3647fb6b6274?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "ai",
+      "agents",
+      "llm",
+      "deepseek-r1",
+      "openai"
+    ]
+  },
+  {
+    "title": "How I implement my portfolio website in a few hours with no full-stack skills ? (No template)",
+    "date": "2025-01-02T04:01:43.000Z",
+    "description": "\n\nRecently I deployed my portfolio website and the feedback has been amazing. I want to share with you, with complete honesty the complete…\nContinue r...",
+    "link": "https://ai.plainenglish.io/why-i-created-my-own-portfolio-website-and-why-you-should-too-b02e8aa7778c?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "personal-development",
+      "llm",
+      "website",
+      "react",
+      "portfolio"
+    ]
+  },
+  {
+    "title": "From chaos to order: How Instructor transforms your prompts",
+    "date": "2024-12-26T06:41:05.000Z",
+    "description": "\n\nSometimes when using a Large Language Model (LLM), the output you receive isn’t quite what you asked for, especially when your prompt gets…\nContinue...",
+    "link": "https://ai.plainenglish.io/from-chaos-to-order-how-instructor-transforms-your-prompts-72a2e45407e5?source=rss-2000a6701d0d------2",
+    "readTime": "1 min read",
+    "tags": [
+      "llm",
+      "prompt-engineering",
+      "ai",
+      "python",
+      "pydantic"
+    ]
+  },
+  {
     "title": "TinyTroupe : Simulating Social Dynamics with AI-Powered Tiny Worlds — Early Bird Gift Awaits!",
     "date": "2024-11-21T11:53:30.000Z",
     "description": "\n\nIn the realm of AI and simulation, TinyTroupe, a cutting-edge project by Microsoft, brings a fascinating twist: creating digital…\nContinue reading o...",
-    "link": "https://medium.com/@lilmod/tinytroupe-simulating-social-dynamics-with-ai-powered-tiny-worlds-early-bird-gift-awaits-0fdebd104053?source=rss-2000a6701d0d------2",
+    "link": "https://ai.plainenglish.io/tinytroupe-simulating-social-dynamics-with-ai-powered-tiny-worlds-early-bird-gift-awaits-0fdebd104053?source=rss-2000a6701d0d------2",
     "readTime": "1 min read",
     "tags": [
       "llm",
@@ -93,48 +135,6 @@
       "ai",
       "chatbots",
       "genai"
-    ]
-  },
-  {
-    "title": "GraphRAG vs RAG, the ultimate use-case",
-    "date": "2024-07-02T03:19:32.000Z",
-    "description": "\n\nIn this article we will review together a new type of RAG: GraphRAG. From implementation to comparaison with common RAG method. Ready ?\nContinue rea...",
-    "link": "https://ai.plainenglish.io/graphrag-vs-rag-the-ultimate-use-case-3413fb48bbd4?source=rss-2000a6701d0d------2",
-    "readTime": "1 min read",
-    "tags": [
-      "machine-learning",
-      "python",
-      "llm",
-      "graph",
-      "langchain"
-    ]
-  },
-  {
-    "title": "Decoding the GPT Model: What you need to know — PART II",
-    "date": "2024-06-18T06:26:12.000Z",
-    "description": "\n\nLooking to understand the inner workings of a major language model? You are in the right place. ☺\nContinue reading on Artificial Intelligence in Pla...",
-    "link": "https://ai.plainenglish.io/decoding-the-gpt-model-what-you-need-to-know-part-ii-80885beb4eee?source=rss-2000a6701d0d------2",
-    "readTime": "1 min read",
-    "tags": [
-      "artificial-intelligence",
-      "llm",
-      "neural-networks",
-      "deep-learning",
-      "genai"
-    ]
-  },
-  {
-    "title": "You know streamlit, gradio ? Say Hi to Mesop by Google",
-    "date": "2024-06-11T04:32:33.000Z",
-    "description": "\n\nMesop is a new UI framework that enables Python developers to quickly create enjoyable web applications in a scalable way. Many Python UI…\nContinue ...",
-    "link": "https://medium.com/@lilmod/you-know-streamlit-gradio-say-hi-to-mesop-by-google-c08c36a091f2?source=rss-2000a6701d0d------2",
-    "readTime": "1 min read",
-    "tags": [
-      "ui",
-      "ai",
-      "python",
-      "app-development",
-      "google"
     ]
   }
 ]

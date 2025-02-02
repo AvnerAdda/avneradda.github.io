@@ -3,22 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #111827;
+  --foreground: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Add these base styles */
+@layer base {
+  body {
+    @apply bg-gray-900 text-white;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
   min-height: 100vh;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .text-transparent {
@@ -33,5 +48,13 @@ h1.text-transparent {
 }
 
 .neural-bg {
-  background: radial-gradient(circle at center, #3b82f6 0%, #8b5cf6 100%);
+  background: radial-gradient(circle at center, #3b82f640 0%, #8b5cf640 100%);
+  filter: blur(100px);
+}
+
+@media (max-width: 768px) {
+  .max-w-4xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

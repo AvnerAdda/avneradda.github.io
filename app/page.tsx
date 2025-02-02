@@ -12,10 +12,10 @@ import Hobbies from '../components/Hobbies'
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    <main className="relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
       <AiDecorations />
       <TableOfContents />
-      <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="space-y-16">
           <div id="profile" className="animate-fade-in" style={{ animationDelay: '0s' }}>
             <AiCard>
