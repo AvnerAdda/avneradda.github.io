@@ -4,7 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/avneradda.github.io' : '',
+  basePath: process.env.GITHUB_ACTIONS ? '/avneradda.github.io' : '',
+  assetPrefix: process.env.GITHUB_ACTIONS ? '/avneradda.github.io/' : '',
 }
 
 module.exports = nextConfig 
