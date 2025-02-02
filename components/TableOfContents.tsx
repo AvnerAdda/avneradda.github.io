@@ -14,6 +14,7 @@ const sections: Section[] = [
   { id: 'experience', title: 'Experience', icon: '💼' },
   { id: 'projects', title: 'Projects', icon: '🚀' },
   { id: 'tools', title: 'Tools', icon: '🛠️' },
+  { id: 'hobbies', title: 'Hobbies', icon: '🎯' },
   { id: 'articles', title: 'Articles', icon: '📝' },
 ];
 

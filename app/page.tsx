@@ -8,6 +8,7 @@ import AiCard from '../components/AiCard'
 import TableOfContents from '../components/TableOfContents'
 import Tools from '../components/Tools'
 import Introduction from '../components/Introduction'
+import Hobbies from '../components/Hobbies'
 
 export default function Home() {
   return (
@@ -39,6 +40,11 @@ export default function Home() {
           <div id="projects" className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <AiCard>
               <Projects />
+            </AiCard>
+          </div>
+          <div id="hobbies" className="animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            <AiCard>
+              <Hobbies />
             </AiCard>
           </div>
           <div id="tools" className="animate-fade-in" style={{ animationDelay: '1s' }}>
