@@ -1,4 +1,4 @@
-import './globals.css'
+import '../styles/globals.css'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ 
@@ -37,9 +37,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} min-h-screen bg-gray-900 text-white relative`}>
-        <div className="fixed inset-0 -z-10 neural-bg opacity-30" />
+    <html lang="en">
+      <body className={`${inter.className} min-h-screen bg-gray-900 text-white`}>
+        <div className="neural-bg" />
         <div className="relative z-0">
           {children}
         </div>

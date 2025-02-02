@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #111827;
+  --foreground: #ffffff;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-gray-900 text-white min-h-screen;
+  }
+}
+
+@layer components {
+  .neural-bg {
+    @apply fixed inset-0 -z-10 opacity-30;
+    background: radial-gradient(circle at center, #3b82f640 0%, #8b5cf640 100%);
+    filter: blur(100px);
+  }
+
+  .animate-fade-in {
+    @apply opacity-0;
+    animation: fadeIn 0.5s ease-in forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure gradients and backgrounds work */
+.bg-gradient-custom {
+  @apply bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800;
+}
+
+.card-background {
+  @apply bg-gray-900/50 backdrop-blur-sm;
+} 
