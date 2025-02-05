@@ -11,15 +11,21 @@ interface Article {
   link: string;
 }
 
-export default function Articles() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [articles, setArticles] = useState<Article[]>([]);
+interface ArticlesProps {
+  initialArticles?: Article[];
+}
+
+export default function Articles({ initialArticles = [] }: ArticlesProps) {
+  const [isLoading, setIsLoading] = useState(!initialArticles.length);
+  const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [displayCount, setDisplayCount] = useState(4);
 
   useEffect(() => {
-    setArticles(articlesData);
+    if (!initialArticles.length) {
+      setArticles(articlesData);
+    }
     setIsLoading(false);
-  }, []);
+  }, [initialArticles]);
 
   const handleShowMore = () => {
     setDisplayCount(prev => prev + 4);
@@ -125,35 +131,5 @@ export default function Articles() {
       </div>
     </div>
   );
-}
-
-export async function getStaticProps() {
-  try {
-    const mediumUsername = '@lilmod';
-    const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`);
-    const data = await response.json();
-    
-    const articles = data.items.map((item: any) => ({
-      title: item.title,
-      date: new Date(item.pubDate).toISOString(),
-      description: item.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
-      link: item.link,
-      readTime: `${Math.ceil(item.content.split(' ').length / 200)} min read`,
-      tags: item.categories || []
-    }));
-
-    return {
-      props: {
-        articles,
-      },
-    };
-  } catch (error) {
-    console.error('Failed to fetch Medium articles:', error);
-    return {
-      props: {
-        articles: [],
-      },
-    };
-  }
 }
 
