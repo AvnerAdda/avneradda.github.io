@@ -132,8 +132,10 @@ const FileUploadButton = ({ onUploadComplete, disabled }: FileUploadProps) => {
 };
 
 const RecruiterForm = ({ onSubmit, disabled }: { onSubmit: (data: RecruiterInfo) => void, disabled?: boolean }) => {
+  const [step, setStep] = useState<'personal' | 'job'>('personal');
   const [formData, setFormData] = useState<RecruiterInfo>({
     name: '',
+    email: '',
     company: '',
     jobRole: '',
   });
@@ -146,6 +148,12 @@ const RecruiterForm = ({ onSubmit, disabled }: { onSubmit: (data: RecruiterInfo)
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleNextStep = () => {
+    if (step === 'personal' && formData.name && formData.email) {
+      setStep('job');
+    }
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,79 +189,120 @@ const RecruiterForm = ({ onSubmit, disabled }: { onSubmit: (data: RecruiterInfo)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={handleChange}
-          className="w-full bg-transparent border-b border-gray-700 px-2 py-1.5 text-sm text-gray-200 
-            placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
-          required
-          disabled={disabled}
-        />
-        <input
-          type="text"
-          name="company"
-          placeholder="Company"
-          value={formData.company}
-          onChange={handleChange}
-          className="w-full bg-transparent border-b border-gray-700 px-2 py-1.5 text-sm text-gray-200 
-            placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
-          required
-          disabled={disabled}
-        />
-        <input
-          type="text"
-          name="jobRole"
-          placeholder="Job Role"
-          value={formData.jobRole}
-          onChange={handleChange}
-          className="w-full bg-transparent border-b border-gray-700 px-2 py-1.5 text-sm text-gray-200 
-            placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
-          required
-          disabled={disabled}
-        />
-        
-        <div className="flex items-center gap-2 pt-2">
-          <label className={`flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 
-            border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-colors
-            ${disabled || uploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+    <form onSubmit={handleSubmit} className="space-y-3">
+      {step === 'personal' ? (
+        <div className="space-y-3">
+          <h3 className="text-base font-medium text-gray-200">Personal Information</h3>
+          <div className="space-y-2">
             <input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              onChange={handleFileChange}
-              disabled={disabled || uploading}
-              className="hidden"
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full bg-transparent border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-gray-200 
+                placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
+              required
+              disabled={disabled}
             />
-            {uploading ? (
-              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                  <path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
-                  <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
-                </svg>
-                Upload Job Description
-              </>
-            )}
-          </label>
-          {fileUrl && (
-            <span className="text-xs text-green-400">File uploaded ✓</span>
-          )}
+            <input
+              type="email"
+              name="email"
+              placeholder="Professional Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full bg-transparent border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-gray-200 
+                placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
+              required
+              disabled={disabled}
+            />
+          </div>
+          <button
+            type="button"
+            onClick={handleNextStep}
+            disabled={disabled || !formData.name || !formData.email}
+            className="w-full px-4 py-1.5 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 
+              transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
         </div>
-      </div>
+      ) : (
+        <div className="space-y-3">
+          <h3 className="text-base font-medium text-gray-200">Job Information</h3>
+          <div className="space-y-2">
+            <input
+              type="text"
+              name="company"
+              placeholder="Company"
+              value={formData.company}
+              onChange={handleChange}
+              className="w-full bg-transparent border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-gray-200 
+                placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
+              required
+              disabled={disabled}
+            />
+            <input
+              type="text"
+              name="jobRole"
+              placeholder="Job Role"
+              value={formData.jobRole}
+              onChange={handleChange}
+              className="w-full bg-transparent border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-gray-200 
+                placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
+              required
+              disabled={disabled}
+            />
+            
+            <div className="flex items-center gap-2">
+              <label className={`flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 
+                border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-colors
+                ${disabled || uploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  disabled={disabled || uploading}
+                  className="hidden"
+                />
+                {uploading ? (
+                  <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                      <path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
+                      <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+                    </svg>
+                    Upload Job Description
+                  </>
+                )}
+              </label>
+              {fileUrl && (
+                <span className="text-xs text-green-400">File uploaded ✓</span>
+              )}
+            </div>
+          </div>
 
-      <button
-        type="submit"
-        disabled={disabled || uploading || !fileUrl || !formData.name || !formData.company || !formData.jobRole}
-        className="w-full px-3 py-2 text-sm text-blue-400 border border-blue-500/20 rounded-lg 
-          hover:bg-blue-500/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Continue
-      </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setStep('personal')}
+              className="flex-1 px-4 py-1.5 border border-gray-700 text-gray-400 rounded-lg 
+                hover:bg-gray-800/50 transition-colors"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              disabled={disabled || uploading || !fileUrl || !formData.company || !formData.jobRole}
+              className="flex-1 px-4 py-1.5 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 
+                transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 };
@@ -282,13 +331,13 @@ const VisitorTopics = ({ onSelect, disabled }: {
   disabled?: boolean 
 }) => {
   return (
-    <div className="space-y-2 p-4">
+    <div className="space-y-2 py-2">
       {chatOptions.visitor.topics.map((topic) => (
         <button
           key={topic.id}
           onClick={() => onSelect(topic.id, topic.prompt)}
           disabled={disabled}
-          className="w-full text-left px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 
+          className="w-full text-left px-3 py-1.5 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 
             transition-colors text-sm text-gray-200 disabled:opacity-50"
         >
           {topic.text}
@@ -406,14 +455,19 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         const newSessionId = uuidv4();
         setSessionId(newSessionId);
         
-        // Set initial state with EMAIL_VERIFICATION stage
+        // Set initial state to INITIAL stage (not EMAIL_VERIFICATION)
         setChatState({
           ...initialChatState,
-          stage: 'EMAIL_VERIFICATION'  // Make sure we start with email verification
+          stage: 'INITIAL'  // Changed from 'EMAIL_VERIFICATION'
         });
         
-        // Don't show initial message until email is verified
-        setMessages([]);
+        // Add initial message with options
+        setMessages([{
+          response: "Hello! Please select an option:",
+          timestamp: new Date(),
+          isOption: true,
+          sessionId: newSessionId
+        }]);
         
       } finally {
         setIsClearing(false);
@@ -500,8 +554,6 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   };
 
   const handleOptionSelect = async (userType: UserType) => {
-    setIsLoading(true);
-    
     if (userType === 'RECRUITER') {
       setChatState({
         userType,
@@ -511,30 +563,25 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         allowFileUpload: chatOptions.recruiter.allowFileUpload
       });
       
-      // Add a message to show the form is ready
       await addDoc(collection(db, 'generate'), {
-        response: "Please fill out the following information:",
+        response: "Please provide your information to proceed:",
         timestamp: new Date(),
         sessionId
       });
-      
-      setIsLoading(false);
     } else {
       setChatState({
         userType,
-        stage: 'VISITOR_TOPICS',
+        stage: 'EMAIL_VERIFICATION',
         questionCount: 0,
         maxQuestions: chatOptions.visitor.maxQuestions,
         allowFileUpload: chatOptions.visitor.allowFileUpload
       });
       
       await addDoc(collection(db, 'generate'), {
-        response: "Great! What would you like to know about Avner?",
+        response: "Before we continue, please provide your email:",
         timestamp: new Date(),
         sessionId
       });
-      
-      setIsLoading(false);
     }
   };
 
@@ -594,14 +641,9 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         prompt: `I have a job opportunity as ${data.jobRole} at ${data.company}. Here's the job description: ${data.jobDescription}. 
                 Please analyze this job description and provide a structured assessment of Avner's fit for this role using the following format:
                 🎯 Role Overview:
-                Brief summary of the position (1 short sentence)
-                ⭐ Technical Skills Match: Rate 1-5 stars (★)
-                ⭐ Experience Relevance: Rate 1-5 stars (★)
-                ⭐ Industry Background: Rate 1-5 stars (★)
-                ⭐ Soft Skills Alignment: Rate 1-5 stars (★)
-                ⭐ Overall Match: Rate 1-5 stars (★)
-                ⭐ Growth Areas: Rate 1-5 stars (★)
-                Overall, rate the match from 1-5 stars (★)
+                - Brief summary of the position (1 short sentence)
+                - Top 3 reasons why Avner would be a good fit for this role
+                - Top 3 reasons why Avner would not be a good fit for this role
                 Keep the analysis honest, specific, and concise`,
         displayPrompt: `I have a job opportunity as ${data.jobRole} at ${data.company}. Please analyze the job description and explain why Avner would be a good fit for this role.`,
         timestamp: new Date(),
@@ -751,18 +793,15 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         return;
       }
 
-      // Store email in state for future reference
       setChatState(prev => ({ 
         ...prev, 
-        stage: 'INITIAL',
+        stage: 'VISITOR_TOPICS',
         userEmail: data.email 
       }));
 
-      // Add welcome message
       await addDoc(collection(db, 'generate'), {
-        response: "👋 Hi there! I'm Avner's AI Assistant. How can I help you today?",
+        response: "Great! What would you like to know about Avner?",
         timestamp: new Date(),
-        isOption: true,
         sessionId
       });
     } catch (error) {
@@ -783,117 +822,151 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] transition-all duration-300">
       <div 
-        className="bg-gray-900/95 backdrop-blur-sm rounded-2xl w-full max-w-xl shadow-2xl relative overflow-hidden"
+        className="bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl 
+          w-full max-w-2xl shadow-2xl relative overflow-hidden border border-gray-700/50
+          transform transition-all duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modified: Better loading indicator */}
+        {/* Loading Overlay */}
         {isLoading && (
-          <div className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm flex items-center justify-center z-30">
-            <div className="flex flex-col items-center gap-2">
+          <div className="absolute inset-0 bg-gray-900/70 backdrop-blur-sm flex items-center justify-center z-30">
+            <div className="flex flex-col items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+                <div className="w-3 h-3 bg-blue-400/80 rounded-full animate-pulse" style={{ animationDelay: '0s' }} />
+                <div className="w-3 h-3 bg-blue-400/80 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                <div className="w-3 h-3 bg-blue-400/80 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
               </div>
-              <span className="text-sm text-gray-400">Thinking...</span>
+              <span className="text-sm text-blue-400/80 font-medium">Processing...</span>
             </div>
           </div>
         )}
 
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-300 transition-colors z-10"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
         {/* Header */}
-        <div className="p-3 border-b border-gray-800/50">
-          <div className="flex items-center gap-3">
-            <div className="relative h-8 w-8">
-              <Image
-                src="/images/profile-picture.jpg"
-                alt="AI Assistant"
-                width={32}
-                height={32}
-                className="rounded-full object-cover"
-              />
-            </div>
-            <div>
-              <h2 className="text-sm font-medium text-gray-200">AI Assistant</h2>
-              <p className="text-xs text-gray-400">Ask me anything about Avner</p>
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm" />
+          <div className="relative p-4 border-b border-gray-700/50">
+            <div className="flex items-center gap-4">
+              <div className="relative h-10 w-10 group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                <Image
+                  src="/images/profile-picture.jpg"
+                  alt="AI Assistant"
+                  width={40}
+                  height={40}
+                  className="rounded-full object-cover relative z-10 border-2 border-gray-700/50"
+                />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  AI Assistant
+                </h2>
+                <p className="text-sm text-gray-400">Ask me anything about Avner</p>
+              </div>
+              <button
+                onClick={onClose}
+                className="ml-auto p-2 rounded-lg hover:bg-gray-700/50 transition-colors group"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-400 group-hover:text-gray-200 transition-colors"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
 
         {/* Chat messages */}
-        <div className="h-[300px] overflow-y-auto p-4 space-y-4 scroll-smooth">
+        <div className="h-[50vh] md:h-[60vh] overflow-y-auto p-4 md:p-6 space-y-6 scroll-smooth">
           {isClearing ? (
             <div className="flex items-center justify-center h-full">
-              <div className="flex items-center gap-1">
-                <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-                <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
               </div>
             </div>
           ) : (
             <>
+              {/* Initial Options */}
+              {chatState.stage === 'INITIAL' && (
+                <div className="flex items-start gap-3 mb-6">
+                  <div className="flex-shrink-0 relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                    <Image
+                      src="/images/profile-picture.jpg"
+                      alt="AI Assistant"
+                      width={36}
+                      height={36}
+                      className="rounded-full object-cover relative z-10 border-2 border-gray-700/50"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/50">
+                      <p className="text-gray-200 mb-4">Hello! Please select an option:</p>
+                      <div className="space-y-2">
+                        {INITIAL_OPTIONS.map((option) => (
+                          <button
+                            key={option.id}
+                            onClick={() => handleOptionSelect(option.action === 'SET_RECRUITER' ? 'RECRUITER' : 'VISITOR')}
+                            disabled={isLoading}
+                            className="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-gray-700/50 to-gray-600/50 
+                              hover:from-blue-600/20 hover:to-purple-600/20 transition-all duration-300
+                              text-sm text-gray-200 relative z-20 disabled:opacity-50 disabled:cursor-not-allowed
+                              border border-gray-600/30 hover:border-blue-500/30 group"
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg group-hover:scale-110 transition-transform duration-300">
+                                {option.id === 'recruiter' ? '💼' : '👋'}
+                              </span>
+                              {option.text}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Regular Messages */}
               {messages.map((message, index) => (
                 <div key={index} className="relative z-10">
                   {message.prompt && !message.isOption && (
-                    <div className="flex flex-col items-end gap-1 mb-2">
-                      <div className="bg-blue-500/10 rounded-lg px-3 py-1.5 max-w-[80%]">
-                        <MarkdownMessage content={
-                          // @ts-ignore (add displayPrompt to ChatMessage interface)
-                          message.displayPrompt || message.prompt
-                        } />
+                    <div className="flex flex-col items-end gap-2 mb-6">
+                      <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl px-4 py-3 max-w-[80%]
+                        backdrop-blur-sm border border-blue-500/30">
+                        <MarkdownMessage content={message.displayPrompt || message.prompt} />
                       </div>
                       {message.timestamp && (
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 mr-1">
                           {formatTimestamp(message.timestamp)}
                         </span>
                       )}
                     </div>
                   )}
-                  {message.response && (
-                    <div className="flex items-start gap-2 mb-2">
-                      <Image
-                        src="/images/profile-picture.jpg"
-                        alt="AI Assistant"
-                        width={24}
-                        height={24}
-                        className="rounded-full mt-1"
-                      />
+                  {message.response && !message.isOption && (
+                    <div className="flex items-start gap-3 mb-6">
+                      <div className="flex-shrink-0 relative group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                        <Image
+                          src="/images/profile-picture.jpg"
+                          alt="AI Assistant"
+                          width={36}
+                          height={36}
+                          className="rounded-full object-cover relative z-10 border-2 border-gray-700/50"
+                        />
+                      </div>
                       <div className="flex-1">
-                        <div className="bg-gray-800/50 rounded-lg px-3 py-1.5 max-w-[80%]">
+                        <div className="bg-gradient-to-r from-gray-800/80 to-gray-700/80 rounded-2xl p-4 backdrop-blur-sm 
+                          border border-gray-700/50 max-w-[80%]">
                           <MarkdownMessage content={message.response} />
-                          {message.isOption && chatState.stage === 'INITIAL' && (
-                            <div className="flex flex-col gap-2 mt-3">
-                              {INITIAL_OPTIONS.map((option) => (
-                                <button
-                                  key={option.id}
-                                  onClick={() => handleOptionSelect(option.action === 'SET_RECRUITER' ? 'RECRUITER' : 'VISITOR')}
-                                  disabled={isLoading}
-                                  className="text-left px-3 py-2 rounded-lg bg-gray-700/50 hover:bg-gray-700/70 
-                                    transition-colors text-sm text-gray-200 relative z-20 disabled:opacity-50
-                                    disabled:cursor-not-allowed"
-                                >
-                                  {option.text}
-                                </button>
-                              ))}
-                            </div>
-                          )}
                         </div>
                         {message.timestamp && (
                           <span className="text-xs text-gray-500 ml-1 mt-1 block">
@@ -905,24 +978,21 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
                   )}
                 </div>
               ))}
-              <div ref={messagesEndRef} /> {/* Scroll anchor */}
+              <div ref={messagesEndRef} />
             </>
           )}
         </div>
 
-        {/* Input Section */}
-        <div className="border-t border-gray-800/50">
+        {/* Forms Section */}
+        <div className="border-t border-gray-700/50 bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-sm">
           {chatState.stage === 'RECRUITER_FORM' && (
-            <div className="p-4">
-              <RecruiterForm 
-                onSubmit={handleRecruiterFormSubmit} 
-                disabled={isLoading} 
-              />
+            <div className="p-6">
+              <RecruiterForm onSubmit={handleRecruiterFormSubmit} disabled={isLoading} />
             </div>
           )}
 
           {chatState.stage === 'MEETING_SETUP' && (
-            <div className="p-4">
+            <div className="p-6">
               <button
                 onClick={async () => {
                   await addDoc(collection(db, 'generate'), {
@@ -932,8 +1002,9 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
                   });
                   setChatState(prev => ({ ...prev, stage: 'CLOSED' }));
                 }}
-                className="w-full px-3 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 
-                  transition-colors"
+                className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600/20 to-purple-600/20 
+                  hover:from-blue-600/30 hover:to-purple-600/30 text-blue-400 font-medium
+                  transition-all duration-300 border border-blue-500/30 hover:border-blue-500/50"
               >
                 Schedule a Meeting
               </button>

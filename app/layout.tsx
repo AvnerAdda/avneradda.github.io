@@ -1,5 +1,7 @@
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'
+import { ChatbotProvider } from '../lib/context/ChatbotContext'
+import ChatbotDialogWrapper from '../components/ChatbotDialogWrapper'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -19,10 +21,15 @@ export const metadata = {
         url: 'https://avneradda.github.io/og-image.jpg',
         width: 1200,
         height: 627,
+        alt: 'Avner Adda Portfolio',
       },
     ],
     locale: 'en_US',
     type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
   icons: {
     icon: '/favicon.ico',
@@ -39,10 +46,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-gray-900 text-white`}>
-        <div className="neural-bg" />
-        <div className="relative z-0">
-          {children}
-        </div>
+        <ChatbotProvider>
+          <div className="neural-bg" />
+          <div className="relative z-0">
+            {children}
+          </div>
+          <ChatbotDialogWrapper />
+        </ChatbotProvider>
       </body>
     </html>
   )

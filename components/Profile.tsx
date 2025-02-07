@@ -2,9 +2,11 @@
 
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import ChatbotDialog from './ChatbotDialog'
+import { useChatbot } from '../lib/context/ChatbotContext';
 import { db } from '../lib/firebase';
 import { doc, increment, updateDoc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
+import { AnalyticsService } from '../lib/analytics';
+import MetricsModal from './MetricsModal';
 
 // Move these arrays outside the component to prevent recreation on each render
 const STATS = [
@@ -44,10 +46,11 @@ const CONTACT_INFO = [
 ];
 
 export default function Profile() {
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const { setIsChatbotOpen } = useChatbot();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeAnimating, setIsLikeAnimating] = useState(false);
+  const [isMetricsOpen, setIsMetricsOpen] = useState(false);
 
   // Add useEffect to listen to likes count
   useEffect(() => {
@@ -60,6 +63,33 @@ export default function Profile() {
 
     return () => unsubscribe();
   }, []);
+
+  // Add this useEffect at the top of your Profile component
+  useEffect(() => {
+    const trackPageView = async () => {
+      try {
+        const viewsRef = doc(db, 'metrics', 'views');
+        const viewsDoc = await getDoc(viewsRef);
+        
+        if (!viewsDoc.exists()) {
+          // Create initial document if it doesn't exist
+          await setDoc(viewsRef, { count: 1 });
+        } else {
+          // Increment existing count
+          await updateDoc(viewsRef, {
+            count: increment(1)
+          });
+        }
+
+        // Track in analytics
+        AnalyticsService.trackPageView('profile');
+      } catch (error) {
+        console.error('Error tracking view:', error);
+      }
+    };
+
+    trackPageView();
+  }, []); // Run once when component mounts
 
   const handleLike = async () => {
     if (!isLiked) {
@@ -84,14 +114,35 @@ export default function Profile() {
     }
   };
 
-  const handleDownloadResume = () => {
-    // You'll need to add your resume file to the public folder
-    const link = document.createElement('a');
-    link.href = 'doc/Resume - Avner.docx'; // Update this with your actual resume file name
-    link.download = 'Resume - Avner.docx';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadResume = async () => {
+    try {
+      // Track download in metrics collection
+      const downloadsRef = doc(db, 'metrics', 'downloads');
+      const downloadsDoc = await getDoc(downloadsRef);
+      
+      if (!downloadsDoc.exists()) {
+        // Create initial document if it doesn't exist
+        await setDoc(downloadsRef, { count: 1 });
+      } else {
+        // Increment existing count
+        await updateDoc(downloadsRef, {
+          count: increment(1)
+        });
+      }
+
+      // Track in analytics
+      AnalyticsService.trackDocumentAction('download', 'resume');
+
+      // Download the file
+      const link = document.createElement('a');
+      link.href = 'doc/Resume - Avner.docx';
+      link.download = 'Resume - Avner.docx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error tracking download:', error);
+    }
   };
 
   return (
@@ -124,6 +175,32 @@ export default function Profile() {
                 Avner Adda
               </h1>
               <p className="text-xl text-gray-300">Data Scientist</p>
+              
+              {/* New Metrics Button */}
+              <button
+                onClick={() => {
+                  AnalyticsService.trackProfileInteraction('metrics_view');
+                  setIsMetricsOpen(true);
+                }}
+                className="mt-2 px-3 py-1.5 text-sm rounded-full 
+                  bg-gradient-to-r from-blue-500/10 to-purple-500/10 
+                  hover:from-blue-500/20 hover:to-purple-500/20
+                  border border-blue-500/20 hover:border-blue-500/30
+                  text-blue-400 hover:text-blue-300
+                  transition-all duration-300 group flex items-center gap-2"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 24 24" 
+                  fill="currentColor" 
+                  className="w-4 h-4 group-hover:scale-110 transition-transform"
+                >
+                  <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75c-1.036 0-1.875-.84-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75C3.84 21.75 3 20.91 3 19.875v-6.75z" />
+                </svg>
+                <span className="group-hover:translate-x-0.5 transition-transform">
+                  View Metrics
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -272,12 +349,12 @@ export default function Profile() {
             </span>
           </button>
         </div>
-
-        <ChatbotDialog
-          isOpen={isChatbotOpen}
-          onClose={() => setIsChatbotOpen(false)}
-        />
       </div>
+
+      <MetricsModal 
+        isOpen={isMetricsOpen} 
+        onClose={() => setIsMetricsOpen(false)} 
+      />
     </div>
   )
 }

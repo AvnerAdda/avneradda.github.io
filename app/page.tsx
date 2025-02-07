@@ -10,31 +10,31 @@ import Tools from '../components/Tools'
 import Introduction from '../components/Introduction'
 import Hobbies from '../components/Hobbies'
 
-async function getMediumArticles() {
-  try {
-    const mediumUsername = '@lilmod';
-    const response = await fetch(
-      `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`,
-      { next: { revalidate: 3600 } } // Revalidate every hour
-    );
-    const data = await response.json();
+// async function getMediumArticles() {
+//   try {
+//     const mediumUsername = '@lilmod';
+//     const response = await fetch(
+//       `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`,
+//       { next: { revalidate: 3600 } } // Revalidate every hour
+//     );
+//     const data = await response.json();
     
-    return data.items.map((item: any) => ({
-      title: item.title,
-      date: new Date(item.pubDate).toISOString(),
-      description: item.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
-      link: item.link,
-      readTime: `${Math.ceil(item.content.split(' ').length / 200)} min read`,
-      tags: item.categories || []
-    }));
-  } catch (error) {
-    console.error('Failed to fetch Medium articles:', error);
-    return [];
-  }
-}
+//     return data.items.map((item: any) => ({
+//       title: item.title,
+//       date: new Date(item.pubDate).toISOString(),
+//       description: item.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+//       link: item.link,
+//       readTime: `${Math.ceil(item.content.split(' ').length / 200)} min read`,
+//       tags: item.categories || []
+//     }));
+//   } catch (error) {
+//     console.error('Failed to fetch Medium articles:', error);
+//     return [];
+//   }
+// }
 
 export default async function Home() {
-  const articles = await getMediumArticles();
+  // const articles = await getMediumArticles();
 
   return (
     <main className="relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
@@ -77,11 +77,11 @@ export default async function Home() {
               <Hobbies />
             </AiCard>
           </div>
-          <div id="articles" className="animate-fade-in" style={{ animationDelay: '1.2s' }}>
+          {/* <div id="articles" className="animate-fade-in" style={{ animationDelay: '1.2s' }}>
             <AiCard>
               <Articles initialArticles={articles} />
             </AiCard>
-          </div>
+          </div> */}
         </div>
       </div>
     </main>

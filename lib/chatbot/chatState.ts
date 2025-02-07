@@ -13,6 +13,7 @@ export type ChatStage =
 
 export interface RecruiterInfo {
   name: string;
+  email: string;
   company: string;
   jobRole: string;
   jobDescription?: string;
@@ -82,7 +83,7 @@ export const chatOptions = {
 
 export const initialChatState: ChatState = {
   userType: null,
-  stage: 'EMAIL_VERIFICATION',
+  stage: 'INITIAL',
   questionCount: 0,
   maxQuestions: chatOptions.visitor.maxQuestions,
   allowFileUpload: false,
