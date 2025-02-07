@@ -45,7 +45,7 @@ export default function Profile() {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   const handleDownloadResume = () => {
-    // You'll need to add your resume file to the public folder
+    // You&apos;ll need to add your resume file to the public folder
     const link = document.createElement('a');
     link.href = 'doc/Resume - Avner.docx'; // Update this with your actual resume file name
     link.download = 'Resume - Avner.docx';
