@@ -333,7 +333,7 @@ export default function Profile() {
                 />
               </svg>
               <div className="relative">
-                <span className="hidden md:inline">Let's chat!</span>
+                <span className="hidden md:inline">Let&apos;s chat!</span>
               </div>
             </div>
           </button>
