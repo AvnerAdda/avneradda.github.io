@@ -77,11 +77,11 @@ export default async function Home() {
               <Hobbies />
             </AiCard>
           </div>
-          {/* <div id="articles" className="animate-fade-in" style={{ animationDelay: '1.2s' }}>
+          <div id="articles" className="animate-fade-in" style={{ animationDelay: '1.2s' }}>
             <AiCard>
-              <Articles initialArticles={articles} />
+              <Articles />
             </AiCard>
-          </div> */}
+          </div>
         </div>
       </div>
     </main>

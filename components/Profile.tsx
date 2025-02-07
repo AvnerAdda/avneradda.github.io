@@ -145,6 +145,23 @@ export default function Profile() {
     }
   };
 
+  const handleScrollToArticles = () => {
+    // Scroll to articles section
+    const articlesSection = document.getElementById('articles');
+    articlesSection?.scrollIntoView({ behavior: 'smooth' });
+
+    // Find and highlight the Stay Updated div
+    const stayUpdatedDiv = document.querySelector('.hover\\:glow-on-hover');
+    if (stayUpdatedDiv) {
+      stayUpdatedDiv.classList.add('animate-pulse', 'ring-2', 'ring-blue-400');
+      
+      // Remove highlight after 3 seconds
+      setTimeout(() => {
+        stayUpdatedDiv.classList.remove('animate-pulse', 'ring-2', 'ring-blue-400');
+      }, 3000);
+    }
+  };
+
   return (
     <div className="relative">
       {/* AI-themed decorative elements */}
@@ -255,7 +272,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Download Resume and Chatbot Buttons in one row */}
+        {/* Download Resume, Chatbot, Like, and Newsletter Buttons in one row */}
         <div className="mt-6 flex justify-center gap-4">
           <button
             onClick={handleDownloadResume}
@@ -316,9 +333,6 @@ export default function Profile() {
                 />
               </svg>
               <div className="relative">
-                <span className="absolute -top-5 left-0 text-xs font-bold text-blue-400 animate-bounce bg-gray-700/30 rounded-full px-2 py-1">
-                  NEW!
-                </span>
                 <span className="hidden md:inline">Let's chat!</span>
               </div>
             </div>
@@ -347,6 +361,20 @@ export default function Profile() {
             <span className={`text-sm ${isLikeAnimating ? 'animate-bounce' : ''}`}>
               {likeCount > 0 ? likeCount : ''}
             </span>
+          </button>
+
+          {/* New Newsletter Button */}
+          <button
+            onClick={handleScrollToArticles}
+            className={`
+              group relative px-4 py-2 rounded-lg
+              transition-all duration-300 flex items-center gap-1.5
+              bg-gray-700/30 hover:bg-gray-600/30 text-gray-300
+              hover:scale-105
+            `}
+          >
+            <span role="img" aria-label="newspaper" className="text-lg">📰</span>
+            <span className="text-sm hidden md:inline">Newsletter</span>
           </button>
         </div>
       </div>

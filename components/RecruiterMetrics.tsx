@@ -61,6 +61,17 @@ export default function RecruiterMetrics() {
         </svg>
       ),
       description: 'Average response time to inquiries'
+    },
+    {
+      label: 'Newsletter Subs',
+      value: 0,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+          <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+        </svg>
+      ),
+      description: 'Newsletter subscribers'
     }
   ]);
 
@@ -85,6 +96,9 @@ export default function RecruiterMetrics() {
         const chatsSnapshot = await getDocs(chatsRef);
         const chatsCount = chatsSnapshot.size;
 
+        // Fetch subscribers count
+        const subscribersCount = viewsSnapshot.docs.find(doc => doc.id === 'subscribers')?.data()?.count || 0;
+
         setMetrics(prev => prev.map(metric => {
           switch(metric.label) {
             case 'Profile Views':
@@ -95,6 +109,8 @@ export default function RecruiterMetrics() {
               return { ...metric, value: downloadsCount };
             case 'Chat Conversations':
               return { ...metric, value: chatsCount };
+            case 'Newsletter Subs':
+              return { ...metric, value: subscribersCount };
             default:
               return metric;
           }

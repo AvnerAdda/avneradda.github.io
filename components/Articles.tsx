@@ -1,31 +1,57 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { db } from '../lib/firebase';
+import { collection, addDoc, doc, increment, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import articlesData from '../public/articles.json';
 
-interface Article {
-  title: string;
-  date: string;
-  description: string;
-  tags: string[];
-  readTime: string;
-  link: string;
-}
+// interface Article {
+//   title: string;
+//   date: string;
+//   description: string;
+//   tags: string[];
+//   readTime: string;
+//   link: string;
+// }
 
-interface ArticlesProps {
-  initialArticles?: Article[];
-}
-
-export default function Articles({ initialArticles = [] }: ArticlesProps) {
-  const [isLoading, setIsLoading] = useState(!initialArticles.length);
-  const [articles, setArticles] = useState<Article[]>(initialArticles);
+export default function Articles() {
   const [displayCount, setDisplayCount] = useState(4);
+  const [email, setEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const articles = articlesData;
 
-  useEffect(() => {
-    if (!initialArticles.length) {
-      setArticles(articlesData);
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || subscribeStatus === 'loading') return;
+
+    setSubscribeStatus('loading');
+    try {
+      // Add email to subscribers collection
+      await addDoc(collection(db, 'newsletter_subscribers'), {
+        email,
+        timestamp: new Date(),
+      });
+
+      // Update metrics count
+      const metricsRef = doc(db, 'metrics', 'subscribers');
+      const metricsDoc = await getDoc(metricsRef);
+      
+      if (!metricsDoc.exists()) {
+        await setDoc(metricsRef, { count: 1 });
+      } else {
+        await updateDoc(metricsRef, {
+          count: increment(1)
+        });
+      }
+
+      setSubscribeStatus('success');
+      setEmail('');
+      setTimeout(() => setSubscribeStatus('idle'), 3000);
+    } catch (error) {
+      console.error('Error subscribing:', error);
+      setSubscribeStatus('error');
+      setTimeout(() => setSubscribeStatus('idle'), 3000);
     }
-    setIsLoading(false);
-  }, [initialArticles]);
+  };
 
   const handleShowMore = () => {
     setDisplayCount(prev => prev + 4);
@@ -37,69 +63,94 @@ export default function Articles({ initialArticles = [] }: ArticlesProps) {
         My Articles
       </h2>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {isLoading ? (
-          // Loading skeleton
-          [...Array(2)].map((_, index) => (
-            <div key={index} className="p-6 rounded-lg bg-gray-700/30 animate-pulse">
-              <div className="h-6 bg-gray-600 rounded w-3/4 mb-4"></div>
-              <div className="h-4 bg-gray-600 rounded w-full mb-2"></div>
-              <div className="h-4 bg-gray-600 rounded w-5/6"></div>
-            </div>
-          ))
-        ) : (
-          articles.slice(0, displayCount).map((article, index) => (
-            <a 
-              href={article.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={article.title}
-              className="group relative p-6 rounded-lg bg-gray-700/30 hover:glow-on-hover hover-float cursor-pointer"
-              style={{ animationDelay: `${index * 0.2}s` }}
+      {/* Newsletter subscription */}
+      <div className="mt-8 p-6 rounded-lg bg-gray-700/30 hover:glow-on-hover">
+        <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 className="text-xl font-semibold text-blue-400">Stay Updated</h3>
+            <p className="text-gray-300">Get the latest AI insights directly in your inbox</p>
+          </div>
+          <div className="flex gap-2 w-full md:w-auto">
+            <input 
+              type="email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-300 
+                focus:outline-none focus:border-blue-400 focus:glow w-full md:w-auto"
+              disabled={subscribeStatus === 'loading'}
+            />
+            <button 
+              type="submit"
+              disabled={subscribeStatus === 'loading'}
+              className={`px-4 py-2 rounded-lg transition-colors ${
+                subscribeStatus === 'success' 
+                  ? 'bg-green-500 hover:bg-green-400' 
+                  : subscribeStatus === 'error'
+                  ? 'bg-red-500 hover:bg-red-400'
+                  : 'bg-blue-500 hover:bg-blue-400'
+              } text-white hover:glow`}
             >
-              {/* Decorative corner element */}
-              <div className="absolute top-0 right-0 w-16 h-16 opacity-10">
-                <div className="absolute top-0 right-0 w-full h-full" 
-                     style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }} />
+              {subscribeStatus === 'loading' ? 'Subscribing...' 
+                : subscribeStatus === 'success' ? 'Subscribed!' 
+                : subscribeStatus === 'error' ? 'Try Again' 
+                : 'Subscribe'}
+            </button>
+          </div>
+        </form>
+      </div>
+      <div className="grid gap-6 md:grid-cols-2">
+        {articles.slice(0, displayCount).map((article, index) => (
+          <a 
+            href={article.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={article.title}
+            className="group relative p-6 rounded-lg bg-gray-700/30 hover:glow-on-hover hover-float cursor-pointer"
+            style={{ animationDelay: `${index * 0.2}s` }}
+          >
+            {/* Decorative corner element */}
+            <div className="absolute top-0 right-0 w-16 h-16 opacity-10">
+              <div className="absolute top-0 right-0 w-full h-full" 
+                   style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }} />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex justify-between items-start">
+                <h3 className="text-xl font-semibold text-blue-400 group-hover:text-blue-300 transition-colors">
+                  {article.title}
+                </h3>
+                <span className="text-sm text-gray-400">
+                  {new Date(article.date).toLocaleDateString('en-US', { 
+                    year: 'numeric',
+                    month: 'long'
+                  })}
+                </span>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl font-semibold text-blue-400 group-hover:text-blue-300 transition-colors">
-                    {article.title}
-                  </h3>
-                  <span className="text-sm text-gray-400">
-                    {new Date(article.date).toLocaleDateString('en-US', { 
-                      year: 'numeric',
-                      month: 'long'
-                    })}
+              <div className="flex flex-wrap gap-2">
+                {article.tags.map((tag) => (
+                  <span 
+                    key={tag}
+                    className="text-xs px-2 py-1 rounded-full bg-gray-600/50 text-gray-300"
+                  >
+                    {tag}
                   </span>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {article.tags.map((tag) => (
-                    <span 
-                      key={tag}
-                      className="text-xs px-2 py-1 rounded-full bg-gray-600/50 text-gray-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex justify-between items-center mt-4">
-                  <span className="text-sm text-gray-400">{article.readTime}</span>
-                  <span className="text-blue-400 group-hover:text-blue-300 transition-colors">
-                    Read more →
-                  </span>
-                </div>
+                ))}
               </div>
-            </a>
-          ))
-        )}
+
+              <div className="flex justify-between items-center mt-4">
+                <span className="text-sm text-gray-400">{article.readTime}</span>
+                <span className="text-blue-400 group-hover:text-blue-300 transition-colors">
+                  Read more →
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
       </div>
 
-      {!isLoading && displayCount < articles.length && (
+      {displayCount < articles.length && (
         <div className="flex justify-center mt-8">
           <button
             onClick={handleShowMore}
@@ -109,26 +160,6 @@ export default function Articles({ initialArticles = [] }: ArticlesProps) {
           </button>
         </div>
       )}
-
-      {/* Newsletter subscription */}
-      <div className="mt-8 p-6 rounded-lg bg-gray-700/30 hover:glow-on-hover">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h3 className="text-xl font-semibold text-blue-400">Stay Updated</h3>
-            <p className="text-gray-300">Get the latest AI insights directly in your inbox</p>
-          </div>
-          <div className="flex gap-2">
-            <input 
-              type="email" 
-              placeholder="Enter your email"
-              className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-300 focus:outline-none focus:border-blue-400 focus:glow"
-            />
-            <button className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-400 text-white transition-colors hover:glow">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
