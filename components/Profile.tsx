@@ -10,9 +10,21 @@ import MetricsModal from './MetricsModal';
 
 // Move these arrays outside the component to prevent recreation on each render
 const STATS = [
-  { label: 'Experience', value: '6+ yrs' },
-  { label: 'Projects', value: '10+' },
-  { label: 'Languages', value: '3' }
+  { 
+    label: 'Experience', 
+    value: '6+ yrs',
+    id: 'experience'
+  },
+  { 
+    label: 'Projects', 
+    value: '10+',
+    id: 'projects'
+  },
+  { 
+    label: 'Languages', 
+    value: '3',
+    id: 'hobbies'
+  }
 ];
 
 const TECH_STACK = [
@@ -162,6 +174,16 @@ export default function Profile() {
     }
   };
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <div className="relative">
       {/* AI-themed decorative elements */}
@@ -238,7 +260,8 @@ export default function Profile() {
           {STATS.map((stat, index) => (
             <div 
               key={stat.label}
-              className="text-center p-3 rounded-lg bg-gray-700/30 hover:glow-on-hover cursor-pointer"
+              onClick={() => scrollToSection(stat.id)}
+              className="text-center p-3 rounded-lg bg-gray-700/30 hover:bg-gray-600/30 hover:glow-on-hover cursor-pointer transform hover:scale-105 transition-all duration-300"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="text-2xl font-bold text-blue-400">{stat.value}</div>

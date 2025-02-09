@@ -53,7 +53,7 @@ export default function RootLayout({
           </div>
           <ChatbotDialogWrapper />
           <footer className="relative z-10 p-2 text-center text-xs text-gray-400 bg-gradient-to-t from-gray-900 to-transparent backdrop-blur-sm">
-            Created by Avner Adda using{' '}
+            Created by <a href="https://www.ai-tasks.fr/" className="text-blue-400 hover:underline">AI Tasks</a> using{' '}
             <span className="text-blue-400">Firebase</span> and{' '}
             <span className="text-blue-400">NextJS</span>
           </footer>
