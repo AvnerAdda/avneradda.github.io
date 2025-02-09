@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { db } from '../lib/firebase';
 import { collection, addDoc, onSnapshot, query, orderBy, getDocs, deleteDoc, where, updateDoc, increment } from 'firebase/firestore';
 import Image from 'next/image';
-import { ChatState, initialChatState, chatOptions, UserType, RecruiterInfo, UserUsage } from '../lib/chatbot/chatState';
+import { ChatState, initialChatState, chatOptions, UserType, RecruiterInfo, UserUsage, RecruiterFilterCriteria } from '../lib/chatbot/chatState';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../lib/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { Timestamp } from 'firebase/firestore';
+import RecruiterFilter from './RecruiterFilter';
 
 interface ChatMessage {
   prompt?: string;
@@ -437,6 +438,11 @@ const InitialEmailForm = ({ onSubmit, disabled }: {
   );
 };
 
+// Add this validation function near the top of the file
+const isValidQuestion = (text: string) => {
+  return text.trim().endsWith('?');
+};
+
 export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -445,6 +451,8 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   const [isClearing, setIsClearing] = useState(false);
   const [chatState, setChatState] = useState<ChatState>(initialChatState);
   const [sessionId, setSessionId] = useState<string>('');
+  const [error, setError] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Modify the session initialization
   useEffect(() => {
@@ -557,14 +565,14 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
     if (userType === 'RECRUITER') {
       setChatState({
         userType,
-        stage: 'RECRUITER_FORM',
+        stage: 'RECRUITER_FILTER',
         questionCount: 0,
         maxQuestions: chatOptions.recruiter.maxQuestions,
         allowFileUpload: chatOptions.recruiter.allowFileUpload
       });
       
       await addDoc(collection(db, 'generate'), {
-        response: "Please provide your information to proceed:",
+        response: chatOptions.recruiter.filterMessage,
         timestamp: new Date(),
         sessionId
       });
@@ -593,6 +601,12 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
 
     setIsLoading(true);
     try {
+      // Enable typing for open questions
+      if (topicId === 'open_question') {
+        setChatState(prev => ({ ...prev, stage: 'TYPING_ENABLED' }));
+        return;
+      }
+
       // Add the user's selection as a message
       await addDoc(collection(db, 'generate'), {
         prompt: prompt,
@@ -816,8 +830,81 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
     }
   };
 
+  const handleFilterComplete = async (criteria: RecruiterFilterCriteria) => {
+    const allCriteriaMet = Object.values(criteria).every(value => value);
+    
+    if (allCriteriaMet) {
+      setChatState(prev => ({
+        ...prev,
+        stage: 'RECRUITER_FORM',
+        recruiterFilterCriteria: criteria
+      }));
+      
+      await addDoc(collection(db, 'generate'), {
+        response: "Great! Please provide your information to proceed:",
+        timestamp: new Date(),
+        sessionId
+      });
+    } else {
+      await addDoc(collection(db, 'generate'), {
+        response: "I appreciate your interest, but it seems this opportunity might not be the best fit. Feel free to reach out when you have positions that better align with my criteria.",
+        timestamp: new Date(),
+        sessionId
+      });
+      
+      setChatState(prev => ({
+        ...prev,
+        stage: 'CLOSED'
+      }));
+    }
+  };
+
   const canType = chatState.stage === 'TYPING_ENABLED';
   const showOptions = chatState.stage === 'INITIAL';
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputRef.current || isLoading) return;
+
+    const userInput = inputRef.current.value.trim();
+    
+    if (!isValidQuestion(userInput)) {
+      setError('Please end your question with a question mark (?)');
+      return;
+    }
+    
+    setError('');
+    setIsLoading(true);
+    
+    try {
+      // Add the user's question as a message
+      await addDoc(collection(db, 'generate'), {
+        prompt: userInput,
+        displayPrompt: userInput,
+        timestamp: new Date(),
+        sessionId
+      });
+
+      // After getting the answer, show the contact form
+      await addDoc(collection(db, 'generate'), {
+        response: "Wait for me to answer... In any case, would you like to get in touch with Avner directly?",
+        timestamp: new Date(),
+        sessionId
+      });
+
+      setChatState(prev => ({ 
+        ...prev, 
+        stage: 'CONTACT_FORM',
+        questionCount: prev.questionCount + 1 
+      }));
+
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
+      inputRef.current.value = '';
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -985,6 +1072,13 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
 
         {/* Forms Section */}
         <div className="border-t border-gray-700/50 bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-sm">
+          {chatState.stage === 'RECRUITER_FILTER' && (
+            <RecruiterFilter
+              onComplete={handleFilterComplete}
+              disabled={isLoading}
+            />
+          )}
+
           {chatState.stage === 'RECRUITER_FORM' && (
             <div className="p-6">
               <RecruiterForm onSubmit={handleRecruiterFormSubmit} disabled={isLoading} />
@@ -1037,6 +1131,54 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
               onSubmit={handleEmailSubmit}
               disabled={isLoading}
             />
+          )}
+
+          {chatState.stage === 'TYPING_ENABLED' && (
+            <form onSubmit={handleSubmit} className="p-4 space-y-2">
+              <div className="relative">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  placeholder={
+                    chatState.userType === 'VISITOR' 
+                      ? "Ask your question (end with ?)" 
+                      : "Type your message..."
+                  }
+                  className={`w-full bg-transparent border ${
+                    error ? 'border-red-500/50' : 'border-gray-700'
+                  } rounded-lg px-4 py-2 pr-24 text-sm text-gray-200 
+                    placeholder-gray-500 focus:outline-none focus:border-blue-500/50`}
+                  disabled={!canType || isLoading}
+                />
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                  {chatState.allowFileUpload && (
+                    <FileUploadButton
+                      onUploadComplete={handleFileUpload}
+                      disabled={isLoading}
+                    />
+                  )}
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 
+                      hover:bg-blue-500/20 transition-colors disabled:opacity-50 
+                      disabled:cursor-not-allowed"
+                  >
+                    Send
+                  </button>
+                </div>
+              </div>
+              {error && (
+                <p className="text-xs text-red-400 px-1">
+                  {error}
+                </p>
+              )}
+              {chatState.userType === 'VISITOR' && chatState.questionCount > 0 && (
+                <div className="text-xs text-gray-400 px-1">
+                  {`Questions remaining: ${chatState.maxQuestions - chatState.questionCount}`}
+                </div>
+              )}
+            </form>
           )}
         </div>
       </div>

@@ -3,6 +3,7 @@ import { Timestamp } from 'firebase/firestore';
 export type UserType = 'RECRUITER' | 'VISITOR' | null;
 export type ChatStage = 
   | 'INITIAL' 
+  | 'RECRUITER_FILTER'
   | 'RECRUITER_FORM' 
   | 'TYPING_ENABLED' 
   | 'MEETING_SETUP' 
@@ -19,6 +20,13 @@ export interface RecruiterInfo {
   jobDescription?: string;
 }
 
+export interface RecruiterFilterCriteria {
+  isIsraelBased: boolean;
+  isSeniorRole: boolean;
+  isAIFocused: boolean;
+  hasCloudTech: boolean;
+}
+
 export interface ChatState {
   userType: UserType;
   stage: ChatStage;
@@ -27,6 +35,7 @@ export interface ChatState {
   allowFileUpload: boolean;
   recruiterInfo?: RecruiterInfo;
   userEmail?: string;
+  recruiterFilterCriteria?: RecruiterFilterCriteria;
 }
 
 export interface UserUsage {
@@ -39,26 +48,42 @@ export interface UserUsage {
 export const chatOptions = {
   recruiter: {
     maxQuestions: 5,
-    allowFileUpload: true
+    allowFileUpload: true,
+    filterMessage: `Thank you for your interest in connecting! To ensure we both make the best use of our time, please confirm that your opportunity meets the following criteria:
+
+### Essential Requirements
+* Location: Israel-based position (Tel Aviv area big plus)
+* Role: (Senior) Data Scientist/ML Engineer position
+* Domain: Preferably FinTech, or Enterprise AI solutions
+
+### Technical Focus
+* Core focus on ML/AI/Generative AI implementation
+* Cloud platforms (AWS/GCP)
+* Big Data tools and Python
+* Exposure to Large Language Models is a plus
+
+### What I Value
+* Transparent communication about the role and company
+* Clear growth and learning opportunities
+* Collaborative team environment
+* Meaningful technical challenges
+
+Please confirm these criteria before proceeding:`,
+    filterCriteria: [
+      { id: 'isIsraelBased', label: 'Position is based in Israel (Tel Aviv area)' },
+      { id: 'isSeniorRole', label: '(Senior) Data Scientist/ML Engineer role' },
+      { id: 'isAIFocused', label: 'Core focus on ML/AI implementation' },
+      { id: 'hasCloudTech', label: 'Includes cloud platforms (AWS/GCP)' }
+    ]
   },
   visitor: {
-    maxQuestions: 2,
+    maxQuestions: 1,
     allowFileUpload: false,
     topics: [
       {
-        id: 'experience',
-        text: "Tell me about Avner's experience",
-        prompt: "Please provide an overview of Avner's professional experience and key achievements, make it short (max 10 sentences)."
-      },
-      {
-        id: 'skills',
-        text: "What are Avner's technical skills?",
-        prompt: "What are Avner's main technical skills and areas of expertise? make it short (max 10 sentences)."
-      },
-      {
-        id: 'projects',
-        text: "Show me some notable projects",
-        prompt: "Can you highlight some of Avner's most notable projects and their impact? make it short (max 10 sentences)."
+        id: 'open_question',
+        text: "Ask me anything about Avner",
+        prompt: "Feel free to ask any question about Avner's experience, skills, or projects."
       },
       {
         id: 'contact',

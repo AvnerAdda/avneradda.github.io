@@ -14,8 +14,8 @@ export default function MetricsModal({ isOpen, onClose }: MetricsModalProps) {
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] transition-all duration-300">
       <div 
         className="bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl 
-          w-full max-w-2xl shadow-2xl relative overflow-hidden border border-gray-700/50
-          transform transition-all duration-300"
+          w-[95%] max-w-2xl max-h-[90vh] shadow-2xl relative overflow-y-auto border border-gray-700/50
+          transform transition-all duration-300 mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

@@ -124,7 +124,7 @@ export default function RecruiterMetrics() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {metrics.map((metric) => (
         <div 
           key={metric.label}
@@ -132,15 +132,15 @@ export default function RecruiterMetrics() {
             rounded-xl border border-gray-700/50 hover:border-blue-500/30 
             transition-all duration-300 group"
         >
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 
+          <div className="flex items-center gap-2 mb-2">
+            <div className="p-1.5 sm:p-2 rounded-lg bg-blue-500/10 text-blue-400 
               group-hover:scale-110 transition-transform duration-300">
               {metric.icon}
             </div>
-            <h3 className="text-sm text-gray-400">{metric.label}</h3>
+            <h3 className="text-xs sm:text-sm text-gray-400">{metric.label}</h3>
           </div>
-          <p className="text-2xl font-bold text-blue-400 mb-1">{metric.value}</p>
-          <p className="text-xs text-gray-500">{metric.description}</p>
+          <p className="text-xl sm:text-2xl font-bold text-blue-400 mb-1">{metric.value}</p>
+          <p className="text-[10px] sm:text-xs text-gray-500">{metric.description}</p>
         </div>
       ))}
     </div>

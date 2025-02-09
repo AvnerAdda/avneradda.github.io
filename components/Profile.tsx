@@ -188,10 +188,21 @@ export default function Profile() {
           {/* Name, Title and Like Button */}
           <div className="flex flex-col gap-2 pt-2">
             <div className="hover-float">
-              <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+              <h1 className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
                 Avner Adda
               </h1>
-              <p className="text-xl text-gray-300">Data Scientist</p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                <p className="text-lg md:text-xl text-gray-300">Data Scientist</p>
+                <div className="flex items-center gap-2 px-2 md:px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span className="text-xs md:text-sm text-emerald-400 whitespace-nowrap">
+                    Deloitte
+                  </span>
+                </div>
+              </div>
               
               {/* New Metrics Button */}
               <button
