@@ -913,7 +913,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
       <div 
         className="bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl 
           w-full max-w-2xl shadow-2xl relative overflow-hidden border border-gray-700/50
-          transform transition-all duration-300"
+          transform transition-all duration-300 flex flex-col h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Loading Overlay */}
@@ -931,10 +931,10 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         )}
 
         {/* Header */}
-        <div className="relative">
+        <div className="relative h-[72px] flex-shrink-0">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm" />
-          <div className="relative p-4 border-b border-gray-700/50">
-            <div className="flex items-center gap-4">
+          <div className="relative p-4 border-b border-gray-700/50 h-full">
+            <div className="flex items-center gap-4 h-full">
               <div className="relative h-10 w-10 group">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
                 <Image
@@ -969,8 +969,8 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
           </div>
         </div>
 
-        {/* Chat messages */}
-        <div className="h-[50vh] md:h-[60vh] overflow-y-auto p-4 md:p-6 space-y-6 scroll-smooth">
+        {/* Chat messages - Flexible height */}
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scroll-smooth">
           {isClearing ? (
             <div className="flex items-center justify-center h-full">
               <div className="flex items-center gap-2">
@@ -1070,23 +1070,25 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
           )}
         </div>
 
-        {/* Forms Section */}
-        <div className="border-t border-gray-700/50 bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-sm">
+        {/* Forms Section - Fixed height */}
+        <div className="border-t border-gray-700/50 bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-sm flex-shrink-0">
           {chatState.stage === 'RECRUITER_FILTER' && (
-            <RecruiterFilter
-              onComplete={handleFilterComplete}
-              disabled={isLoading}
-            />
+            <div className="h-[280px] overflow-y-auto">
+              <RecruiterFilter
+                onComplete={handleFilterComplete}
+                disabled={isLoading}
+              />
+            </div>
           )}
 
           {chatState.stage === 'RECRUITER_FORM' && (
-            <div className="p-6">
+            <div className="h-[280px] overflow-y-auto p-6">
               <RecruiterForm onSubmit={handleRecruiterFormSubmit} disabled={isLoading} />
             </div>
           )}
 
           {chatState.stage === 'MEETING_SETUP' && (
-            <div className="p-6">
+            <div className="h-[72px] p-6">
               <button
                 onClick={async () => {
                   await addDoc(collection(db, 'generate'), {
@@ -1106,7 +1108,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
           )}
 
           {chatState.stage === 'VISITOR_TOPICS' && (
-            <div className="p-4">
+            <div className="h-[180px] p-4">
               <VisitorTopics 
                 onSelect={handleTopicSelect}
                 disabled={isLoading}
@@ -1120,65 +1122,71 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
           )}
 
           {chatState.stage === 'CONTACT_FORM' && (
-            <ContactForm 
-              onSubmit={handleContactSubmit}
-              disabled={isLoading}
-            />
+            <div className="h-[280px] overflow-y-auto">
+              <ContactForm 
+                onSubmit={handleContactSubmit}
+                disabled={isLoading}
+              />
+            </div>
           )}
 
           {chatState.stage === 'EMAIL_VERIFICATION' && (
-            <InitialEmailForm 
-              onSubmit={handleEmailSubmit}
-              disabled={isLoading}
-            />
+            <div className="h-[120px]">
+              <InitialEmailForm 
+                onSubmit={handleEmailSubmit}
+                disabled={isLoading}
+              />
+            </div>
           )}
 
           {chatState.stage === 'TYPING_ENABLED' && (
-            <form onSubmit={handleSubmit} className="p-4 space-y-2">
-              <div className="relative">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  placeholder={
-                    chatState.userType === 'VISITOR' 
-                      ? "Ask your question (end with ?)" 
-                      : "Type your message..."
-                  }
-                  className={`w-full bg-transparent border ${
-                    error ? 'border-red-500/50' : 'border-gray-700'
-                  } rounded-lg px-4 py-2 pr-24 text-sm text-gray-200 
-                    placeholder-gray-500 focus:outline-none focus:border-blue-500/50`}
-                  disabled={!canType || isLoading}
-                />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                  {chatState.allowFileUpload && (
-                    <FileUploadButton
-                      onUploadComplete={handleFileUpload}
+            <div className="h-[88px] flex-shrink-0">
+              <form onSubmit={handleSubmit} className="p-4 space-y-2 h-full">
+                <div className="relative">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder={
+                      chatState.userType === 'VISITOR' 
+                        ? "Ask your question (end with ?)" 
+                        : "Type your message..."
+                    }
+                    className={`w-full bg-transparent border ${
+                      error ? 'border-red-500/50' : 'border-gray-700'
+                    } rounded-lg px-4 py-2 pr-24 text-sm text-gray-200 
+                      placeholder-gray-500 focus:outline-none focus:border-blue-500/50`}
+                    disabled={!canType || isLoading}
+                  />
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                    {chatState.allowFileUpload && (
+                      <FileUploadButton
+                        onUploadComplete={handleFileUpload}
+                        disabled={isLoading}
+                      />
+                    )}
+                    <button
+                      type="submit"
                       disabled={isLoading}
-                    />
-                  )}
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 
-                      hover:bg-blue-500/20 transition-colors disabled:opacity-50 
-                      disabled:cursor-not-allowed"
-                  >
-                    Send
-                  </button>
+                      className="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 
+                        hover:bg-blue-500/20 transition-colors disabled:opacity-50 
+                        disabled:cursor-not-allowed"
+                    >
+                      Send
+                    </button>
+                  </div>
                 </div>
-              </div>
-              {error && (
-                <p className="text-xs text-red-400 px-1">
-                  {error}
-                </p>
-              )}
-              {chatState.userType === 'VISITOR' && chatState.questionCount > 0 && (
-                <div className="text-xs text-gray-400 px-1">
-                  {`Questions remaining: ${chatState.maxQuestions - chatState.questionCount}`}
-                </div>
-              )}
-            </form>
+                {error && (
+                  <p className="text-xs text-red-400 px-1">
+                    {error}
+                  </p>
+                )}
+                {chatState.userType === 'VISITOR' && chatState.questionCount > 0 && (
+                  <div className="text-xs text-gray-400 px-1">
+                    {`Questions remaining: ${chatState.maxQuestions - chatState.questionCount}`}
+                  </div>
+                )}
+              </form>
+            </div>
           )}
         </div>
       </div>

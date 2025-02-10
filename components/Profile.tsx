@@ -207,7 +207,7 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Name, Title and Like Button */}
+          {/* Name, Title and Company Badge */}
           <div className="flex flex-col gap-2 pt-2">
             <div className="hover-float">
               <h1 className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
@@ -215,14 +215,19 @@ export default function Profile() {
               </h1>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                 <p className="text-lg md:text-xl text-gray-300">Data Scientist</p>
-                <div className="flex items-center gap-2 px-2 md:px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full 
+                  bg-white/5 border border-gray-700/50 hover:border-gray-600/50">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                   </span>
-                  <span className="text-xs md:text-sm text-emerald-400 whitespace-nowrap">
-                    Deloitte
-                  </span>
+                  <Image
+                    src="/images/deloitte.svg"
+                    alt="Deloitte"
+                    width={60}
+                    height={18}
+                    className="opacity-90"
+                  />
                 </div>
               </div>
               

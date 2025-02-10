@@ -25,6 +25,7 @@ export interface RecruiterFilterCriteria {
   isSeniorRole: boolean;
   isAIFocused: boolean;
   hasCloudTech: boolean;
+  hasCompellingOffer: boolean;
 }
 
 export interface ChatState {
@@ -73,7 +74,12 @@ Please confirm these criteria before proceeding:`,
       { id: 'isIsraelBased', label: 'Position is based in Israel (Tel Aviv area)' },
       { id: 'isSeniorRole', label: '(Senior) Data Scientist/ML Engineer role' },
       { id: 'isAIFocused', label: 'Core focus on ML/AI implementation' },
-      { id: 'hasCloudTech', label: 'Includes cloud platforms (AWS/GCP)' }
+      { id: 'hasCloudTech', label: 'Includes cloud platforms (AWS/GCP)' },
+      { 
+        id: 'hasCompellingOffer', 
+        label: 'I do not meet all criteria but have a compelling opportunity',
+        overrideOthers: true
+      }
     ]
   },
   visitor: {

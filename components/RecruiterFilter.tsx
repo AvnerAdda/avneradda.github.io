@@ -12,17 +12,51 @@ export default function RecruiterFilter({ onComplete, disabled }: RecruiterFilte
     isIsraelBased: false,
     isSeniorRole: false,
     isAIFocused: false,
-    hasCloudTech: false
+    hasCloudTech: false,
+    hasCompellingOffer: false
   });
 
   const handleChange = (id: keyof RecruiterFilterCriteria) => {
-    setCriteria(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
+    setCriteria(prev => {
+      const newCriteria = { ...prev };
+      
+      // If clicking the compelling offer checkbox
+      if (id === 'hasCompellingOffer') {
+        if (!prev.hasCompellingOffer) {
+          // If enabling compelling offer, set all other criteria to true
+          return {
+            isIsraelBased: true,
+            isSeniorRole: true,
+            isAIFocused: true,
+            hasCloudTech: true,
+            hasCompellingOffer: true
+          };
+        } else {
+          // If disabling compelling offer, reset all criteria
+          return {
+            isIsraelBased: false,
+            isSeniorRole: false,
+            isAIFocused: false,
+            hasCloudTech: false,
+            hasCompellingOffer: false
+          };
+        }
+      }
+      
+      // For other checkboxes, just toggle their value
+      newCriteria[id] = !prev[id];
+      // If compelling offer was checked, uncheck it when modifying other criteria
+      if (prev.hasCompellingOffer) {
+        newCriteria.hasCompellingOffer = false;
+      }
+      
+      return newCriteria;
+    });
   };
 
-  const allChecked = Object.values(criteria).every(value => value);
+  const allChecked = criteria.hasCompellingOffer || Object.entries(criteria)
+    .filter(([key]) => key !== 'hasCompellingOffer')
+    .every(([_, value]) => value);
 
   return (
     <div className="p-4 space-y-4">
@@ -30,7 +64,8 @@ export default function RecruiterFilter({ onComplete, disabled }: RecruiterFilte
         {chatOptions.recruiter.filterCriteria.map(({ id, label }) => (
           <label 
             key={id}
-            className="flex items-center gap-3 text-sm text-gray-300 hover:text-gray-200 cursor-pointer"
+            className={`flex items-center gap-3 text-sm text-gray-300 hover:text-gray-200 cursor-pointer
+              ${id === 'hasCompellingOffer' ? 'mt-6 pt-4 border-t border-gray-700' : ''}`}
           >
             <input
               type="checkbox"
