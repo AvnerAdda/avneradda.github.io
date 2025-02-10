@@ -7,6 +7,7 @@ import { db } from '../lib/firebase';
 import { doc, increment, updateDoc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
 import { AnalyticsService } from '../lib/analytics';
 import MetricsModal from './MetricsModal';
+import CommentDialog from './CommentDialog';
 
 // Move these arrays outside the component to prevent recreation on each render
 const STATS = [
@@ -63,6 +64,7 @@ export default function Profile() {
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeAnimating, setIsLikeAnimating] = useState(false);
   const [isMetricsOpen, setIsMetricsOpen] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
 
   // Add useEffect to listen to likes count
   useEffect(() => {
@@ -402,6 +404,27 @@ export default function Profile() {
             </span>
           </button>
 
+          {/* Add this new Comment button before the Newsletter button */}
+          <button
+            onClick={() => setIsCommentOpen(true)}
+            className={`
+              group relative px-4 py-2 rounded-lg
+              transition-all duration-300 flex items-center gap-1.5
+              bg-gray-700/30 hover:bg-gray-600/30 text-gray-300
+              hover:scale-105
+            `}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="currentColor" 
+              className="w-4 h-4"
+            >
+              <path fillRule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clipRule="evenodd" />
+            </svg>
+            <span className="text-sm hidden md:inline">Comments</span>
+          </button>
+
           {/* New Newsletter Button */}
           <button
             onClick={handleScrollToArticles}
@@ -421,6 +444,11 @@ export default function Profile() {
       <MetricsModal 
         isOpen={isMetricsOpen} 
         onClose={() => setIsMetricsOpen(false)} 
+      />
+
+      <CommentDialog
+        isOpen={isCommentOpen}
+        onClose={() => setIsCommentOpen(false)}
       />
     </div>
   )
