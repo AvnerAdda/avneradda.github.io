@@ -125,7 +125,7 @@ export default function Profile() {
       }
     }
   };
-
+ 
   const handleDownloadResume = async () => {
     try {
       // Track download in metrics collection
