@@ -309,7 +309,7 @@ const createFirestoreQuery = (sessionId: string) => {
   // First try with the composite index
   try {
     return query(
-      collection(db, 'generate'),
+      collection(db, 'chatbot_interactions'),
       where('sessionId', '==', sessionId),
       orderBy('timestamp', 'asc')
     );
@@ -317,7 +317,7 @@ const createFirestoreQuery = (sessionId: string) => {
     // Fallback to simple query if index doesn't exist
     console.warn('Falling back to simple query - please create the required index');
     return query(
-      collection(db, 'generate'),
+      collection(db, 'chatbot_interactions'),
       where('sessionId', '==', sessionId)
     );
   }
@@ -487,66 +487,57 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   useEffect(() => {
     if (!sessionId) return;
 
-    const q = query(
+    // Create queries for both collections
+    const chatQuery = query(
+      collection(db, 'chatbot_interactions'),
+      where('sessionId', '==', sessionId),
+      orderBy('timestamp', 'asc')
+    );
+
+    const generateQuery = query(
       collection(db, 'generate'),
       where('sessionId', '==', sessionId),
       orderBy('timestamp', 'asc')
     );
 
-    const unsubscribe = onSnapshot(q, 
-      (snapshot) => {
-        const newMessages = snapshot.docs
-          .map(doc => ({
-            ...(doc.data() as ChatMessage),
-            timestamp: doc.data().timestamp?.toDate()
-          }))
+    // Listen to both collections
+    const unsubscribeChatbot = onSnapshot(chatQuery, (chatSnapshot) => {
+      const chatMessages = chatSnapshot.docs.map(doc => ({
+        ...(doc.data() as ChatMessage),
+        timestamp: doc.data().timestamp?.toDate()
+      }));
+
+      const unsubscribeGenerate = onSnapshot(generateQuery, (generateSnapshot) => {
+        const generateMessages = generateSnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            prompt: data.displayPrompt || data.prompt,
+            response: data.response,
+            timestamp: data.timestamp?.toDate(),
+            sessionId: data.sessionId
+          } as ChatMessage;
+        });
+
+        // Combine and sort all messages by timestamp
+        const allMessages = [...chatMessages, ...generateMessages]
           .sort((a, b) => a.timestamp - b.timestamp);
-        
+
         // Only show messages after email verification
         if (chatState.stage !== 'EMAIL_VERIFICATION') {
-          setMessages(newMessages);
+          setMessages(allMessages);
         }
         
         setIsLoading(false);
-      },
-      (error) => {
-        console.error('Error in snapshot listener:', error);
-        // Fallback to simpler query if index is building
-        if (error.code === 'failed-precondition') {
-          const fallbackQuery = query(
-            collection(db, 'generate'),
-            where('sessionId', '==', sessionId)
-          );
-          
-          onSnapshot(fallbackQuery, (snapshot) => {
-            const newMessages = snapshot.docs
-              .map(doc => ({
-                ...(doc.data() as ChatMessage),
-                timestamp: doc.data().timestamp?.toDate()
-              }))
-              .sort((a, b) => a.timestamp - b.timestamp);
-            
-            if (chatState.stage === 'INITIAL') {
-              setMessages([
-                {
-                  response: "Hello! Please select an option:",
-                  timestamp: new Date(),
-                  isOption: true,
-                  sessionId
-                },
-                ...newMessages
-              ]);
-            } else {
-              setMessages(newMessages);
-            }
-            
-            setIsLoading(false);
-          });
-        }
-      }
-    );
+      });
 
-    return () => unsubscribe();
+      return () => {
+        unsubscribeGenerate();
+      };
+    });
+
+    return () => {
+      unsubscribeChatbot();
+    };
   }, [chatState.stage, sessionId]);
 
   const formatTimestamp = (timestamp: Date) => {
@@ -567,7 +558,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         allowFileUpload: chatOptions.recruiter.allowFileUpload
       });
       
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: chatOptions.recruiter.filterMessage,
         timestamp: new Date(),
         sessionId
@@ -581,7 +572,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         allowFileUpload: chatOptions.visitor.allowFileUpload
       });
       
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "Before we continue, please provide your email:",
         timestamp: new Date(),
         sessionId
@@ -591,46 +582,29 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
 
   const handleTopicSelect = async (topicId: string, prompt?: string) => {
     if (topicId === 'contact') {
-      setChatState(prev => ({ ...prev, stage: 'CONTACT_FORM' }));
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      // Enable typing for open questions
-      if (topicId === 'open_question') {
-        setChatState(prev => ({ ...prev, stage: 'TYPING_ENABLED' }));
-        return;
-      }
-
-      // Add the user's selection as a message
-      await addDoc(collection(db, 'generate'), {
-        prompt: prompt,
-        displayPrompt: chatOptions.visitor.topics.find(t => t.id === topicId)?.text,
+      setChatState(prev => ({
+        ...prev,
+        stage: 'CONTACT_FORM'
+      }));
+      
+      await addDoc(collection(db, 'chatbot_interactions'), {
+        response: "Please provide your contact information:",
         timestamp: new Date(),
         sessionId
       });
-      
-      // After response, show topics again instead of enabling typing
+    } else {
       setChatState(prev => ({
         ...prev,
-        stage: 'VISITOR_TOPICS',
-        questionCount: prev.questionCount + 1
+        stage: 'TYPING_ENABLED'
       }));
 
-      // If max questions reached, add a final message
-      if (chatState.questionCount + 1 >= chatState.maxQuestions) {
-        await addDoc(collection(db, 'generate'), {
-          response: "I hope I've been helpful! Would you like to get in touch with Avner directly?",
+      if (prompt) {
+        await addDoc(collection(db, 'chatbot_interactions'), {
+          response: prompt,
           timestamp: new Date(),
           sessionId
         });
-        setChatState(prev => ({ ...prev, stage: 'CONTACT_FORM' }));
       }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -671,7 +645,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
       }
       
       // Add follow-up message
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: `Thank you ${data.name} for sharing this opportunity! ${
           data.jobDescription 
             ? "Wait a minute, I'll analyze the role and provide my assessment above."
@@ -688,7 +662,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
       }));
     } catch (error) {
       console.error('Error submitting form:', error);
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "I apologize, but I encountered an error while processing your request. Please try again.",
         timestamp: new Date(),
         sessionId
@@ -707,15 +681,23 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         sessionId
       });
 
-      await addDoc(collection(db, 'generate'), {
-        response: `Thanks ${data.name}! I've forwarded your message to Avner. He'll get back to you soon at ${data.email}.`,
+      await addDoc(collection(db, 'chatbot_interactions'), {
+        response: `Thank you ${data.name}! I'll make sure to get back to you soon at ${data.email}.`,
         timestamp: new Date(),
         sessionId
       });
 
-      setChatState(prev => ({ ...prev, stage: 'CLOSED' }));
+      setChatState(prev => ({
+        ...prev,
+        stage: 'CLOSED'
+      }));
     } catch (error) {
       console.error('Error:', error);
+      await addDoc(collection(db, 'chatbot_interactions'), {
+        response: "Sorry, there was an error submitting your contact information. Please try again.",
+        timestamp: new Date(),
+        sessionId
+      });
     } finally {
       setIsLoading(false);
     }
@@ -724,13 +706,8 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   const handleFileUpload = async (fileUrl: string) => {
     setIsLoading(true);
     try {
-      await addDoc(collection(db, 'generate'), {
-        prompt: `Please analyze this job description and explain why you would be a good fit: ${fileUrl}`,
-        timestamp: new Date(),
-        sessionId
-      });
-      
-      await addDoc(collection(db, 'generate'), {
+      // Add follow-up message
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "I've analyzed the job description. Would you like to schedule a meeting to discuss this opportunity further?",
         timestamp: new Date(),
         sessionId
@@ -746,7 +723,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
       }));
     } catch (error) {
       console.error('Error processing file:', error);
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "Sorry, I couldn't process the file. Please try uploading it again.",
         timestamp: new Date(),
         sessionId
@@ -807,7 +784,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
     try {
       const canProceed = await checkUserUsage(data.email);
       if (!canProceed) {
-        await addDoc(collection(db, 'generate'), {
+        await addDoc(collection(db, 'chatbot_interactions'), {
           response: "I apologize, but you've reached the maximum number of chat sessions for today. Please try again tomorrow.",
           timestamp: new Date(),
           sessionId
@@ -816,20 +793,22 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         return;
       }
 
-      setChatState(prev => ({ 
-        ...prev, 
-        stage: 'VISITOR_TOPICS',
-        userEmail: data.email 
-      }));
-
-      await addDoc(collection(db, 'generate'), {
-        response: "Great! What would you like to know about Avner?",
-        timestamp: new Date(),
-        sessionId
-      });
+      if (chatState.userType === 'VISITOR') {
+        setChatState(prev => ({
+          ...prev,
+          stage: 'VISITOR_TOPICS',
+          userEmail: data.email
+        }));
+        
+        await addDoc(collection(db, 'chatbot_interactions'), {
+          response: "Great! How can I help you today?",
+          timestamp: new Date(),
+          sessionId
+        });
+      }
     } catch (error) {
       console.error('Error:', error);
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "Sorry, there was an error. Please try again.",
         timestamp: new Date(),
         sessionId
@@ -840,7 +819,6 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   };
 
   const handleFilterComplete = async (criteria: RecruiterFilterCriteria) => {
-    // Check if either all main criteria are met OR compelling offer is checked
     const allCriteriaMet = 
       criteria.hasCompellingOffer || 
       (criteria.isIsraelBased && 
@@ -855,13 +833,13 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         recruiterFilterCriteria: criteria
       }));
       
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "Great! Please provide your information to proceed:",
         timestamp: new Date(),
         sessionId
       });
     } else {
-      await addDoc(collection(db, 'generate'), {
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "I appreciate your interest, but it seems this opportunity might not be the best fit. Feel free to reach out when you have positions that better align with my criteria.",
         timestamp: new Date(),
         sessionId
@@ -892,7 +870,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
     setIsLoading(true);
     
     try {
-      // Add the user's question as a message
+      // Add the user's question to generate collection for LLM processing
       await addDoc(collection(db, 'generate'), {
         prompt: userInput,
         displayPrompt: userInput,
@@ -900,8 +878,8 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
         sessionId
       });
 
-      // After getting the answer, show the contact form
-      await addDoc(collection(db, 'generate'), {
+      // Add the follow-up message to chatbot_interactions
+      await addDoc(collection(db, 'chatbot_interactions'), {
         response: "Wait for me to answer... In any case, would you like to get in touch with Avner directly?",
         timestamp: new Date(),
         sessionId
@@ -915,6 +893,11 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
 
     } catch (error) {
       console.error('Error:', error);
+      await addDoc(collection(db, 'chatbot_interactions'), {
+        response: "Sorry, there was an error processing your question. Please try again.",
+        timestamp: new Date(),
+        sessionId
+      });
     } finally {
       setIsLoading(false);
       inputRef.current.value = '';
@@ -1106,12 +1089,30 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
             <div className="h-[72px] p-6">
               <button
                 onClick={async () => {
-                  await addDoc(collection(db, 'generate'), {
-                    response: "I'll have Avner review your request and get back to you soon with available meeting times. Thank you for your interest!",
-                    timestamp: new Date(),
-                    sessionId
-                  });
-                  setChatState(prev => ({ ...prev, stage: 'CLOSED' }));
+                  try {
+                    // Create meeting request
+                    await addDoc(collection(db, 'meeting_requests'), {
+                      sessionId,
+                      timestamp: new Date(),
+                      status: 'pending'
+                    });
+                    
+                    // Add response message
+                    await addDoc(collection(db, 'chatbot_interactions'), {
+                      response: "I'll have Avner review your request and get back to you soon with available meeting times. Thank you for your interest!",
+                      timestamp: new Date(),
+                      sessionId
+                    });
+                    
+                    setChatState(prev => ({ ...prev, stage: 'CLOSED' }));
+                  } catch (error) {
+                    console.error('Error scheduling meeting:', error);
+                    await addDoc(collection(db, 'chatbot_interactions'), {
+                      response: "I apologize, but I encountered an error while processing your request. Please try again.",
+                      timestamp: new Date(),
+                      sessionId
+                    });
+                  }
                 }}
                 className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600/20 to-purple-600/20 
                   hover:from-blue-600/30 hover:to-purple-600/30 text-blue-400 font-medium
