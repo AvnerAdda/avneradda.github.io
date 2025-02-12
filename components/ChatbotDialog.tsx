@@ -831,7 +831,13 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   };
 
   const handleFilterComplete = async (criteria: RecruiterFilterCriteria) => {
-    const allCriteriaMet = Object.values(criteria).every(value => value);
+    // Check if either all main criteria are met OR compelling offer is checked
+    const allCriteriaMet = 
+      criteria.hasCompellingOffer || 
+      (criteria.isIsraelBased && 
+       criteria.isSeniorRole && 
+       criteria.isAIFocused && 
+       criteria.hasCloudTech);
     
     if (allCriteriaMet) {
       setChatState(prev => ({

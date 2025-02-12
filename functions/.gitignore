@@ -1,0 +1,6 @@
+# functions
+lib/**/*.js
+lib/**/*.js.map
+typings/
+node_modules/
+*.local

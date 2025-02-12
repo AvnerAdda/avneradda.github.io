@@ -22,41 +22,23 @@ export default function RecruiterFilter({ onComplete, disabled }: RecruiterFilte
       
       // If clicking the compelling offer checkbox
       if (id === 'hasCompellingOffer') {
-        if (!prev.hasCompellingOffer) {
-          // If enabling compelling offer, set all other criteria to true
-          return {
-            isIsraelBased: true,
-            isSeniorRole: true,
-            isAIFocused: true,
-            hasCloudTech: true,
-            hasCompellingOffer: true
-          };
-        } else {
-          // If disabling compelling offer, reset all criteria
-          return {
-            isIsraelBased: false,
-            isSeniorRole: false,
-            isAIFocused: false,
-            hasCloudTech: false,
-            hasCompellingOffer: false
-          };
-        }
+        newCriteria.hasCompellingOffer = !prev.hasCompellingOffer;
+        return newCriteria;
       }
       
       // For other checkboxes, just toggle their value
       newCriteria[id] = !prev[id];
-      // If compelling offer was checked, uncheck it when modifying other criteria
-      if (prev.hasCompellingOffer) {
-        newCriteria.hasCompellingOffer = false;
-      }
-      
       return newCriteria;
     });
   };
 
-  const allChecked = criteria.hasCompellingOffer || Object.entries(criteria)
-    .filter(([key]) => key !== 'hasCompellingOffer')
-    .every(([_, value]) => value);
+  // Check if either all main criteria are met OR compelling offer is checked
+  const allChecked = 
+    criteria.hasCompellingOffer || 
+    (criteria.isIsraelBased && 
+     criteria.isSeniorRole && 
+     criteria.isAIFocused && 
+     criteria.hasCloudTech);
 
   return (
     <div className="p-4 space-y-4">
