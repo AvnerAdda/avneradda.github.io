@@ -7,6 +7,7 @@ import { db } from '../lib/firebase';
 import { doc, increment, updateDoc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
 import { AnalyticsService } from '../lib/analytics';
 import MetricsModal from './MetricsModal';
+import { useRouter } from 'next/navigation';
 
 // Move these arrays outside the component to prevent recreation on each render
 const STATS = [
@@ -63,6 +64,8 @@ export default function Profile() {
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeAnimating, setIsLikeAnimating] = useState(false);
   const [isMetricsOpen, setIsMetricsOpen] = useState(false);
+  const [isNewsMenuOpen, setIsNewsMenuOpen] = useState(false);
+  const router = useRouter();
 
   // Add useEffect to listen to likes count
   useEffect(() => {
@@ -183,6 +186,29 @@ export default function Profile() {
       });
     }
   };
+
+  const handleNewsClick = (action: 'newsletter' | 'latest') => {
+    if (action === 'newsletter') {
+      handleScrollToArticles();
+    } else {
+      // Navigate to the latest news page using Next.js router
+      router.push('/latestnews');
+    }
+    setIsNewsMenuOpen(false);
+  };
+
+  // Add this useEffect to close the menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.relative')) {
+        setIsNewsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   return (
     <div className="relative">
@@ -403,18 +429,52 @@ export default function Profile() {
           </button>
 
           {/* New Newsletter Button */}
-          <button
-            onClick={handleScrollToArticles}
-            className={`
-              group relative px-4 py-2 rounded-lg
-              transition-all duration-300 flex items-center gap-1.5
-              bg-gray-700/30 hover:bg-gray-600/30 text-gray-300
-              hover:scale-105
-            `}
-          >
-            <span role="img" aria-label="newspaper" className="text-lg">📰</span>
-            <span className="text-sm hidden md:inline">Newsletter</span>
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setIsNewsMenuOpen(!isNewsMenuOpen)}
+              className={`
+                group relative px-4 py-2 rounded-lg
+                transition-all duration-300 flex items-center gap-1.5
+                bg-gray-700/30 hover:bg-gray-600/30 text-gray-300
+                hover:scale-105
+              `}
+            >
+              <span role="img" aria-label="newspaper" className="text-lg">📰</span>
+              <span className="text-sm hidden md:inline">News</span>
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 20 20" 
+                fill="currentColor" 
+                className="w-4 h-4 ml-1"
+              >
+                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+              </svg>
+            </button>
+
+            {/* Dropdown Menu */}
+            {isNewsMenuOpen && (
+              <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 z-50">
+                <div className="py-1" role="menu" aria-orientation="vertical">
+                  <button
+                    onClick={() => handleNewsClick('newsletter')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 flex items-center gap-2"
+                    role="menuitem"
+                  >
+                    <span role="img" aria-label="email">✉️</span>
+                    Newsletter
+                  </button>
+                  <button
+                    onClick={() => handleNewsClick('latest')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 flex items-center gap-2"
+                    role="menuitem"
+                  >
+                    <span role="img" aria-label="news">🔥</span>
+                    Latest AI News
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
