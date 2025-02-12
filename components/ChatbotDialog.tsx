@@ -182,11 +182,7 @@ const RecruiterForm = ({ onSubmit, disabled }: { onSubmit: (data: RecruiterInfo)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fileUrl) {
-      alert('Please upload a job description file');
-      return;
-    }
-    onSubmit({ ...formData, jobDescription: fileUrl });
+    onSubmit({ ...formData, jobDescription: fileUrl || undefined });
   };
 
   return (
@@ -274,7 +270,7 @@ const RecruiterForm = ({ onSubmit, disabled }: { onSubmit: (data: RecruiterInfo)
                       <path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
                       <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
                     </svg>
-                    Upload Job Description
+                    Upload Job Description (Optional)
                   </>
                 )}
               </label>
@@ -295,7 +291,7 @@ const RecruiterForm = ({ onSubmit, disabled }: { onSubmit: (data: RecruiterInfo)
             </button>
             <button
               type="submit"
-              disabled={disabled || uploading || !fileUrl || !formData.company || !formData.jobRole}
+              disabled={disabled || uploading || !formData.company || !formData.jobRole}
               className="flex-1 px-4 py-1.5 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -641,33 +637,46 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
   const handleRecruiterFormSubmit = async (data: RecruiterInfo) => {
     setIsLoading(true);
     try {
-      // Store recruiter form data
-      await addDoc(collection(db, 'recruiter_submissions'), {
-        ...data,
+      // Create submission object without undefined values
+      const submissionData = {
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        jobRole: data.jobRole,
         timestamp: new Date(),
         status: 'pending',
         notes: '',
-        sessionId
-      });
+        sessionId,
+        // Only include jobDescription if it exists
+        ...(data.jobDescription ? { jobDescription: data.jobDescription } : {})
+      };
 
-      // Send analysis message with hidden URL
-      await addDoc(collection(db, 'generate'), {
-        prompt: `I have a job opportunity as ${data.jobRole} at ${data.company}. Here's the job description: ${data.jobDescription}. 
-                Please analyze this job description and provide a structured assessment of Avner's fit for this role using the following format:
-                🎯 Role Overview:
-                - Brief summary of the position (1 short sentence)
-                - Top 3 reasons why Avner would be a good fit for this role
-                - Top 3 reasons why Avner would not be a good fit for this role
-                Keep the analysis honest, specific, and concise`,
-        displayPrompt: `I have a job opportunity as ${data.jobRole} at ${data.company}. Please analyze the job description and explain why Avner would be a good fit for this role.`,
-        timestamp: new Date(),
-        sessionId
-      });
+      // Store recruiter form data
+      await addDoc(collection(db, 'recruiter_submissions'), submissionData);
+
+      // Only send analysis message if there's a job description
+      if (data.jobDescription) {
+        await addDoc(collection(db, 'generate'), {
+          prompt: `I have a job opportunity as ${data.jobRole} at ${data.company}. Here's the job description: ${data.jobDescription}. 
+                  Please analyze this job description and provide a structured assessment of Avner's fit for this role using the following format:
+                  🎯 Role Overview:
+                  - Brief summary of the position (1 short sentence)
+                  - Top 3 reasons why Avner would be a good fit for this role
+                  - Top 3 reasons why Avner would not be a good fit for this role
+                  Keep the analysis honest, specific, and concise`,
+          displayPrompt: `I have a job opportunity as ${data.jobRole} at ${data.company}. Please analyze the job description and explain why Avner would be a good fit for this role.`,
+          timestamp: new Date(),
+          sessionId
+        });
+      }
       
       // Add follow-up message
       await addDoc(collection(db, 'generate'), {
-        response: `Thank you ${data.name} for sharing this opportunity! Wait a minute, I'll analyze the role and provide my assessment above. 
-                  Would you like to schedule a meeting to discuss this opportunity in more detail?`,
+        response: `Thank you ${data.name} for sharing this opportunity! ${
+          data.jobDescription 
+            ? "Wait a minute, I'll analyze the role and provide my assessment above."
+            : ""
+        } Would you like to schedule a meeting to discuss this opportunity in more detail?`,
         timestamp: new Date(),
         sessionId
       });
