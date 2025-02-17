@@ -9,8 +9,13 @@ interface NewsItem {
   source_link: string;
 }
 
-export const scheduledFetchNews = functions.pubsub
-  .schedule("0 12 * * *") // Runs every day at 12:00 AM UTC
+export const scheduledFetchNews = functions
+  .runWith({
+    timeoutSeconds: 300,
+    memory: "256MB",
+  })
+  .pubsub
+  .schedule("0 12 * * *")
   .timeZone("UTC")
   .onRun(async () => {
     console.log("🚀 Starting scheduled news fetch...");
@@ -42,8 +47,8 @@ export const scheduledFetchNews = functions.pubsub
             },
             {
               role: "user",
-              content: "What are the 10 latest news of today related to AI, " +
-                "ML and LLM in the world. It can be news, articles, blog posts, training etc. " +
+              content: "What are the 5-10 latest news of today related to AI, " +
+                "ML and LLM in the world. Focus on the latest news and more pertinents. " +
                 "For both technical and hobby. " +
                 "Return only a JSON array with objects containing " +
                 "{title, type, summary, source_link}. No other text. " +
@@ -58,11 +63,12 @@ export const scheduledFetchNews = functions.pubsub
       const response = await fetch("https://api.perplexity.ai/chat/completions", options);
       const data = await response.json();
       const content = data.choices[0].message.content;
-      console.log("🔍 Content:", content);
+      // console.log("🔍 Content:", content);
       // Extract JSON array from the response by finding the json code block
       const jsonMarker = "```json";
       const jsonStart = content.indexOf(jsonMarker);
       if (jsonStart === -1) {
+        console.error("❌ Content does not contain JSON block marker");
         throw new Error("Invalid response format: Could not find JSON block");
       }
       const jsonContent = content.slice(jsonStart + jsonMarker.length);
@@ -72,9 +78,16 @@ export const scheduledFetchNews = functions.pubsub
       if (jsonEnd !== -1) {
         jsonString = jsonContent.slice(0, jsonEnd);
       }
+      jsonString = jsonString.trim()
+        .replace(/\n/g, "")
+        .replace(/\r/g, "")
+        .replace(/\\"/g, "\"")
+        .replace(/"{2,}/g, "\"")
+        .replace(/\s+/g, " ");
+
+      console.log("🔍 Cleaned JSON string:", jsonString);
       try {
-        // Parse the JSON content, trimming any whitespace
-        const newsItems: NewsItem[] = JSON.parse(jsonString.trim());
+        const newsItems: NewsItem[] = JSON.parse(jsonString);
         console.log(`📰 Received ${newsItems.length} news items`);
         // Create a batch write
         const batch = db.batch();
