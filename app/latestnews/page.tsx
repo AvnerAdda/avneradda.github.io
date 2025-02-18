@@ -16,14 +16,28 @@ interface NewsItem {
 export const revalidate = 0;  // This will make the page dynamic
 
 async function getNewsFromFirebase(): Promise<NewsItem[]> {
-  const newsRef = collection(db, 'ai_news');
-  const q = query(newsRef, orderBy('timestamp', 'desc'));
-  const snapshot = await getDocs(q);
-  
-  return snapshot.docs.map(doc => ({
-    ...doc.data(),
-    timestamp: doc.data().timestamp?.toDate(),
-  })) as NewsItem[];
+  try {
+    const newsRef = collection(db, 'ai_news');
+    const q = query(newsRef, orderBy('timestamp', 'desc'));
+    const snapshot = await getDocs(q);
+    
+    console.log('News items count:', snapshot.docs.length);
+    
+    const items = snapshot.docs.map(doc => {
+      const data = doc.data();
+      console.log('Document data:', data);  // Log each document's data
+      return {
+        ...data,
+        timestamp: data.timestamp?.toDate(),
+      };
+    }) as NewsItem[];
+
+    console.log('Processed items:', items);  // Log the final processed items
+    return items;
+  } catch (error) {
+    console.error('Error fetching news:', error);
+    throw error;
+  }
 }
 
 export default async function LatestNews() {
