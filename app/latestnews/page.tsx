@@ -13,6 +13,8 @@ interface NewsItem {
   type?: string;
 }
 
+export const revalidate = 0;  // This will make the page dynamic
+
 async function getNewsFromFirebase(): Promise<NewsItem[]> {
   const newsRef = collection(db, 'ai_news');
   const q = query(newsRef, orderBy('timestamp', 'desc'));
