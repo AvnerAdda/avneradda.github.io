@@ -13,7 +13,7 @@ interface NewsItem {
   type?: string;
 }
 
-export const revalidate = 0;  // This will make the page dynamic
+export const revalidate = 3600;  // Revalidate every hour instead of every request
 
 async function getNewsFromFirebase(): Promise<NewsItem[]> {
   try {
@@ -21,27 +21,49 @@ async function getNewsFromFirebase(): Promise<NewsItem[]> {
     const q = query(newsRef, orderBy('timestamp', 'desc'));
     const snapshot = await getDocs(q);
     
-    console.log('News items count:', snapshot.docs.length);
+    if (snapshot.empty) {
+      console.log('No news items found');
+      return [];
+    }
     
     const items = snapshot.docs.map(doc => {
       const data = doc.data();
-      console.log('Document data:', data);  // Log each document's data
       return {
         ...data,
-        timestamp: data.timestamp?.toDate(),
+        timestamp: data.timestamp?.toDate() || new Date(),  // Provide fallback date
       };
     }) as NewsItem[];
 
-    console.log('Processed items:', items);  // Log the final processed items
     return items;
   } catch (error) {
     console.error('Error fetching news:', error);
-    throw error;
+    return [];  // Return empty array instead of throwing
   }
 }
 
 export default async function LatestNews() {
-  const newsItems = await getNewsFromFirebase();
+  let newsItems: NewsItem[] = [];
+  
+  try {
+    newsItems = await getNewsFromFirebase();
+  } catch (error) {
+    console.error('Failed to load news:', error);
+    // You might want to add error UI here
+  }
+
+  if (newsItems.length === 0) {
+    return (
+      <main className="relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
+        <div className="relative z-10 max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <AiCard>
+            <div className="text-center py-8">
+              <h2 className="text-xl text-gray-400">No news items available at the moment</h2>
+            </div>
+          </AiCard>
+        </div>
+      </main>
+    );
+  }
   
   // Group news items by type
   const newsTypes = [
