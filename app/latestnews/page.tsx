@@ -42,6 +42,13 @@ async function getNewsFromFirebase(): Promise<NewsItem[]> {
 
 export default async function LatestNews() {
   const newsItems = await getNewsFromFirebase();
+  
+  // Group news items by type
+  const newsTypes = ['Model Release', 'Research', 'Economy', 'Other'];
+  const groupedNews = newsTypes.reduce<Record<string, NewsItem[]>>((acc, type) => {
+    acc[type] = newsItems.filter(item => item.type === type);
+    return acc;
+  }, {});
 
   return (
     <main className="relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
@@ -83,16 +90,28 @@ export default async function LatestNews() {
               <div className="h-1 w-32 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
             </div>
 
-            {/* News Grid */}
-            <div className="grid gap-6">
-              {newsItems.map((news, index) => (
-                <div 
-                  key={index} 
-                  className="animate-fade-in hover:transform hover:scale-[1.02] transition-all duration-300" 
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <NewsCard news={news} />
-                </div>
+            {/* News Sections by Type */}
+            <div className="space-y-12">
+              {newsTypes.map((type) => (
+                groupedNews[type].length > 0 && (
+                  <div key={type} className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <h2 className="text-2xl font-semibold text-white">{type}</h2>
+                      <div className="h-px flex-grow bg-gradient-to-r from-blue-500/50 to-transparent" />
+                    </div>
+                    <div className="grid gap-6">
+                      {groupedNews[type].map((news, index) => (
+                        <div 
+                          key={`${type}-${index}`} 
+                          className="animate-fade-in hover:transform hover:scale-[1.02] transition-all duration-300" 
+                          style={{ animationDelay: `${index * 0.1}s` }}
+                        >
+                          <NewsCard news={news} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
               ))}
             </div>
 
