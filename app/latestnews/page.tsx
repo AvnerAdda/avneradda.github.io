@@ -44,7 +44,22 @@ export default async function LatestNews() {
   const newsItems = await getNewsFromFirebase();
   
   // Group news items by type
-  const newsTypes = ['Model Release', 'Research', 'Economy', 'Other'];
+  const newsTypes = [
+    'Model Release',
+    'Research',
+    'Tooling & Frameworks',
+    'Datasets',
+    'Economy',
+    'Regulation & Policy',
+    'Company Strategies',
+    'GitHub Projects',
+    'Competitions & Benchmarks',
+    'Conferences & Events',
+    'AI Safety & Alignment',
+    'Bias & Fairness',
+    'Misinformation & Deepfakes',
+    'Other'
+  ];
   const groupedNews = newsTypes.reduce<Record<string, NewsItem[]>>((acc, type) => {
     acc[type] = newsItems.filter(item => item.type === type);
     return acc;
