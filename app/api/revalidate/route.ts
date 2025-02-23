@@ -1,6 +1,9 @@
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
+
 export async function GET() {
   try {
     // Revalidate the main pages
