@@ -33,6 +33,9 @@ import Hobbies from '../components/Hobbies'
 //   }
 // }
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function Home() {
   // const articles = await getMediumArticles();
 
