@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Profile from '../components/Profile'
 import Education from '../components/Education'
 import Experience from '../components/Experience'
@@ -9,6 +10,7 @@ import TableOfContents from '../components/TableOfContents'
 import Tools from '../components/Tools'
 import Introduction from '../components/Introduction'
 import Hobbies from '../components/Hobbies'
+import NewsButton from '../components/NewsButton'
 
 // async function getMediumArticles() {
 //   try {
@@ -36,14 +38,16 @@ import Hobbies from '../components/Hobbies'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export default async function Home() {
-  // const articles = await getMediumArticles();
-
+export default function Home() {
   return (
     <main className="relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
       <AiDecorations />
       <TableOfContents />
       <div className="relative z-10 max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <Suspense fallback={<div>Loading...</div>}>
+          <NewsButton />
+        </Suspense>
+
         <div className="space-y-16">
           <div id="profile" className="animate-fade-in" style={{ animationDelay: '0s' }}>
             <AiCard>

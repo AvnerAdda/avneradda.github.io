@@ -1,57 +1,10 @@
 "use client";
 import { useState } from 'react';
-import { db } from '../lib/firebase';
-import { collection, addDoc, doc, increment, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import articlesData from '../public/articles.json';
-
-// interface Article {
-//   title: string;
-//   date: string;
-//   description: string;
-//   tags: string[];
-//   readTime: string;
-//   link: string;
-// }
 
 export default function Articles() {
   const [displayCount, setDisplayCount] = useState(4);
-  const [email, setEmail] = useState('');
-  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const articles = articlesData;
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || subscribeStatus === 'loading') return;
-
-    setSubscribeStatus('loading');
-    try {
-      // Add email to subscribers collection
-      await addDoc(collection(db, 'newsletter_subscribers'), {
-        email,
-        timestamp: new Date(),
-      });
-
-      // Update metrics count
-      const metricsRef = doc(db, 'metrics', 'subscribers');
-      const metricsDoc = await getDoc(metricsRef);
-      
-      if (!metricsDoc.exists()) {
-        await setDoc(metricsRef, { count: 1 });
-      } else {
-        await updateDoc(metricsRef, {
-          count: increment(1)
-        });
-      }
-
-      setSubscribeStatus('success');
-      setEmail('');
-      setTimeout(() => setSubscribeStatus('idle'), 3000);
-    } catch (error) {
-      console.error('Error subscribing:', error);
-      setSubscribeStatus('error');
-      setTimeout(() => setSubscribeStatus('idle'), 3000);
-    }
-  };
 
   const handleShowMore = () => {
     setDisplayCount(prev => prev + 4);
@@ -63,42 +16,6 @@ export default function Articles() {
         My Articles
       </h2>
 
-      {/* Newsletter subscription */}
-      <div className="mt-8 p-6 rounded-lg bg-gray-700/30 hover:glow-on-hover">
-        <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h3 className="text-xl font-semibold text-blue-400">Stay Updated</h3>
-            <p className="text-gray-300">Get the latest AI insights directly in your inbox</p>
-          </div>
-          <div className="flex gap-2 w-full md:w-auto">
-            <input 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-300 
-                focus:outline-none focus:border-blue-400 focus:glow w-full md:w-auto"
-              disabled={subscribeStatus === 'loading'}
-            />
-            <button 
-              type="submit"
-              disabled={subscribeStatus === 'loading'}
-              className={`px-4 py-2 rounded-lg transition-colors ${
-                subscribeStatus === 'success' 
-                  ? 'bg-green-500 hover:bg-green-400' 
-                  : subscribeStatus === 'error'
-                  ? 'bg-red-500 hover:bg-red-400'
-                  : 'bg-blue-500 hover:bg-blue-400'
-              } text-white hover:glow`}
-            >
-              {subscribeStatus === 'loading' ? 'Subscribing...' 
-                : subscribeStatus === 'success' ? 'Subscribed!' 
-                : subscribeStatus === 'error' ? 'Try Again' 
-                : 'Subscribe'}
-            </button>
-          </div>
-        </form>
-      </div>
       <div className="grid gap-6 md:grid-cols-2">
         {articles.slice(0, displayCount).map((article, index) => (
           <a 
