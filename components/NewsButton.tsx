@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import NewsModal from './NewsModal';
 import SubscribeModal from './SubscribeModal';
+import GameModal from './GameModal';
 
 export default function NewsButton() {
   const [isNewsModalOpen, setIsNewsModalOpen] = useState(false);
   const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
+  const [isGameModalOpen, setIsGameModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -50,6 +52,40 @@ export default function NewsButton() {
         )}
       </button>
 
+      {/* Game Button */}
+      <button
+        onClick={() => setIsGameModalOpen(true)}
+        className="bg-gradient-to-r from-yellow-500 to-orange-500 
+          text-white rounded-full shadow-lg hover:shadow-xl transition-all 
+          duration-300 flex items-center justify-center
+          md:rounded-lg md:px-4 md:py-2
+          w-12 h-12 md:w-auto md:h-auto"
+        aria-label="Play Daily Quiz"
+      >
+        {isMobile ? (
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+              d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" 
+            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+              d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+            />
+          </svg>
+        ) : (
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" 
+              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+              />
+            </svg>
+            Play
+          </div>
+        )}
+      </button>
+
       {/* Latest News Button */}
       <button
         onClick={() => setIsNewsModalOpen(true)}
@@ -85,6 +121,10 @@ export default function NewsButton() {
       <SubscribeModal 
         isOpen={isSubscribeModalOpen}
         onClose={() => setIsSubscribeModalOpen(false)}
+      />
+      <GameModal
+        isOpen={isGameModalOpen}
+        onClose={() => setIsGameModalOpen(false)}
       />
     </div>
   );

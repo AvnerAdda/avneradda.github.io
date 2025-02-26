@@ -52,5 +52,15 @@ export const AnalyticsService = {
       document_type: documentType,
       timestamp: new Date().toISOString(),
     });
-  }
+  },
+
+  // Game Actions
+  trackGameAction: (action: string, data?: any) => {
+    if (!analytics) return;
+    logEvent(analytics, 'game_action', {
+      action_type: action,
+      ...data,
+      timestamp: new Date().toISOString(),
+    });
+  },
 }; 
