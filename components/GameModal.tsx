@@ -117,7 +117,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
                   Daily AI Quiz
                 </h1>
                 <p className="text-gray-400">
-                  Test your knowledge with today's AI/ML questions!
+                  Test your knowledge with todays AI/ML questions!
                 </p>
                 <div className="h-1 w-32 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
               </div>
