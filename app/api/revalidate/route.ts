@@ -8,7 +8,6 @@ export async function GET() {
   try {
     // Revalidate the main pages
     revalidatePath('/');
-    revalidatePath('/latestnews');
     
     return NextResponse.json({ revalidated: true, now: Date.now() });
   } catch (err) {
