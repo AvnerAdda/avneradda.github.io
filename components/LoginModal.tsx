@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '../lib/context/AuthContext';
 import AiCard from './AiCard';
+import Image from 'next/image';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -77,7 +78,15 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 onClick={handleGoogleSignIn}
                 className="w-full p-3 flex items-center justify-center gap-3 bg-white text-gray-800 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+                <div className="flex justify-center mb-6">
+                  <Image
+                    src="/google-icon.png"
+                    alt="Google Sign In"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
+                  />
+                </div>
                 Continue with Google
               </button>
 

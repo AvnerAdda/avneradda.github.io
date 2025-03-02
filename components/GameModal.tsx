@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../lib/context/AuthContext';
 import { db } from '../lib/firebase';
 import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
@@ -45,7 +45,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
 
-  const checkTodayCompletion = async () => {
+  const checkTodayCompletion = useCallback(async () => {
     if (!user) return;
     
     try {
@@ -68,7 +68,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
     } catch (error) {
       console.error('Error checking completion status:', error);
     }
-  };
+  }, [user]);
 
   const handleRefresh = async () => {
     if (isRefreshing) return;
@@ -117,7 +117,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
       fetchDailyQuestions();
       checkTodayCompletion();
     }
-  }, [isOpen, user]);
+  }, [isOpen, user, checkTodayCompletion]);
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
@@ -201,8 +201,8 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
           </div>
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-white">You've completed today's quiz!</h2>
-            <p className="text-xl text-gray-300">
-              Score: {todayScore?.score || 0}/{todayScore?.maxScore || 0}
+            <p className="text-gray-400">
+              Today&apos;s score: {todayScore?.score || 0}/{todayScore?.maxScore || 0}
             </p>
             <p className="text-sm text-gray-400">
               Last checked: {lastRefresh.toLocaleTimeString()}
