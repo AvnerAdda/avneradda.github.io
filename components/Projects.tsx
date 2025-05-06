@@ -91,6 +91,12 @@ const projectsData = {
   ],
   "Machine Learning & AI": [
     {
+      title: "AI Agent Automation Platform",
+      description: "End-to-end automation platform using AI agents to identify optimal tools for consultants handling complex tasks",
+      tech: ["Python", "LLM", "GenAI", "FastAPI", "Docker", "Langchain"],
+      metrics: "82% user satisfaction, dramatic time reduction"
+    },
+    {
       title: "Anomaly Detection System",
       description: "Real-time anomaly detection for SaaS KPI monitoring",
       tech: ["Python", "Time Series", "ML"],
@@ -192,6 +198,67 @@ export default function Projects() {
                 />
               </svg>
               <span className="font-semibold">93% user progress improvement</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      {/* Featured LadderAZ Project */}
+      <a 
+        href="#" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="block group mt-8"
+      >
+        <div className="relative p-6 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-blue-500/20 
+          transition-all duration-300 hover:from-blue-500/20 hover:to-purple-600/20 hover:border-blue-500/30 hover:shadow-lg">
+          <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
+            <Image
+              src="/images/ladderaz.svg"
+              alt="LadderAZ Logo"
+              width={128}
+              height={128}
+              className="w-full h-full text-blue-500"
+            />
+          </div>
+          
+          <div className="relative z-10">
+            <span className="text-blue-400 text-sm font-semibold tracking-wider uppercase">
+              Featured Project
+            </span>
+            <h3 className="mt-2 text-2xl font-bold text-blue-500">
+              LadderAZ - Gamified Learning Platform
+            </h3>
+            <p className="mt-3 text-gray-300">
+              Make learning engaging and effective with gamified challenges, team competitions, and personalized insights.
+            </p>
+            
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Firebase", "Python", "Next.js", "ML", "LLM", "GenAI", "GCP", "TypeScript"].map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1 text-sm rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+            
+            <div className="mt-4 flex items-center gap-2 text-blue-400">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                />
+              </svg>
+              <span className="font-semibold">Continuous learning for 95% of users</span>
             </div>
           </div>
         </div>

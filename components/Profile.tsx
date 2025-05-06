@@ -279,6 +279,21 @@ export default function Profile() {
           </div>
         </div>
 
+        {/* Currently Working On section - minimalist version */}
+        <div className="mt-5 text-center">
+          <h3 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Currently Working On</h3>
+          <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center">
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse"></div>
+              <span className="text-emerald-400">AI Agent Platform</span>
+            </div>
+            <div className="flex items-center">
+              <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mr-2 animate-pulse"></div>
+              <span className="text-blue-400">LadderAZ</span>
+            </div>
+          </div>
+        </div>
+
         {/* Contact section with hover effects and links */}
         <div className="text-center">
           <div className="mt-6 flex flex-wrap gap-4 justify-center">
