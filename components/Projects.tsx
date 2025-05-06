@@ -205,7 +205,7 @@ export default function Projects() {
 
       {/* Featured LadderAZ Project */}
       <a 
-        href="#" 
+        href="https://ladderaz.web.app/" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="block group mt-8"
