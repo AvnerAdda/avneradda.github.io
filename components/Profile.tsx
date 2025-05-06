@@ -350,19 +350,22 @@ export default function Profile() {
           <button
             onClick={() => setIsChatbotOpen(true)}
             className="group relative px-6 py-3 md:px-6 md:py-3 px-4 py-2 rounded-full 
-              bg-gradient-to-r from-blue-500 to-purple-500 
+              bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 
               text-white font-semibold hover:scale-105 
-              transition-all duration-300 z-10"
+              transition-all duration-300 z-10
+              hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]
+              animate-shimmer bg-[length:200%_100%]"
           >
             <div className="absolute -inset-1 
               bg-gradient-to-r from-blue-500 to-purple-500 
               rounded-full blur opacity-30 
-              group-hover:opacity-70 transition duration-500"
+              group-hover:opacity-70 transition duration-500
+              group-hover:animate-pulse"
             />
             <div className="relative flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 group-hover:animate-bounce"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -375,7 +378,13 @@ export default function Profile() {
                 />
               </svg>
               <div className="relative">
-                <span className="hidden md:inline">Let&apos;s chat!</span>
+                <span className="inline group-hover:font-bold">Let&apos;s chat!</span>
+                <span className="absolute -top-1 -right-6 hidden group-hover:inline-block">
+                  <span className="flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                  </span>
+                </span>
               </div>
             </div>
           </button>
