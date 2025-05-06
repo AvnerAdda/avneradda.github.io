@@ -349,23 +349,26 @@ export default function Profile() {
 
           <button
             onClick={() => setIsChatbotOpen(true)}
-            className="group relative px-6 py-3 md:px-6 md:py-3 px-4 py-2 rounded-full 
+            className="group relative px-4 py-2 md:px-6 md:py-3 rounded-full 
               bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 
-              text-white font-semibold hover:scale-105 
+              text-white font-semibold active:scale-95 md:hover:scale-105
               transition-all duration-300 z-10
-              hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]
-              animate-shimmer bg-[length:200%_100%]"
+              md:hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]
+              md:animate-shimmer bg-[length:200%_100%]
+              focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900
+              touch-manipulation min-h-[40px] min-w-[40px]"
+            aria-label="Open chat"
           >
             <div className="absolute -inset-1 
               bg-gradient-to-r from-blue-500 to-purple-500 
               rounded-full blur opacity-30 
               group-hover:opacity-70 transition duration-500
-              group-hover:animate-pulse"
+              md:group-hover:animate-pulse"
             />
             <div className="relative flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 group-hover:animate-bounce"
+                className="h-5 w-5 md:group-hover:animate-bounce"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -378,8 +381,8 @@ export default function Profile() {
                 />
               </svg>
               <div className="relative">
-                <span className="inline group-hover:font-bold">Let&apos;s chat!</span>
-                <span className="absolute -top-1 -right-6 hidden group-hover:inline-block">
+                <span className="text-sm md:text-base group-active:font-bold md:group-hover:font-bold">Let&apos;s chat!</span>
+                <span className="absolute -top-1 -right-6 hidden md:group-hover:inline-block">
                   <span className="flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
