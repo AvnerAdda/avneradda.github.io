@@ -122,147 +122,212 @@ export default function Projects() {
 
   return (
     <div className="space-y-12">
-              {/* GitHub Contributions with enhanced styling */}
-              <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-3">GitHub Contributions</h3>
-          <div className="w-full overflow-hidden rounded-lg bg-gray-700/30 hover:bg-gray-700/40 transition-all duration-300 p-4 group">
+      {/* GitHub Contributions with enhanced styling */}
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-3">GitHub Contributions</h3>
+        <div className="w-full overflow-hidden rounded-lg bg-gray-700/30 hover:bg-gray-700/40 transition-all duration-300 p-4 group">
+          <div className="relative">
+            <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition duration-500" />
             <div className="relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition duration-500" />
-              <div className="relative">
-                <Image
-                  src="https://ghchart.rshah.org/gradient/AvnerAdda"
-                  alt="GitHub Contributions Graph"
-                  width={800}
-                  height={128}
-                  className="w-full h-auto rounded-md hover:scale-[1.01] transition-transform duration-300"
-                  unoptimized // Since this is an external dynamic image
-                />
+              <Image
+                src="https://ghchart.rshah.org/gradient/AvnerAdda"
+                alt="GitHub Contributions Graph"
+                width={800}
+                height={128}
+                className="w-full h-auto rounded-md hover:scale-[1.01] transition-transform duration-300"
+                unoptimized // Since this is an external dynamic image
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Featured Projects - Now in a single row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Featured Lilmod Project */}
+        <a 
+          href="https://lilmod-ai.com" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="block group"
+        >
+          <div className="relative p-4 rounded-xl bg-gradient-to-r from-orange-500/10 to-orange-600/10 border border-orange-500/20 
+            transition-all duration-300 hover:from-orange-500/20 hover:to-orange-600/20 hover:border-orange-500/30 hover:shadow-lg h-full">
+            <div className="absolute top-3 right-3 w-16 h-16 opacity-20">
+              <Image
+                src="/images/lilmod.svg"
+                alt="Lilmod Logo"
+                width={64}
+                height={64}
+                className="w-full h-full text-orange-500"
+              />
+            </div>
+            
+            <div className="relative z-10">
+              <span className="text-orange-400 text-xs font-semibold tracking-wider uppercase">
+                Featured Project
+              </span>
+              <h3 className="mt-2 text-lg font-bold text-orange-500">
+                Lilmod - AI Language Learning Platform
+              </h3>
+              <p className="mt-2 text-sm text-gray-300">
+                Full-stack AI-powered language learning platform with personalized learning paths, 
+                adaptive quizzes, and news-based content
+              </p>
+              
+              <div className="mt-3 flex flex-wrap gap-1">
+                {["GCP", "AI/ML/GenAI", "SQL", "Next.js", "TypeScript"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-1 text-xs rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              
+              <div className="mt-3 flex items-center gap-2 text-orange-400">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
+                </svg>
+                <span className="text-sm font-semibold">93% user progress improvement</span>
               </div>
             </div>
           </div>
-        </div>
-      {/* Featured Lilmod Project - Now Clickable */}
-      <a 
-        href="https://lilmod-ai.com" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="block group"
-      >
-        <div className="relative p-6 rounded-xl bg-gradient-to-r from-orange-500/10 to-orange-600/10 border border-orange-500/20 
-          transition-all duration-300 hover:from-orange-500/20 hover:to-orange-600/20 hover:border-orange-500/30 hover:shadow-lg">
-          <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-            <Image
-              src="/images/lilmod.svg"
-              alt="Lilmod Logo"
-              width={128}
-              height={128}
-              className="w-full h-full text-orange-500"
-            />
-          </div>
-          
-          <div className="relative z-10">
-            <span className="text-orange-400 text-sm font-semibold tracking-wider uppercase">
-              Featured Project
-            </span>
-            <h3 className="mt-2 text-2xl font-bold text-orange-500">
-              Lilmod - AI Language Learning Platform
-            </h3>
-            <p className="mt-3 text-gray-300">
-              Full-stack AI-powered language learning platform with personalized learning paths, 
-              adaptive quizzes, and news-based content
-            </p>
-            
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["GCP", "AI/ML/GenAI", "SQL", "Next.js", "TypeScript", "Tailwind"].map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3 py-1 text-sm rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-            
-            <div className="mt-4 flex items-center gap-2 text-orange-400">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
-              <span className="font-semibold">93% user progress improvement</span>
-            </div>
-          </div>
-        </div>
-      </a>
+        </a>
 
-      {/* Featured LadderAZ Project */}
-      <a 
-        href="https://ladderaz.web.app/" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="block group mt-8"
-      >
-        <div className="relative p-6 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-blue-500/20 
-          transition-all duration-300 hover:from-blue-500/20 hover:to-purple-600/20 hover:border-blue-500/30 hover:shadow-lg">
-          <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-            <Image
-              src="/images/ladderaz.svg"
-              alt="LadderAZ Logo"
-              width={128}
-              height={128}
-              className="w-full h-full text-blue-500"
-            />
-          </div>
-          
-          <div className="relative z-10">
-            <span className="text-blue-400 text-sm font-semibold tracking-wider uppercase">
-              Featured Project
-            </span>
-            <h3 className="mt-2 text-2xl font-bold text-blue-500">
-              LadderAZ - Gamified Learning Platform
-            </h3>
-            <p className="mt-3 text-gray-300">
-              Make learning engaging and effective with gamified challenges, team competitions, and personalized insights.
-            </p>
+        {/* Featured LadderAZ Project */}
+        <a 
+          href="https://ladderaz.web.app/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="block group"
+        >
+          <div className="relative p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-blue-500/20 
+            transition-all duration-300 hover:from-blue-500/20 hover:to-purple-600/20 hover:border-blue-500/30 hover:shadow-lg h-full">
+            <div className="absolute top-3 right-3 w-16 h-16 opacity-20">
+              <Image
+                src="/images/ladderaz.svg"
+                alt="LadderAZ Logo"
+                width={64}
+                height={64}
+                className="w-full h-full text-blue-500"
+              />
+            </div>
             
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["Firebase", "Python", "Next.js", "ML", "LLM", "GenAI", "GCP", "TypeScript"].map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3 py-1 text-sm rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20"
+            <div className="relative z-10">
+              <span className="text-blue-400 text-xs font-semibold tracking-wider uppercase">
+                Featured Project
+              </span>
+              <h3 className="mt-2 text-lg font-bold text-blue-500">
+                LadderAZ - Gamified Learning Platform
+              </h3>
+              <p className="mt-2 text-sm text-gray-300">
+                Make learning engaging and effective with gamified challenges, team competitions, and personalized insights.
+              </p>
+              
+              <div className="mt-3 flex flex-wrap gap-1">
+                {["Firebase", "Python", "Next.js", "ML", "LLM", "GenAI"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-1 text-xs rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              
+              <div className="mt-3 flex items-center gap-2 text-blue-400">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  {tech}
-                </span>
-              ))}
-            </div>
-            
-            <div className="mt-4 flex items-center gap-2 text-blue-400">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
-              <span className="font-semibold">Continuous learning for 95% of users</span>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
+                </svg>
+                <span className="text-sm font-semibold">Continuous learning for 95% of users</span>
+              </div>
             </div>
           </div>
-        </div>
-      </a>
+        </a>
+
+        {/* Featured Kaspenu Project */}
+        <a 
+          href="https://www.kaspenu.org/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="block group"
+        >
+          <div className="relative p-4 rounded-xl bg-gradient-to-r from-green-500/10 to-emerald-600/10 border border-green-500/20 
+            transition-all duration-300 hover:from-green-500/20 hover:to-emerald-600/20 hover:border-green-500/30 hover:shadow-lg h-full">
+            <div className="absolute top-3 right-3 w-16 h-16 opacity-20">
+              <Image
+                src="/images/kaspenu.avif"
+                alt="Kaspenu Logo"
+                width={64}
+                height={64}
+                className="w-full h-full"
+              />
+            </div>
+            
+            <div className="relative z-10">
+              <span className="text-green-400 text-xs font-semibold tracking-wider uppercase">
+                Featured Project
+              </span>
+              <h3 className="mt-2 text-lg font-bold text-green-500">
+                Kaspenu - Smart Consumer Platform
+              </h3>
+              <p className="mt-2 text-sm text-gray-300">
+                Provides transparent, unbiased information to help consumers in Israel make informed, healthy purchases at fair prices.
+              </p>
+              
+              <div className="mt-3 flex flex-wrap gap-1">
+                {["Python", "Data Science", "ML", "RecSys", "LLM"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-1 text-xs rounded-full bg-green-500/10 text-green-400 border border-green-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              
+              <div className="mt-3 flex items-center gap-2 text-green-400">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
+                </svg>
+                <span className="text-sm font-semibold">Best price & health recommendations for more that 50,000 users</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
 
       {/* Projects Section */}
       <div className="space-y-8">
