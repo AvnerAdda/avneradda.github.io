@@ -48,7 +48,7 @@ export default function Introduction() {
                 ))}
               </ul>
             </div>
-
+{/* 
             <div className="mt-8 p-6 rounded-lg bg-purple-500/10 border border-purple-500/20 shadow-lg transition-transform hover:scale-[1.02] duration-300">
               <h3 className="text-xl font-semibold text-purple-400 mb-4 flex items-center gap-2">
                 <span className="text-2xl">🎯</span> Areas for Growth
@@ -68,7 +68,7 @@ export default function Introduction() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
           </div>
         ) : (
           <p className="text-gray-300 leading-relaxed line-clamp-2 text-lg">

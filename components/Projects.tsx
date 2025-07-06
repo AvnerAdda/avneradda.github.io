@@ -164,9 +164,14 @@ export default function Projects() {
             </div>
             
             <div className="relative z-10">
-              <span className="text-orange-400 text-xs font-semibold tracking-wider uppercase">
-                Featured Project
-              </span>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-orange-400 text-xs font-semibold tracking-wider uppercase">
+                  Featured Project
+                </span>
+                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                </svg>
+              </div>
               <h3 className="mt-2 text-lg font-bold text-orange-500">
                 Lilmod - AI Language Learning Platform
               </h3>
@@ -226,9 +231,14 @@ export default function Projects() {
             </div>
             
             <div className="relative z-10">
-              <span className="text-blue-400 text-xs font-semibold tracking-wider uppercase">
-                Featured Project
-              </span>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-blue-400 text-xs font-semibold tracking-wider uppercase">
+                  Featured Project
+                </span>
+                <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
               <h3 className="mt-2 text-lg font-bold text-blue-500">
                 LadderAZ - Gamified Learning Platform
               </h3>
@@ -287,9 +297,14 @@ export default function Projects() {
             </div>
             
             <div className="relative z-10">
-              <span className="text-green-400 text-xs font-semibold tracking-wider uppercase">
-                Featured Project
-              </span>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-green-400 text-xs font-semibold tracking-wider uppercase">
+                  Featured Project
+                </span>
+                <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                </svg>
+              </div>
               <h3 className="mt-2 text-lg font-bold text-green-500">
                 Kaspenu - Smart Consumer Platform
               </h3>
@@ -327,6 +342,69 @@ export default function Projects() {
             </div>
           </div>
         </a>
+      </div>
+
+      {/* Additional Smaller Projects */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Energy Leads Phone Project */}
+        <div className="relative p-3 rounded-lg bg-gradient-to-r from-gray-500/10 to-gray-600/10 border border-gray-500/20 
+          transition-all duration-300 hover:from-gray-500/20 hover:to-gray-600/20 hover:border-gray-500/30 hover:shadow-md">
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-gray-400 text-xs font-semibold tracking-wider uppercase">
+                Side Project
+              </span>
+              <div className="h-1.5 w-1.5 rounded-full bg-orange-500 animate-pulse"></div>
+            </div>
+            <h3 className="text-md font-bold text-gray-300">
+              Energy Leads Phone
+            </h3>
+            <p className="mt-1 text-sm text-gray-400">
+              Real-time conversation system by phone for Leads in Energy sector with intelligent call routing
+            </p>
+            
+            <div className="mt-2 flex flex-wrap gap-1">
+              {["Python", "Twilio", "Real-time", "AI"].map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2 py-0.5 text-xs rounded-full bg-gray-500/10 text-gray-400 border border-gray-500/20"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Smart Portfolio Project */}
+        <div className="relative p-3 rounded-lg bg-gradient-to-r from-gray-500/10 to-gray-600/10 border border-gray-500/20 
+          transition-all duration-300 hover:from-gray-500/20 hover:to-gray-600/20 hover:border-gray-500/30 hover:shadow-md">
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-gray-400 text-xs font-semibold tracking-wider uppercase">
+                Side Project
+              </span>
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+            </div>
+            <h3 className="text-md font-bold text-gray-300">
+              Smart Portfolio Tracker
+            </h3>
+            <p className="mt-1 text-sm text-gray-400">
+              Intelligent portfolio management system to track and optimize your personal finance investments
+            </p>
+            
+            <div className="mt-2 flex flex-wrap gap-1">
+              {["Python", "Finance", "ML", "Dashboard"].map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2 py-0.5 text-xs rounded-full bg-gray-500/10 text-gray-400 border border-gray-500/20"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Projects Section */}
