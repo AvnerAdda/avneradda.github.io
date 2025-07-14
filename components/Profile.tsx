@@ -86,7 +86,12 @@ const CONTACT_INFO = [
 ];
 
 export default function Profile() {
-  const { setIsChatbotOpen } = useChatbot();
+  const { 
+    setIsChatbotOpen, 
+    showChatNotification, 
+    setShowChatNotification, 
+    setNotificationDismissed 
+  } = useChatbot();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeAnimating, setIsLikeAnimating] = useState(false);
@@ -130,6 +135,7 @@ export default function Profile() {
 
     trackPageView();
   }, []); // Run once when component mounts
+
 
   const handleLike = async () => {
     if (!isLiked) {
@@ -185,10 +191,6 @@ export default function Profile() {
     }
   };
 
-  const handleScrollToArticles = () => {
-    const articlesSection = document.getElementById('articles');
-    articlesSection?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -394,7 +396,11 @@ export default function Profile() {
           </button>
 
           <button
-            onClick={() => setIsChatbotOpen(true)}
+            onClick={() => {
+              setIsChatbotOpen(true);
+              setShowChatNotification(false);
+              setNotificationDismissed(true);
+            }}
             className="group relative px-4 py-2 md:px-6 md:py-3 rounded-full 
               bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 
               text-white font-semibold active:scale-95 md:hover:scale-105
@@ -436,6 +442,30 @@ export default function Profile() {
                 </span>
               </div>
             </div>
+            
+            {/* Chat Notification Popup */}
+            {showChatNotification && (
+              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
+                <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs px-3 py-2 rounded-lg shadow-lg border border-blue-400/30">
+                  <div className="flex items-center gap-2">
+                    <span className="animate-pulse">💬</span>
+                    <span className="font-medium">What if we talk together?</span>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowChatNotification(false);
+                        setNotificationDismissed(true);
+                      }}
+                      className="ml-2 text-white/80 hover:text-white transition-colors cursor-pointer hover:bg-white/10 rounded-full w-4 h-4 flex items-center justify-center"
+                    >
+                      ×
+                    </div>
+                  </div>
+                  {/* Speech bubble tail */}
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-blue-600"></div>
+                </div>
+              </div>
+            )}
           </button>
 
           <button
@@ -469,6 +499,7 @@ export default function Profile() {
         isOpen={isMetricsOpen} 
         onClose={() => setIsMetricsOpen(false)} 
       />
+
     </div>
   )
 }

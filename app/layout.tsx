@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { ChatbotProvider } from '../lib/context/ChatbotContext'
 import ChatbotDialogWrapper from '../components/ChatbotDialogWrapper'
 import { AuthProvider } from '../lib/context/AuthContext'
+import ChatNotificationIndicator from '../components/ChatNotificationIndicator'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -54,6 +55,7 @@ export default function RootLayout({
               {children}
             </div>
             <ChatbotDialogWrapper />
+            <ChatNotificationIndicator />
             <footer className="relative z-10 p-2 text-center text-xs text-gray-400 bg-gradient-to-t from-gray-900 to-transparent backdrop-blur-sm">
               Created by <a href="https://www.ai-tasks.fr/" className="text-blue-400 hover:underline">AI Tasks</a> using{' '}
               <span className="text-blue-400">Firebase</span> and{' '}
