@@ -309,18 +309,86 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Currently Working On section - minimalist version */}
+        {/* Currently Working On section - logo version */}
         <div className="mt-5 text-center">
-          <h3 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Currently Working On</h3>
+          <h3 className="text-sm uppercase tracking-wider text-gray-400 mb-3">Currently Working On</h3>
           <div className="flex items-center justify-center gap-4">
-            <div className="flex items-center">
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse"></div>
-              <span className="text-emerald-400">AI Agent Platform</span>
+            {/* Deloitte AI Agent */}
+            <a 
+              href="https://endeavor.deloitte.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="relative group"
+            >
+              <div className="p-2 rounded-lg bg-gray-700/30 hover:bg-gray-600/30 transition-all duration-300 hover:scale-105">
+                <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+              </div>
+            </a>
+
+            {/* Generic AI Agent */}
+            <div className="relative group">
+              <div className="p-2 rounded-lg bg-gray-700/30 hover:bg-gray-600/30 transition-all duration-300 hover:scale-105">
+                <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20,9V7c0-1.1-0.9-2-2-2h-3c0-1.66-1.34-3-3-3S9,3.34,9,5H6C4.9,5,4,5.9,4,7v2c-1.66,0-3,1.34-3,3s1.34,3,3,3v2 c0,1.1,0.9,2,2,2h3c0,1.66,1.34,3,3,3s3-1.34,3-3h3c1.1,0,2-0.9,2-2v-2c1.66,0,3-1.34,3-3S21.66,9,20,9z M12,17.5 c-0.83,0-1.5-0.67-1.5-1.5s0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5S12.83,17.5,12,17.5z M12,10.5c-0.83,0-1.5-0.67-1.5-1.5 S11.17,7.5,12,7.5S13.5,8.17,13.5,9S12.83,10.5,12,10.5z"/>
+                </svg>
+              </div>
             </div>
-            <div className="flex items-center">
-              <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mr-2 animate-pulse"></div>
-              <span className="text-blue-400">LadderAZ</span>
-            </div>
+
+            {/* LadderAZ */}
+            <a 
+              href="https://ladderaz.web.app/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="relative group"
+            >
+              <div className="p-2 rounded-lg bg-gray-700/30 hover:bg-gray-600/30 transition-all duration-300 hover:scale-105">
+                <Image
+                  src="/images/ladderaz.svg"
+                  alt="LadderAZ"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                />
+              </div>
+            </a>
+
+            {/* Lilmod */}
+            <a 
+              href="https://lilmod-ai.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="relative group"
+            >
+              <div className="p-2 rounded-lg bg-gray-700/30 hover:bg-gray-600/30 transition-all duration-300 hover:scale-105">
+                <Image
+                  src="/images/lilmod.svg"
+                  alt="Lilmod"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                />
+              </div>
+            </a>
+
+            {/* Kaspenu */}
+            <a 
+              href="https://www.kaspenu.org/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="relative group"
+            >
+              <div className="p-2 rounded-lg bg-gray-700/30 hover:bg-gray-600/30 transition-all duration-300 hover:scale-105">
+                <Image
+                  src="/images/kaspenu.avif"
+                  alt="Kaspenu"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                />
+              </div>
+            </a>
           </div>
         </div>
 
