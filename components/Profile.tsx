@@ -353,7 +353,7 @@ export default function Profile() {
                   `}
                 >
                   {typeof icon === 'string' ? <span>{icon}</span> : icon}
-                  <span>{label}</span>
+                  {/* <span>{label}</span> */}
                 </button>
               );
             })}
