@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../lib/firebase';
 import { collection, query, getDocs, orderBy } from 'firebase/firestore';
+import { getIPMetricCount } from '../lib/ipBasedMetrics';
 
 interface Metric {
   label: string;
@@ -78,26 +79,20 @@ export default function RecruiterMetrics() {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        // Fetch views from the metrics collection
-        const viewsRef = collection(db, 'metrics');
-        const viewsSnapshot = await getDocs(viewsRef);
-        const viewsCount = viewsSnapshot.docs.find(doc => doc.id === 'views')?.data()?.count || 0;
+        // Fetch IP-based metrics
+        const viewsCount = await getIPMetricCount('profile_views');
+        const downloadsCount = await getIPMetricCount('resume_downloads');
+        const chatCount = await getIPMetricCount('chat_conversations');
         
         // Fetch meetings from recruiter_submissions collection
         const meetingsRef = collection(db, 'recruiter_submissions');
         const meetingsSnapshot = await getDocs(meetingsRef);
         const meetingsCount = meetingsSnapshot.size;
         
-        // Fetch downloads from metrics collection
-        const downloadsCount = viewsSnapshot.docs.find(doc => doc.id === 'downloads')?.data()?.count || 0;
-        
-        // Fetch chat conversations from generate collection
-        const chatsRef = collection(db, 'generate');
-        const chatsSnapshot = await getDocs(chatsRef);
-        const chatsCount = chatsSnapshot.size;
-
-        // Fetch subscribers count
-        const subscribersCount = viewsSnapshot.docs.find(doc => doc.id === 'subscribers')?.data()?.count || 0;
+        // Fetch subscribers count from metrics collection
+        const metricsRef = collection(db, 'metrics');
+        const metricsSnapshot = await getDocs(metricsRef);
+        const subscribersCount = metricsSnapshot.docs.find(doc => doc.id === 'subscribers')?.data()?.count || 0;
 
         setMetrics(prev => prev.map(metric => {
           switch(metric.label) {
@@ -108,7 +103,7 @@ export default function RecruiterMetrics() {
             case 'Resume Downloads':
               return { ...metric, value: downloadsCount };
             case 'Chat Conversations':
-              return { ...metric, value: chatsCount };
+              return { ...metric, value: chatCount };
             case 'Newsletter Subs':
               return { ...metric, value: subscribersCount };
             default:

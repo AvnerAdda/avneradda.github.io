@@ -4,8 +4,9 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useChatbot } from '../lib/context/ChatbotContext';
 import { db } from '../lib/firebase';
-import { doc, increment, updateDoc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { AnalyticsService } from '../lib/analytics';
+import { trackIPBasedMetric, hasIPInteracted } from '../lib/ipBasedMetrics';
 import MetricsModal from './MetricsModal';
 
 // Move these arrays outside the component to prevent recreation on each render
@@ -93,67 +94,58 @@ export default function Profile() {
     setNotificationDismissed 
   } = useChatbot();
   const [isLiked, setIsLiked] = useState(false);
+  const [hasUserLiked, setHasUserLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeAnimating, setIsLikeAnimating] = useState(false);
   const [isMetricsOpen, setIsMetricsOpen] = useState(false);
 
-  // Add useEffect to listen to likes count
+  // Add useEffect to listen to likes count and check IP status
   useEffect(() => {
-    const feedbackRef = doc(db, 'feedback', 'profile');
+    const feedbackRef = doc(db, 'ip_metrics', 'profile_likes');
     const unsubscribe = onSnapshot(feedbackRef, (doc) => {
       if (doc.exists()) {
-        setLikeCount(doc.data()?.likes || 0);
+        setLikeCount(doc.data()?.count || 0);
       }
     });
 
+    // Check if current IP has already liked
+    const checkIPStatus = async () => {
+      const hasLiked = await hasIPInteracted('profile_likes');
+      setHasUserLiked(hasLiked);
+      setIsLiked(hasLiked);
+    };
+
+    checkIPStatus();
     return () => unsubscribe();
   }, []);
 
-  // Add this useEffect at the top of your Profile component
+  // Track page view with IP-based tracking
   useEffect(() => {
     const trackPageView = async () => {
       try {
-        const viewsRef = doc(db, 'metrics', 'views');
-        const viewsDoc = await getDoc(viewsRef);
-        
-        if (!viewsDoc.exists()) {
-          // Create initial document if it doesn't exist
-          await setDoc(viewsRef, { count: 1 });
-        } else {
-          // Increment existing count
-          await updateDoc(viewsRef, {
-            count: increment(1)
-          });
+        const wasTracked = await trackIPBasedMetric('profile_views');
+        if (wasTracked) {
+          AnalyticsService.trackPageView('profile');
         }
-
-        // Track in analytics
-        AnalyticsService.trackPageView('profile');
       } catch (error) {
         console.error('Error tracking view:', error);
       }
     };
 
     trackPageView();
-  }, []); // Run once when component mounts
+  }, []);
 
 
   const handleLike = async () => {
-    if (!isLiked) {
+    if (!isLiked && !hasUserLiked) {
       try {
-        const feedbackRef = doc(db, 'feedback', 'profile');
-        
-        const docSnap = await getDoc(feedbackRef);
-        if (!docSnap.exists()) {
-          await setDoc(feedbackRef, { likes: 0 });
+        const wasTracked = await trackIPBasedMetric('profile_likes');
+        if (wasTracked) {
+          setIsLiked(true);
+          setHasUserLiked(true);
+          setIsLikeAnimating(true);
+          setTimeout(() => setIsLikeAnimating(false), 1000);
         }
-        
-        await updateDoc(feedbackRef, {
-          likes: increment(1)
-        });
-        
-        setIsLiked(true);
-        setIsLikeAnimating(true);
-        setTimeout(() => setIsLikeAnimating(false), 1000);
       } catch (error) {
         console.error('Error updating likes:', error);
       }
@@ -162,22 +154,11 @@ export default function Profile() {
  
   const handleDownloadResume = async () => {
     try {
-      // Track download in metrics collection
-      const downloadsRef = doc(db, 'metrics', 'downloads');
-      const downloadsDoc = await getDoc(downloadsRef);
-      
-      if (!downloadsDoc.exists()) {
-        // Create initial document if it doesn't exist
-        await setDoc(downloadsRef, { count: 1 });
-      } else {
-        // Increment existing count
-        await updateDoc(downloadsRef, {
-          count: increment(1)
-        });
+      // Track download with IP-based tracking
+      const wasTracked = await trackIPBasedMetric('resume_downloads');
+      if (wasTracked) {
+        AnalyticsService.trackDocumentAction('download', 'resume');
       }
-
-      // Track in analytics
-      AnalyticsService.trackDocumentAction('download', 'resume');
 
       // Download the file
       const link = document.createElement('a');
@@ -538,11 +519,11 @@ export default function Profile() {
 
           <button
             onClick={handleLike}
-            disabled={isLiked}
+            disabled={isLiked || hasUserLiked}
             className={`
               group relative px-4 py-2 rounded-lg
               transition-all duration-300 flex items-center gap-1.5
-              ${isLiked 
+              ${(isLiked || hasUserLiked) 
                 ? 'bg-gray-700/30 text-gray-400' 
                 : 'bg-gray-700/30 hover:bg-gray-600/30 text-gray-300'
               }
@@ -552,7 +533,7 @@ export default function Profile() {
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 24 24" 
               fill="currentColor" 
-              className={`w-4 h-4 ${isLiked ? 'text-blue-400' : ''}`}
+              className={`w-4 h-4 ${(isLiked || hasUserLiked) ? 'text-blue-400' : ''}`}
             >
               <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
             </svg>
