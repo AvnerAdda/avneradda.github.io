@@ -94,13 +94,13 @@ export default function NewsModal({ isOpen, onClose }: NewsModalProps) {
             <div className="space-y-8">
               {/* Header Section */}
               <div className="text-center space-y-4">
-                <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">
                   Latest AI News
                 </h1>
                 <p className="text-gray-400 max-w-2xl mx-auto">
                   Stay updated with the most recent developments in AI, Machine Learning, and Large Language Models
                 </p>
-                <div className="h-1 w-32 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+                <div className="h-1 w-32 mx-auto bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" />
               </div>
 
               {loading ? (

@@ -14,6 +14,23 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
+export const isFirebaseConfigured = Object.values(firebaseConfig).every(Boolean);
+
+export const isFirebasePermissionError = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object' || !('code' in error)) {
+    return false;
+  }
+
+  const code = String((error as { code?: string }).code);
+  return [
+    'permission-denied',
+    'firestore/permission-denied',
+    'unauthenticated',
+    'firestore/unauthenticated',
+    'storage/unauthorized',
+  ].includes(code);
+};
+
 // Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
  
@@ -27,4 +44,4 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage();
 
-export { db, auth, storage, analytics }; 
+export { db, auth, storage, analytics };

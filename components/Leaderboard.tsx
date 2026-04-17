@@ -62,7 +62,7 @@ export default function Leaderboard() {
           </div>
         </div>
         <div className="flex-none text-right">
-          <div className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+          <div className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-500">
             {activeTab === 'daily' 
               ? `${player.dailyScores[LeaderboardService.formatDate(new Date())]?.score || 0}/${
                   player.dailyScores[LeaderboardService.formatDate(new Date())]?.maxPossibleScore || 0
@@ -82,10 +82,10 @@ export default function Leaderboard() {
     <AiCard>
       <div className="p-6 space-y-6">
         <div className="text-center space-y-4">
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">
             Leaderboard
           </h2>
-          <div className="h-1 w-24 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+          <div className="h-1 w-24 mx-auto bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" />
         </div>
 
         <div className="flex space-x-2 p-1 bg-gray-800 rounded-lg">
@@ -93,7 +93,7 @@ export default function Leaderboard() {
             onClick={() => setActiveTab('daily')}
             className={`flex-1 py-2 px-4 rounded-md transition-colors ${
               activeTab === 'daily'
-                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                ? 'bg-gradient-to-r from-blue-500 to-emerald-500 text-white'
                 : 'text-gray-400 hover:text-white'
             }`}
           >
@@ -103,7 +103,7 @@ export default function Leaderboard() {
             onClick={() => setActiveTab('allTime')}
             className={`flex-1 py-2 px-4 rounded-md transition-colors ${
               activeTab === 'allTime'
-                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                ? 'bg-gradient-to-r from-blue-500 to-emerald-500 text-white'
                 : 'text-gray-400 hover:text-white'
             }`}
           >

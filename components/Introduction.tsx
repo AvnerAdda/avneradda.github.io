@@ -8,12 +8,12 @@ export default function Introduction() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 hover:from-blue-500 hover:via-purple-600 hover:to-pink-600 transition-all duration-300 animate-slideDown">
+        <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400 hover:from-blue-500 hover:via-cyan-400 hover:to-emerald-500 transition-all duration-300 animate-slideDown">
           About Me
         </h2>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-2 px-6 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-500/25 animate-slideDown"
+          className="flex items-center gap-2 px-6 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-500/25 animate-slideDown"
         >
           {isExpanded ? 'Show Less' : 'Show More'}
         </button>
@@ -49,8 +49,8 @@ export default function Introduction() {
               </ul>
             </div>
 {/* 
-            <div className="mt-8 p-6 rounded-lg bg-purple-500/10 border border-purple-500/20 shadow-lg transition-transform hover:scale-[1.02] duration-300">
-              <h3 className="text-xl font-semibold text-purple-400 mb-4 flex items-center gap-2">
+            <div className="mt-8 p-6 rounded-lg bg-emerald-500/10 border border-emerald-500/20 shadow-lg transition-transform hover:scale-[1.02] duration-300">
+              <h3 className="text-xl font-semibold text-emerald-400 mb-4 flex items-center gap-2">
                 <span className="text-2xl">🎯</span> Areas for Growth
               </h3>
               <ul className="space-y-3">
@@ -63,7 +63,7 @@ export default function Introduction() {
                     className="flex items-start gap-3 text-gray-300 animate-slideRight"
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
-                    <span className="text-purple-400 text-xl">•</span>
+                    <span className="text-emerald-400 text-xl">•</span>
                     {weakness}
                   </li>
                 ))}

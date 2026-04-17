@@ -1,7 +1,7 @@
 export default function Experience() {
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-blue-500 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+      <h2 className="text-3xl font-bold text-blue-500 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">
         Experience
       </h2>
 

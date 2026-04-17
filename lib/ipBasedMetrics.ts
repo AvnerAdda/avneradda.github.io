@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, isFirebasePermissionError } from './firebase';
 import { getUserIP, generateIPHash } from './ipUtils';
 
 export interface IPMetric {
@@ -39,7 +39,9 @@ export const trackIPBasedMetric = async (metricType: string): Promise<boolean> =
     
     return true;
   } catch (error) {
-    console.error('Error tracking IP-based metric:', error);
+    if (!isFirebasePermissionError(error)) {
+      console.error('Error tracking IP-based metric:', error);
+    }
     return false;
   }
 };
@@ -55,7 +57,9 @@ export const getIPMetricCount = async (metricType: string): Promise<number> => {
     
     return docSnap.data().count || 0;
   } catch (error) {
-    console.error('Error getting IP metric count:', error);
+    if (!isFirebasePermissionError(error)) {
+      console.error('Error getting IP metric count:', error);
+    }
     return 0;
   }
 };
@@ -75,7 +79,9 @@ export const hasIPInteracted = async (metricType: string): Promise<boolean> => {
     const data = docSnap.data() as IPMetric;
     return data.ips.includes(ipHash);
   } catch (error) {
-    console.error('Error checking IP interaction:', error);
+    if (!isFirebasePermissionError(error)) {
+      console.error('Error checking IP interaction:', error);
+    }
     return false;
   }
 };

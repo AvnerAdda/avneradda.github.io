@@ -41,14 +41,14 @@ body {
 }
 
 h1.text-transparent {
-  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  background: linear-gradient(to right, #3b82f6, #10b981);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent !important;
 }
 
 .neural-bg {
-  background: radial-gradient(circle at center, #3b82f640 0%, #8b5cf640 100%);
+  background: radial-gradient(circle at center, #3b82f640 0%, #10b98140 100%);
   filter: blur(100px);
 }
 

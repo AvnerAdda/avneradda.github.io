@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import Profile from '../components/Profile'
 import Education from '../components/Education'
 import Experience from '../components/Experience'
@@ -34,9 +33,6 @@ import NewsButton from '../components/NewsButton'
 //     return [];
 //   }
 // }
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
 
 export default function Home() {
   return (
@@ -77,9 +73,7 @@ export default function Home() {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <Suspense fallback={<div>Loading...</div>}>
-          <NewsButton />
-        </Suspense>
+        <NewsButton />
 
         <div className="space-y-16">
           <div id="profile" className="animate-fade-in" style={{ animationDelay: '0s' }}>

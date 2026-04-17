@@ -38,7 +38,7 @@ export default function ChatNotificationIndicator() {
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-pulse">
       <div 
         onClick={handleScrollToTop}
-        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs px-4 py-2 rounded-full shadow-lg border border-blue-400/30 flex items-center gap-2 cursor-pointer hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+        className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white text-xs px-4 py-2 rounded-full shadow-lg border border-blue-400/30 flex items-center gap-2 cursor-pointer hover:from-blue-700 hover:to-emerald-700 transition-all duration-300"
       >
         <span className="animate-bounce">👆</span>
         <span className="font-medium">Scroll up to see the notification!</span>

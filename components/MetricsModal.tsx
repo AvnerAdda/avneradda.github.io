@@ -20,9 +20,9 @@ export default function MetricsModal({ isOpen, onClose }: MetricsModalProps) {
       >
         {/* Header */}
         <div className="relative border-b border-gray-700/50">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-emerald-600/20 backdrop-blur-sm" />
           <div className="relative p-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
               Profile Metrics
             </h2>
             <button

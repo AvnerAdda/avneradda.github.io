@@ -62,10 +62,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <AiCard>
             <div className="space-y-6 p-6">
               <div className="text-center space-y-4">
-                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">
                   {isSignUp ? 'Create Account' : 'Welcome Back'}
                 </h2>
-                <div className="h-1 w-24 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+                <div className="h-1 w-24 mx-auto bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" />
               </div>
 
               {error && (
@@ -130,7 +130,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
                 <button
                   type="submit"
-                  className="w-full p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+                  className="w-full p-4 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
                 >
                   {isSignUp ? 'Sign Up' : 'Sign In'}
                 </button>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { db } from '../lib/firebase';
-import { collection, query, getDocs, orderBy } from 'firebase/firestore';
+import { db, isFirebasePermissionError } from '../lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 import { getIPMetricCount } from '../lib/ipBasedMetrics';
 
 interface Metric {
@@ -11,6 +11,7 @@ interface Metric {
 }
 
 export default function RecruiterMetrics() {
+  const [firebaseMetricsUnavailable, setFirebaseMetricsUnavailable] = useState(false);
   const [metrics, setMetrics] = useState<Metric[]>([
     {
       label: 'Profile Views',
@@ -83,16 +84,25 @@ export default function RecruiterMetrics() {
         const viewsCount = await getIPMetricCount('profile_views');
         const downloadsCount = await getIPMetricCount('resume_downloads');
         const chatCount = await getIPMetricCount('chat_conversations');
-        
-        // Fetch meetings from recruiter_submissions collection
-        const meetingsRef = collection(db, 'recruiter_submissions');
-        const meetingsSnapshot = await getDocs(meetingsRef);
-        const meetingsCount = meetingsSnapshot.size;
-        
-        // Fetch subscribers count from metrics collection
-        const metricsRef = collection(db, 'metrics');
-        const metricsSnapshot = await getDocs(metricsRef);
-        const subscribersCount = metricsSnapshot.docs.find(doc => doc.id === 'subscribers')?.data()?.count || 0;
+
+        let meetingsCount = 0;
+        let subscribersCount = 0;
+
+        try {
+          const meetingsRef = collection(db, 'recruiter_submissions');
+          const meetingsSnapshot = await getDocs(meetingsRef);
+          meetingsCount = meetingsSnapshot.size;
+
+          const metricsRef = collection(db, 'metrics');
+          const metricsSnapshot = await getDocs(metricsRef);
+          subscribersCount = metricsSnapshot.docs.find(doc => doc.id === 'subscribers')?.data()?.count || 0;
+        } catch (error) {
+          if (isFirebasePermissionError(error)) {
+            setFirebaseMetricsUnavailable(true);
+          } else {
+            console.error('Error fetching metrics:', error);
+          }
+        }
 
         setMetrics(prev => prev.map(metric => {
           switch(metric.label) {
@@ -111,7 +121,11 @@ export default function RecruiterMetrics() {
           }
         }));
       } catch (error) {
-        console.error('Error fetching metrics:', error);
+        if (!isFirebasePermissionError(error)) {
+          console.error('Error fetching metrics:', error);
+        } else {
+          setFirebaseMetricsUnavailable(true);
+        }
       }
     };
 
@@ -120,6 +134,11 @@ export default function RecruiterMetrics() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {firebaseMetricsUnavailable && (
+        <div className="sm:col-span-2 lg:col-span-3 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-2">
+          Live Firebase metrics are currently unavailable. Local sections still work normally.
+        </div>
+      )}
       {metrics.map((metric) => (
         <div 
           key={metric.label}

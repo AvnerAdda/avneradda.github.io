@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useChatbot } from '../lib/context/ChatbotContext';
-import { db } from '../lib/firebase';
+import { db, isFirebasePermissionError } from '../lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { AnalyticsService } from '../lib/analytics';
 import { trackIPBasedMetric, hasIPInteracted } from '../lib/ipBasedMetrics';
@@ -98,15 +98,28 @@ export default function Profile() {
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeAnimating, setIsLikeAnimating] = useState(false);
   const [isMetricsOpen, setIsMetricsOpen] = useState(false);
+  const [likesAvailable, setLikesAvailable] = useState(true);
 
   // Add useEffect to listen to likes count and check IP status
   useEffect(() => {
     const feedbackRef = doc(db, 'ip_metrics', 'profile_likes');
-    const unsubscribe = onSnapshot(feedbackRef, (doc) => {
-      if (doc.exists()) {
-        setLikeCount(doc.data()?.count || 0);
+    const unsubscribe = onSnapshot(
+      feedbackRef,
+      (doc) => {
+        if (doc.exists()) {
+          setLikeCount(doc.data()?.count || 0);
+        }
+      },
+      (error) => {
+        if (isFirebasePermissionError(error)) {
+          setLikesAvailable(false);
+          setLikeCount(0);
+          return;
+        }
+
+        console.error('Error listening to like metrics:', error);
       }
-    });
+    );
 
     // Check if current IP has already liked
     const checkIPStatus = async () => {
@@ -137,6 +150,10 @@ export default function Profile() {
 
 
   const handleLike = async () => {
+    if (!likesAvailable || isLiked || hasUserLiked) {
+      return;
+    }
+
     if (!isLiked && !hasUserLiked) {
       try {
         const wasTracked = await trackIPBasedMetric('profile_likes');
@@ -193,7 +210,7 @@ export default function Profile() {
         <div className="flex items-start gap-6 md:gap-8">
           {/* Profile Image */}
           <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
             <div className="relative h-28 w-28 md:h-32 md:w-32">
               <Image
                 src="/images/profile-picture.jpg" // You'll need to add your image to the public folder
@@ -209,7 +226,7 @@ export default function Profile() {
           {/* Name, Title and Company Badge */}
           <div className="flex flex-col gap-2 pt-2">
             <div className="hover-float">
-              <h1 className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+              <h1 className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">
                 Avner Adda
               </h1>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
@@ -225,7 +242,7 @@ export default function Profile() {
                     alt="Deloitte"
                     width={60}
                     height={18}
-                    className="opacity-90"
+                    className="h-[18px] w-auto opacity-90"
                   />
                 </div>
               </div>
@@ -237,8 +254,8 @@ export default function Profile() {
                   setIsMetricsOpen(true);
                 }}
                 className="mt-2 px-3 py-1.5 text-sm rounded-full 
-                  bg-gradient-to-r from-blue-500/10 to-purple-500/10 
-                  hover:from-blue-500/20 hover:to-purple-500/20
+                  bg-gradient-to-r from-blue-500/10 to-emerald-500/10 
+                  hover:from-blue-500/20 hover:to-emerald-500/20
                   border border-blue-500/20 hover:border-blue-500/30
                   text-blue-400 hover:text-blue-300
                   transition-all duration-300 group flex items-center gap-2"
@@ -308,14 +325,23 @@ export default function Profile() {
               </div>
             </a>
 
-            {/* Generic AI Agent */}
-            <div className="relative group">
+            {/* ShekelSync */}
+            <a
+              href="https://www.shekelsync.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group"
+            >
               <div className="p-2 rounded-lg bg-gray-700/30 hover:bg-gray-600/30 transition-all duration-300 hover:scale-105">
-                <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20,9V7c0-1.1-0.9-2-2-2h-3c0-1.66-1.34-3-3-3S9,3.34,9,5H6C4.9,5,4,5.9,4,7v2c-1.66,0-3,1.34-3,3s1.34,3,3,3v2 c0,1.1,0.9,2,2,2h3c0,1.66,1.34,3,3,3s3-1.34,3-3h3c1.1,0,2-0.9,2-2v-2c1.66,0,3-1.34,3-3S21.66,9,20,9z M12,17.5 c-0.83,0-1.5-0.67-1.5-1.5s0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5S12.83,17.5,12,17.5z M12,10.5c-0.83,0-1.5-0.67-1.5-1.5 S11.17,7.5,12,7.5S13.5,8.17,13.5,9S12.83,10.5,12,10.5z"/>
-                </svg>
+                <Image
+                  src="/images/shekelsync.svg"
+                  alt="ShekelSync"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                />
               </div>
-            </div>
+            </a>
 
             {/* LadderAZ */}
             <a 
@@ -451,7 +477,7 @@ export default function Profile() {
               setNotificationDismissed(true);
             }}
             className="group relative px-4 py-2 md:px-6 md:py-3 rounded-full 
-              bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 
+              bg-gradient-to-r from-blue-500 via-emerald-500 to-blue-500 
               text-white font-semibold active:scale-95 md:hover:scale-105
               transition-all duration-300 z-10
               md:hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]
@@ -461,7 +487,7 @@ export default function Profile() {
             aria-label="Open chat"
           >
             <div className="absolute -inset-1 
-              bg-gradient-to-r from-blue-500 to-purple-500 
+              bg-gradient-to-r from-blue-500 to-emerald-500 
               rounded-full blur opacity-30 
               group-hover:opacity-70 transition duration-500
               md:group-hover:animate-pulse"
@@ -495,7 +521,7 @@ export default function Profile() {
             {/* Chat Notification Popup */}
             {showChatNotification && (
               <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
-                <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs px-3 py-2 rounded-lg shadow-lg border border-blue-400/30">
+                <div className="relative bg-gradient-to-r from-blue-600 to-emerald-600 text-white text-xs px-3 py-2 rounded-lg shadow-lg border border-blue-400/30">
                   <div className="flex items-center gap-2">
                     <span className="animate-pulse">💬</span>
                     <span className="font-medium">What if we talk together?</span>
@@ -519,11 +545,12 @@ export default function Profile() {
 
           <button
             onClick={handleLike}
-            disabled={isLiked || hasUserLiked}
+            disabled={!likesAvailable || isLiked || hasUserLiked}
+            title={likesAvailable ? 'Like this profile' : 'Likes are unavailable while Firebase access is disabled'}
             className={`
               group relative px-4 py-2 rounded-lg
               transition-all duration-300 flex items-center gap-1.5
-              ${(isLiked || hasUserLiked) 
+              ${(!likesAvailable || isLiked || hasUserLiked) 
                 ? 'bg-gray-700/30 text-gray-400' 
                 : 'bg-gray-700/30 hover:bg-gray-600/30 text-gray-300'
               }
@@ -533,7 +560,7 @@ export default function Profile() {
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 24 24" 
               fill="currentColor" 
-              className={`w-4 h-4 ${(isLiked || hasUserLiked) ? 'text-blue-400' : ''}`}
+              className={`w-4 h-4 ${(!likesAvailable || isLiked || hasUserLiked) ? 'text-blue-400' : ''}`}
             >
               <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
             </svg>
@@ -552,4 +579,3 @@ export default function Profile() {
     </div>
   )
 }
-

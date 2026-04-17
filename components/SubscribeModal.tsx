@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { db } from '../lib/firebase';
+import { db, isFirebasePermissionError } from '../lib/firebase';
 import { collection, addDoc, doc, increment, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import AiCard from './AiCard';
 import { AnalyticsService } from '../lib/analytics';
@@ -54,9 +54,16 @@ export default function SubscribeModal({ isOpen, onClose }: SubscribeModalProps)
         setMessage('');
       }, 2000);
     } catch (error) {
-      console.error('Error subscribing:', error);
       setStatus('error');
-      setMessage('Error subscribing to newsletter. Please try again.');
+      setMessage(
+        isFirebasePermissionError(error)
+          ? 'Newsletter signup is currently unavailable.'
+          : 'Error subscribing to newsletter. Please try again.'
+      );
+
+      if (!isFirebasePermissionError(error)) {
+        console.error('Error subscribing:', error);
+      }
     }
   };
 

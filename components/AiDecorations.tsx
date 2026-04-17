@@ -6,7 +6,7 @@ export default function AiDecorations() {
       {/* Neural network nodes */}
       <div className="absolute top-20 right-20 w-3 h-3 rounded-full bg-blue-400 opacity-70 animate-pulse" />
       <div className="absolute top-40 right-40 w-2 h-2 rounded-full bg-green-400 opacity-70 animate-pulse" style={{ animationDelay: '0.5s' }} />
-      <div className="absolute top-60 right-30 w-4 h-4 rounded-full bg-purple-400 opacity-70 animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-60 right-30 w-4 h-4 rounded-full bg-emerald-400 opacity-70 animate-pulse" style={{ animationDelay: '1s' }} />
       
       {/* Floating binary */}
       <div className="absolute top-1/4 left-10 text-sm text-gray-600 opacity-30 animate-pulse">

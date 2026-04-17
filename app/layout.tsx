@@ -1,10 +1,7 @@
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'
 import { ChatbotProvider } from '../lib/context/ChatbotContext'
-import ChatbotDialogWrapper from '../components/ChatbotDialogWrapper'
-import { AuthProvider } from '../lib/context/AuthContext'
-import FloatingChatButton from '../components/FloatingChatButton'
-import FloatingResumeButton from '../components/FloatingResumeButton'
+import ClientChrome from '../components/ClientChrome'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -49,24 +46,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-gray-900 text-white flex flex-col`}>
-        <AuthProvider>
-          <ChatbotProvider>
-            <div className="neural-bg" />
-            <div className="relative z-0 flex-grow">
-              {children}
-            </div>
-            <ChatbotDialogWrapper />
-            <FloatingResumeButton />
-            <FloatingChatButton />
-            <footer className="relative z-10 p-2 text-center text-xs text-gray-400 bg-gradient-to-t from-gray-900 to-transparent backdrop-blur-sm">
-              Created by <a href="https://www.ai-tasks.fr/" className="text-blue-400 hover:underline">AI Tasks</a> using{' '}
-              <span className="text-blue-400">Firebase</span> and{' '}
-              <span className="text-blue-400">NextJS</span>
-            </footer>
-          </ChatbotProvider>
-        </AuthProvider>
+        <ChatbotProvider>
+          <div className="neural-bg" />
+          <div className="relative z-0 flex-grow">
+            {children}
+          </div>
+          <ClientChrome />
+          <footer className="relative z-10 p-2 text-center text-xs text-gray-400 bg-gradient-to-t from-gray-900 to-transparent backdrop-blur-sm">
+            Created by <a href="https://www.ai-tasks.fr/" className="text-blue-400 hover:underline">AI Tasks</a> using{' '}
+            <span className="text-blue-400">Firebase</span> and{' '}
+            <span className="text-blue-400">NextJS</span>
+          </footer>
+        </ChatbotProvider>
       </body>
     </html>
   )
 }
-

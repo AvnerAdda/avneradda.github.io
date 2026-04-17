@@ -20,7 +20,7 @@
 @layer components {
   .neural-bg {
     @apply fixed inset-0 -z-10 opacity-30;
-    background: radial-gradient(circle at center, #3b82f640 0%, #8b5cf640 100%);
+    background: radial-gradient(circle at center, #3b82f640 0%, #10b98140 100%);
     filter: blur(100px);
   }
 

@@ -179,7 +179,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
       return (
         <div className="text-center space-y-6 py-8">
           <div className="relative">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full flex items-center justify-center">
               <span className="text-3xl font-bold text-white">
                 {Math.round((todayScore?.score || 0) / (todayScore?.maxScore || 1) * 100)}%
               </span>
@@ -215,7 +215,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
             <div className="flex justify-center space-x-3">
               <button
                 onClick={() => setView('leaderboard')}
-                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
               >
                 View Leaderboard
               </button>
@@ -235,13 +235,13 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
       <div className="space-y-8">
         {/* Header Section */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">
             Daily AI Quiz
           </h1>
           <p className="text-gray-400">
             Test your knowledge with daily AI/ML questions!
           </p>
-          <div className="h-1 w-32 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+          <div className="h-1 w-32 mx-auto bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" />
         </div>
 
         {loading ? (
@@ -255,7 +255,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
           </div>
         ) : gameCompleted ? (
           <div className="text-center space-y-6 py-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full flex items-center justify-center">
               <span className="text-3xl font-bold text-white">{Math.round((score / questions.length) * 100)}%</span>
             </div>
             <h2 className="text-2xl font-bold text-white">Quiz Completed!</h2>
@@ -278,7 +278,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
             )}
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
             >
               Close Quiz
             </button>
@@ -332,7 +332,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
               {!submitted && selectedAnswer !== null && (
                 <button
                   onClick={handleSubmit}
-                  className="w-full p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+                  className="w-full p-4 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
                 >
                   Submit Answer
                 </button>
@@ -350,7 +350,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
               {submitted && (
                 <button
                   onClick={handleNextQuestion}
-                  className="w-full p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+                  className="w-full p-4 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
                 >
                   {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Complete Quiz'}
                 </button>
@@ -383,7 +383,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
               onClick={() => setView('quiz')}
               className={`px-6 py-2 rounded-lg transition-all duration-200 ${
                 view === 'quiz'
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-blue-500 to-emerald-500 text-white shadow-lg'
                   : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
               }`}
             >
@@ -393,7 +393,7 @@ export default function GameModal({ isOpen, onClose }: GameModalProps) {
               onClick={() => setView('leaderboard')}
               className={`px-6 py-2 rounded-lg transition-all duration-200 ${
                 view === 'leaderboard'
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-blue-500 to-emerald-500 text-white shadow-lg'
                   : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
               }`}
             >

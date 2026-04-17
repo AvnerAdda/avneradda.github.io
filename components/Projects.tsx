@@ -127,7 +127,7 @@ export default function Projects() {
         <h3 className="text-lg font-semibold mb-3">GitHub Contributions</h3>
         <div className="w-full overflow-hidden rounded-lg bg-gray-700/30 hover:bg-gray-700/40 transition-all duration-300 p-4 group">
           <div className="relative">
-            <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition duration-500" />
+            <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-emerald-500/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition duration-500" />
             <div className="relative">
               <Image
                 src="https://ghchart.rshah.org/gradient/AvnerAdda"
@@ -218,8 +218,8 @@ export default function Projects() {
           rel="noopener noreferrer" 
           className="block group"
         >
-          <div className="relative p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-blue-500/20 
-            transition-all duration-300 hover:from-blue-500/20 hover:to-purple-600/20 hover:border-blue-500/30 hover:shadow-lg h-full">
+          <div className="relative p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-emerald-600/10 border border-blue-500/20 
+            transition-all duration-300 hover:from-blue-500/20 hover:to-emerald-600/20 hover:border-blue-500/30 hover:shadow-lg h-full">
             <div className="absolute top-3 right-3 w-16 h-16 opacity-20">
               <Image
                 src="/images/ladderaz.svg"
@@ -376,35 +376,55 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Smart Portfolio Project */}
-        <div className="relative p-3 rounded-lg bg-gradient-to-r from-gray-500/10 to-gray-600/10 border border-gray-500/20 
-          transition-all duration-300 hover:from-gray-500/20 hover:to-gray-600/20 hover:border-gray-500/30 hover:shadow-md">
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-gray-400 text-xs font-semibold tracking-wider uppercase">
-                Side Project
-              </span>
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-            </div>
-            <h3 className="text-md font-bold text-gray-300">
-              Smart Portfolio Tracker
-            </h3>
-            <p className="mt-1 text-sm text-gray-400">
-              Intelligent portfolio management system to track and optimize your personal finance investments
-            </p>
-            
-            <div className="mt-2 flex flex-wrap gap-1">
-              {["Python", "Finance", "ML", "Dashboard"].map((tech) => (
-                <span
-                  key={tech}
-                  className="px-2 py-0.5 text-xs rounded-full bg-gray-500/10 text-gray-400 border border-gray-500/20"
-                >
-                  {tech}
+        {/* ShekelSync Project */}
+        <a
+          href="https://www.shekelsync.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block group"
+        >
+          <div className="relative p-3 rounded-lg bg-gradient-to-r from-cyan-500/10 to-emerald-500/10 border border-cyan-500/20 
+            transition-all duration-300 hover:from-cyan-500/20 hover:to-emerald-500/20 hover:border-cyan-500/30 hover:shadow-md h-full">
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-cyan-300 text-xs font-semibold tracking-wider uppercase">
+                  Currently Building
                 </span>
-              ))}
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              </div>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-md font-bold text-cyan-100">
+                    ShekelSync
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-300">
+                    Personal finance desktop app for Israeli banks, credit cards, and portfolio tracking, built with a local API and React renderer.
+                  </p>
+                </div>
+                <div className="shrink-0 rounded-lg bg-slate-950/40 p-1.5 border border-cyan-500/20">
+                  <Image
+                    src="/images/shekelsync.svg"
+                    alt="ShekelSync Logo"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-2 flex flex-wrap gap-1">
+                {["Electron", "React", "Vite", "SQLite", "Fintech"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-0.5 text-xs rounded-full bg-cyan-500/10 text-cyan-200 border border-cyan-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       {/* Projects Section */}
@@ -451,4 +471,3 @@ export default function Projects() {
     </div>
   );
 }
-

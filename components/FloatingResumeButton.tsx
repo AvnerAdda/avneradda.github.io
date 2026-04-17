@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { db } from '../lib/firebase';
-import { doc, increment, updateDoc, setDoc, getDoc } from 'firebase/firestore';
 import { AnalyticsService } from '../lib/analytics';
+import { trackIPBasedMetric } from '../lib/ipBasedMetrics';
 
 export default function FloatingResumeButton() {
   const [isProfileVisible, setIsProfileVisible] = useState(true);
@@ -29,22 +28,11 @@ export default function FloatingResumeButton() {
 
   const handleDownloadResume = async () => {
     try {
-      // Track download in metrics collection
-      const downloadsRef = doc(db, 'metrics', 'downloads');
-      const downloadsDoc = await getDoc(downloadsRef);
-      
-      if (!downloadsDoc.exists()) {
-        // Create initial document if it doesn't exist
-        await setDoc(downloadsRef, { count: 1 });
-      } else {
-        // Increment existing count
-        await updateDoc(downloadsRef, {
-          count: increment(1)
-        });
+      // Track download with the same IP-based metric flow used in the profile.
+      const wasTracked = await trackIPBasedMetric('resume_downloads');
+      if (wasTracked) {
+        AnalyticsService.trackDocumentAction('download', 'resume');
       }
-
-      // Track in analytics
-      AnalyticsService.trackDocumentAction('download', 'resume');
 
       // Download the file
       const link = document.createElement('a');
@@ -54,7 +42,7 @@ export default function FloatingResumeButton() {
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Error tracking download:', error);
+      console.error('Error downloading resume:', error);
     }
   };
 

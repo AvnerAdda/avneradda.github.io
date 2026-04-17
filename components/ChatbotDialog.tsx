@@ -930,11 +930,11 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
 
         {/* Header */}
         <div className="relative h-[72px] flex-shrink-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-emerald-600/20 backdrop-blur-sm" />
           <div className="relative p-4 border-b border-gray-700/50 h-full">
             <div className="flex items-center gap-4 h-full">
               <div className="relative h-10 w-10 group">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
                 <Image
                   src="/images/profile-picture.jpg"
                   alt="AI Assistant"
@@ -944,7 +944,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
                 />
               </div>
               <div>
-                <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
                   AI Assistant
                 </h2>
                 <p className="text-sm text-gray-400">Ask me anything about Avner</p>
@@ -983,7 +983,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
               {chatState.stage === 'INITIAL' && (
                 <div className="flex items-start gap-3 mb-6">
                   <div className="flex-shrink-0 relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
                     <Image
                       src="/images/profile-picture.jpg"
                       alt="AI Assistant"
@@ -1002,7 +1002,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
                             onClick={() => handleOptionSelect(option.action === 'SET_RECRUITER' ? 'RECRUITER' : 'VISITOR')}
                             disabled={isLoading}
                             className="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-gray-700/50 to-gray-600/50 
-                              hover:from-blue-600/20 hover:to-purple-600/20 transition-all duration-300
+                              hover:from-blue-600/20 hover:to-emerald-600/20 transition-all duration-300
                               text-sm text-gray-200 relative z-20 disabled:opacity-50 disabled:cursor-not-allowed
                               border border-gray-600/30 hover:border-blue-500/30 group"
                           >
@@ -1025,7 +1025,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
                 <div key={index} className="relative z-10">
                   {message.prompt && !message.isOption && (
                     <div className="flex flex-col items-end gap-2 mb-6">
-                      <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl px-4 py-3 max-w-[80%]
+                      <div className="bg-gradient-to-r from-blue-600/20 to-emerald-600/20 rounded-2xl px-4 py-3 max-w-[80%]
                         backdrop-blur-sm border border-blue-500/30">
                         <MarkdownMessage content={message.displayPrompt || message.prompt} />
                       </div>
@@ -1039,7 +1039,7 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
                   {message.response && !message.isOption && (
                     <div className="flex items-start gap-3 mb-6">
                       <div className="flex-shrink-0 relative group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
                         <Image
                           src="/images/profile-picture.jpg"
                           alt="AI Assistant"
@@ -1114,8 +1114,8 @@ export default function ChatbotDialog({ isOpen, onClose }: ChatbotDialogProps) {
                     });
                   }
                 }}
-                className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600/20 to-purple-600/20 
-                  hover:from-blue-600/30 hover:to-purple-600/30 text-blue-400 font-medium
+                className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600/20 to-emerald-600/20 
+                  hover:from-blue-600/30 hover:to-emerald-600/30 text-blue-400 font-medium
                   transition-all duration-300 border border-blue-500/30 hover:border-blue-500/50"
               >
                 Schedule a Meeting

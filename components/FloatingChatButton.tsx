@@ -42,7 +42,7 @@ export default function FloatingChatButton() {
     >
       <button
         onClick={handleChatOpen}
-        className="group bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 
+        className="group bg-gradient-to-r from-blue-500 via-emerald-500 to-blue-500 
           text-white rounded-full shadow-lg hover:shadow-xl transition-all 
           duration-300 flex items-center justify-center
           w-12 h-12 hover:scale-110 animate-shimmer bg-[length:200%_100%]
@@ -50,7 +50,7 @@ export default function FloatingChatButton() {
         aria-label="Open chat"
       >
         <div className="absolute -inset-1 
-          bg-gradient-to-r from-blue-500 to-purple-500 
+          bg-gradient-to-r from-blue-500 to-emerald-500 
           rounded-full blur opacity-30 
           group-hover:opacity-70 transition duration-500
           group-hover:animate-pulse"

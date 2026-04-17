@@ -68,7 +68,7 @@ export default function Hobbies() {
               <div className="flex flex-col items-center text-center space-y-2">
                 <span className="text-3xl mb-2">{lang.icon}</span>
                 <h3 className="font-semibold text-blue-400">{lang.language}</h3>
-                <span className="text-sm text-purple-400 font-medium">{lang.level}</span>
+                <span className="text-sm text-emerald-400 font-medium">{lang.level}</span>
                 <p className="text-gray-400 text-sm">{lang.description}</p>
               </div>
             </div>

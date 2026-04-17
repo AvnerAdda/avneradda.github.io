@@ -27,7 +27,7 @@ const CERTIFICATIONS = [
 export default function Education() {
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+      <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">
         Education
       </h2>
       {/* Existing Education Content */}
@@ -108,7 +108,7 @@ export default function Education() {
                 alt={`${cert.issuer} logo`}
                 width={24}
                 height={24}
-                className="opacity-70 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity flex-shrink-0"
               />
               <div className="flex flex-col min-w-0">
                 <span className="text-green-400 flex items-center gap-2 truncate">
@@ -124,4 +124,3 @@ export default function Education() {
     </div>
   );
 }
-

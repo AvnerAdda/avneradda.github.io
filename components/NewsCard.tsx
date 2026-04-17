@@ -14,7 +14,7 @@ export default function NewsCard({ news }: { news: NewsItem }) {
       hover:bg-gray-700/50 transition-all duration-300 border border-gray-700/50
       hover:border-gray-600/50">
       {/* Glow effect */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 
         rounded-lg blur opacity-0 group-hover:opacity-20 transition-opacity"/>
       
       <div className="relative">

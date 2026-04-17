@@ -6,6 +6,10 @@ async function fetchAndSaveArticles() {
     const mediumUsername = '@lilmod';
     const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`);
     const data = await response.json();
+
+    if (!response.ok || !Array.isArray(data.items)) {
+      throw new Error(data?.message || `Unexpected Medium feed response (${response.status})`);
+    }
     
     const articles = data.items.map((item: any) => ({
       title: item.title,
@@ -21,7 +25,7 @@ async function fetchAndSaveArticles() {
     fs.writeFileSync(filePath, JSON.stringify(articles, null, 2));
     console.log('Articles saved successfully!');
   } catch (error) {
-    console.error('Failed to fetch Medium articles:', error);
+    console.warn('Failed to fetch Medium articles. Keeping the existing articles.json file.', error);
   }
 }
 
