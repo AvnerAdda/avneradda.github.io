@@ -42,22 +42,12 @@ export default function FloatingChatButton() {
     >
       <button
         onClick={handleChatOpen}
-        className="group bg-gradient-to-r from-blue-500 via-emerald-500 to-blue-500 
-          text-white rounded-full shadow-lg hover:shadow-xl transition-all 
-          duration-300 flex items-center justify-center
-          w-12 h-12 hover:scale-110 animate-shimmer bg-[length:200%_100%]
-          hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+        className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-stone-950/80 text-white shadow-2xl shadow-black/30 backdrop-blur-xl transition duration-300 hover:border-white/25 hover:bg-stone-900"
         aria-label="Open chat"
       >
-        <div className="absolute -inset-1 
-          bg-gradient-to-r from-blue-500 to-emerald-500 
-          rounded-full blur opacity-30 
-          group-hover:opacity-70 transition duration-500
-          group-hover:animate-pulse"
-        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="relative z-10 w-6 h-6 group-hover:animate-bounce"
+          className="relative z-10 h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

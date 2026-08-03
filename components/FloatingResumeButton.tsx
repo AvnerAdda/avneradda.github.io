@@ -56,20 +56,12 @@ export default function FloatingResumeButton() {
     >
       <button
         onClick={handleDownloadResume}
-        className="group bg-gradient-to-r from-green-500 to-emerald-500 
-          text-white rounded-full shadow-lg hover:shadow-xl transition-all 
-          duration-300 flex items-center justify-center
-          w-12 h-12 hover:scale-110"
+        className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-stone-950/80 text-white shadow-2xl shadow-black/30 backdrop-blur-xl transition duration-300 hover:border-white/25 hover:bg-stone-900"
         aria-label="Download Resume"
       >
-        <div className="absolute -inset-1 
-          bg-gradient-to-r from-green-500 to-emerald-500 
-          rounded-full blur opacity-30 
-          group-hover:opacity-70 transition duration-500"
-        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="relative z-10 w-6 h-6 group-hover:animate-bounce"
+          className="relative z-10 h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

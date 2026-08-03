@@ -3,8 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --background: #111827;
-  --foreground: #ffffff;
+  --background: #111214;
+  --foreground: #f5f2ea;
+  --muted: #b7b0a4;
+  --panel: rgba(255, 255, 255, 0.055);
+  --panel-strong: rgba(255, 255, 255, 0.085);
+  --border: rgba(255, 255, 255, 0.13);
+  --accent: #60a5fa;
+  --accent-2: #34d399;
+  --accent-3: #f59e0b;
 }
 
 @layer base {
@@ -13,20 +20,159 @@
   }
   
   body {
-    @apply bg-gray-900 text-white min-h-screen;
+    @apply min-h-screen antialiased;
+    color: var(--foreground);
+    background:
+      linear-gradient(180deg, #111214 0%, #171816 48%, #101214 100%);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(245, 158, 11, 0.12), transparent 34%),
+      linear-gradient(225deg, rgba(52, 211, 153, 0.1), transparent 38%),
+      linear-gradient(315deg, rgba(96, 165, 250, 0.11), transparent 42%);
+    background-size: 72px 72px, 72px 72px, 100% 100%, 100% 100%, 100% 100%;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(17, 18, 20, 0.72), rgba(17, 18, 20, 0.9));
+  }
+
+  ::selection {
+    background: rgba(96, 165, 250, 0.35);
+    color: #ffffff;
   }
 }
 
 @layer components {
   .neural-bg {
-    @apply fixed inset-0 -z-10 opacity-30;
-    background: radial-gradient(circle at center, #3b82f640 0%, #10b98140 100%);
-    filter: blur(100px);
+    @apply fixed inset-0 -z-10 opacity-20;
+    background:
+      linear-gradient(135deg, rgba(96, 165, 250, 0.16), transparent 35%),
+      linear-gradient(225deg, rgba(52, 211, 153, 0.12), transparent 40%);
   }
 
   .animate-fade-in {
     @apply opacity-0;
     animation: fadeIn 0.5s ease-in forwards;
+  }
+
+  .section-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .portfolio-section {
+    @apply relative scroll-mt-28 py-14 sm:py-20;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .portfolio-hero {
+    @apply relative scroll-mt-28 pb-12 pt-28 sm:pb-16 sm:pt-32;
+  }
+
+  .portfolio-band {
+    background: rgba(255, 255, 255, 0.028);
+  }
+
+  .section-eyebrow {
+    @apply mb-3 text-sm font-semibold uppercase text-amber-300;
+    letter-spacing: 0;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-stone-50 sm:text-3xl;
+  }
+
+  .section-lede {
+    @apply mt-3 max-w-3xl text-base leading-7 text-stone-300;
+  }
+
+  .surface-card {
+    @apply rounded-lg border p-5 transition duration-200;
+    background: var(--panel);
+    border-color: var(--border);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+  }
+
+  .surface-card:hover {
+    background: var(--panel-strong);
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-2px);
+  }
+
+  .metric-card {
+    @apply rounded-lg border p-4 transition duration-200;
+    background: rgba(255, 255, 255, 0.045);
+    border-color: rgba(255, 255, 255, 0.11);
+  }
+
+  .metric-card:hover {
+    background: rgba(255, 255, 255, 0.075);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium;
+    background: rgba(255, 255, 255, 0.065);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #ded8cc;
+  }
+
+  .primary-action {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold text-white transition duration-200;
+    background: linear-gradient(135deg, #2563eb, #059669);
+    box-shadow: 0 16px 35px rgba(37, 99, 235, 0.22);
+  }
+
+  .primary-action:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+
+  .secondary-action {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border px-5 py-3 text-sm font-semibold transition duration-200;
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: #f5f2ea;
+  }
+
+  .secondary-action:hover {
+    background: rgba(255, 255, 255, 0.095);
+    border-color: rgba(255, 255, 255, 0.24);
+    transform: translateY(-1px);
+  }
+
+  .icon-action {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-lg border transition duration-200;
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(255, 255, 255, 0.13);
+    color: #f5f2ea;
+  }
+
+  .icon-action:hover {
+    background: rgba(255, 255, 255, 0.095);
+    border-color: rgba(255, 255, 255, 0.24);
+    transform: translateY(-1px);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -41,11 +187,13 @@
   }
 }
 
-/* Ensure gradients and backgrounds work */
-.bg-gradient-custom {
-  @apply bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
-
-.card-background {
-  @apply bg-gray-900/50 backdrop-blur-sm;
-} 

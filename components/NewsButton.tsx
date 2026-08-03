@@ -25,18 +25,14 @@ export default function NewsButton() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4 flex flex-col items-end gap-4 z-50">
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
       {/* Collapsible Menu Items */}
-      <div className={`space-y-4 transition-all duration-300 transform origin-bottom-right flex flex-col items-end
-        ${isMenuOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 h-0'}`}>
+      <div className={`flex origin-bottom-right flex-col items-end gap-3 transition-all duration-300
+        ${isMenuOpen ? 'scale-100 opacity-100' : 'pointer-events-none h-0 scale-95 opacity-0'}`}>
         {/* Subscribe Newsletter Button */}
         <button
           onClick={() => setIsSubscribeModalOpen(true)}
-          className="bg-gradient-to-r from-green-500 to-emerald-500 
-            text-white rounded-full shadow-lg hover:shadow-xl transition-all 
-            duration-300 flex items-center justify-center
-            md:rounded-lg md:px-4 md:py-2
-            w-12 h-12 md:w-auto md:h-auto"
+          className="secondary-action rounded-full bg-black/55 px-4 shadow-xl shadow-black/20"
           aria-label="Subscribe to Newsletter"
         >
           <div className="flex items-center gap-2">
@@ -52,11 +48,7 @@ export default function NewsButton() {
         {/* Game Button */}
         <button
           onClick={() => setIsGameModalOpen(true)}
-          className="bg-gradient-to-r from-yellow-500 to-orange-500 
-            text-white rounded-full shadow-lg hover:shadow-xl transition-all 
-            duration-300 flex items-center justify-center
-            md:rounded-lg md:px-4 md:py-2
-            w-12 h-12 md:w-auto md:h-auto"
+          className="secondary-action rounded-full bg-black/55 px-4 shadow-xl shadow-black/20"
           aria-label="Play Daily Quiz"
         >
           <div className="flex items-center gap-2">
@@ -75,11 +67,7 @@ export default function NewsButton() {
         {/* Latest News Button */}
         <button
           onClick={() => setIsNewsModalOpen(true)}
-          className="bg-gradient-to-r from-blue-500 to-emerald-500 
-            text-white rounded-full shadow-lg hover:shadow-xl transition-all 
-            duration-300 flex items-center justify-center
-            md:rounded-lg md:px-4 md:py-2
-            w-12 h-12 md:w-auto md:h-auto"
+          className="secondary-action rounded-full bg-black/55 px-4 shadow-xl shadow-black/20"
           aria-label="View Latest News"
         >
           <div className="flex items-center gap-2">
@@ -96,10 +84,7 @@ export default function NewsButton() {
       {/* Menu Toggle Button */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="bg-gradient-to-r from-blue-500 to-emerald-500 
-          text-white rounded-full shadow-lg hover:shadow-xl transition-all 
-          duration-300 flex items-center justify-center
-          w-12 h-12"
+        className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-stone-950/80 text-white shadow-2xl shadow-black/30 backdrop-blur-xl transition hover:border-white/25 hover:bg-stone-900"
         aria-label="Toggle Menu"
       >
         <svg className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-45' : ''}`} 

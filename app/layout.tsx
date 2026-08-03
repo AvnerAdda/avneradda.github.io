@@ -9,11 +9,11 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'Avner Adda - Data Scientist',
-  description: 'Personal profile of Avner Adda, Data Scientist based in Tel Aviv',
+  title: 'Avner Adda | Data Scientist & AI Engineer',
+  description: 'Portfolio of Avner Adda, a Tel Aviv based Data Scientist building applied AI, GenAI, and analytics products.',
   openGraph: {
-    title: 'Avner Adda - Data Scientist',
-    description: 'Personal profile of Avner Adda, Data Scientist based in Tel Aviv',
+    title: 'Avner Adda | Data Scientist & AI Engineer',
+    description: 'Applied AI, GenAI, data science, and product engineering portfolio.',
     url: 'https://avneradda.github.io',
     siteName: 'Avner Adda Portfolio',
     images: [
@@ -45,17 +45,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen bg-gray-900 text-white flex flex-col`}>
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <ChatbotProvider>
-          <div className="neural-bg" />
           <div className="relative z-0 flex-grow">
             {children}
           </div>
           <ClientChrome />
-          <footer className="relative z-10 p-2 text-center text-xs text-gray-400 bg-gradient-to-t from-gray-900 to-transparent backdrop-blur-sm">
-            Created by <a href="https://www.ai-tasks.fr/" className="text-blue-400 hover:underline">AI Tasks</a> using{' '}
-            <span className="text-blue-400">Firebase</span> and{' '}
-            <span className="text-blue-400">NextJS</span>
+          <footer className="relative z-10 border-t border-white/10 bg-black/20 px-4 py-5 text-center text-xs text-stone-400 backdrop-blur-sm">
+            (c) 2026 Avner Adda. Built with Next.js and Firebase.
           </footer>
         </ChatbotProvider>
       </body>

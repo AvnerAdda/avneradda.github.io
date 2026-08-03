@@ -1,33 +1,67 @@
-import fs from 'fs'
-import path from 'path'
-import Image from 'next/image'
+import fs from 'fs';
+import path from 'path';
+import Image from 'next/image';
+
+const priorityTools = [
+  'python.svg',
+  'openai.svg',
+  'langchain.svg',
+  'spark.svg',
+  'aws.svg',
+  'gcp.svg',
+  'docker.svg',
+  'PostgresSQL.svg',
+];
+
+function formatToolName(file: string) {
+  return file
+    .replace('.svg', '')
+    .replace(/-/g, ' ')
+    .replace('gcp', 'Google Cloud')
+    .replace('aws', 'AWS')
+    .replace('html', 'HTML')
+    .replace('openai', 'OpenAI');
+}
 
 export default async function Tools() {
-  const toolsDirectory = path.join(process.cwd(), 'public/images/tools')
-  const files = fs.readdirSync(toolsDirectory)
-  const svgFiles = files.filter(file => file.endsWith('.svg'))
+  const toolsDirectory = path.join(process.cwd(), 'public/images/tools');
+  const files = fs.readdirSync(toolsDirectory);
+  const svgFiles = files
+    .filter((file) => file.endsWith('.svg'))
+    .sort((a, b) => {
+      const aIndex = priorityTools.indexOf(a);
+      const bIndex = priorityTools.indexOf(b);
+      if (aIndex !== -1 || bIndex !== -1) {
+        return (aIndex === -1 ? Number.POSITIVE_INFINITY : aIndex) - (bIndex === -1 ? Number.POSITIVE_INFINITY : bIndex);
+      }
+      return a.localeCompare(b);
+    });
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-500">Tools & Technologies</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div>
+      <p className="section-eyebrow">Tools</p>
+      <h2 className="section-title">Technologies I use</h2>
+      <p className="section-lede">
+        A practical stack for data science, ML engineering, cloud deployment,
+        analytics, and AI application development.
+      </p>
+
+      <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {svgFiles.map((file) => (
-          <div key={file} className="flex flex-col items-center p-4 bg-gray-800 rounded-lg">
-            <div className="flex h-12 w-12 items-center justify-center">
+          <div key={file} className="surface-card flex min-h-32 flex-col items-center justify-center text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/90 p-2">
               <Image
                 src={`/images/tools/${file}`}
-                alt={file.replace('.svg', '')}
+                alt={formatToolName(file)}
                 width={48}
                 height={48}
-                className="h-12 w-auto max-w-12 object-contain"
+                className="max-h-10 w-auto object-contain"
               />
             </div>
-            <span className="mt-2 text-sm text-gray-300">
-              {file.replace('.svg', '').replace(/-/g, ' ')}
-            </span>
+            <span className="mt-3 text-sm text-stone-200">{formatToolName(file)}</span>
           </div>
         ))}
       </div>
     </div>
-  )
-} 
+  );
+}
